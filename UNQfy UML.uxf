@@ -1,8 +1,8 @@
-<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>753</x><y>339</y><w>160</w><h>70</h></coordinates><panel_attributes>Album	
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>220</x><y>487</y><w>160</w><h>70</h></coordinates><panel_attributes>Album	
 --
 -artist: Artist
 --
-Methods:</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>453</x><y>619</y><w>150</w><h>130</h></coordinates><panel_attributes>Track
+Methods:</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>577</y><w>150</w><h>130</h></coordinates><panel_attributes>Track
 --
 -id: Int
 -album: Album
@@ -11,38 +11,45 @@ Methods:</panel_attributes><additional_attributes></additional_attributes></elem
 -artist: ArrayList&lt;Artist&gt;
 -name: String
 --
-Methods:</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1163</x><y>329</y><w>180</w><h>110</h></coordinates><panel_attributes>Artist
+Methods:</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>540</x><y>467</y><w>180</w><h>110</h></coordinates><panel_attributes>Artist
 --
 -id: Int
 -name: String
 -albums: ArrayList&lt;Album&gt;
 -genere: ArrayList&lt;Genre&gt;
 --
-Methods:</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>73</x><y>359</y><w>150</w><h>70</h></coordinates><panel_attributes>Playlist
+Methods:</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>110</x><y>597</y><w>150</w><h>70</h></coordinates><panel_attributes>Playlist
 --
 -duration: Float
 --
-Methods:</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>593</x><y>379</y><w>180</w><h>280</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=1..1
-m2=1..n
-</panel_attributes><additional_attributes>160;10;80;10;80;250;10;250</additional_attributes></element><element><id>Relation</id><coordinates><x>903</x><y>359</y><w>280</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=1..n
-m2=0..n
-</panel_attributes><additional_attributes>260;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>213</x><y>389</y><w>260</w><h>270</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-
-m1=0..n
-m2=0..n
-</panel_attributes><additional_attributes>10;10;180;10;180;240;240;240</additional_attributes></element><element><id>UMLClass</id><coordinates><x>413</x><y>159</y><w>170</w><h>100</h></coordinates><panel_attributes>/TrackList/
+Methods:</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>340</x><y>327</y><w>170</w><h>100</h></coordinates><panel_attributes>/TrackList/
 --
 -id: Int
 -tracks: ArrayList&lt;Track&gt;
 -genre: ArrayList&lt;Genre&gt;
 -name: String
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>273</x><y>369</y><w>100</w><h>70</h></coordinates><panel_attributes>tracks</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>573</x><y>589</y><w>100</w><h>70</h></coordinates><panel_attributes>tracks
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>450</x><y>587</y><w>50</w><h>30</h></coordinates><panel_attributes>tracks</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>730</x><y>647</y><w>60</w><h>30</h></coordinates><panel_attributes>tracks
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>923</x><y>349</y><w>40</w><h>80</h></coordinates><panel_attributes>artist</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>573</x><y>209</y><w>250</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;230;130</additional_attributes></element><element><id>Relation</id><coordinates><x>143</x><y>219</y><w>290</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>270;10;10;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>803</x><y>140</y><w>240</w><h>150</h></coordinates><panel_attributes>UNQfy
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>430</x><y>477</y><w>40</w><h>30</h></coordinates><panel_attributes>artist</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>28</y><w>170</w><h>150</h></coordinates><panel_attributes>UNQfy
 --
 -albums: ArrayList&lt;Album&gt;
--playlists: ArrayList&lt;Playlist&gt; 
+-playlists: ArrayList&lt;Playlist&gt;
 -tracks: ArrayList&lt;Track&gt;
 -artists: ArrayList&lt;Artist&gt;
---</panel_attributes><additional_attributes></additional_attributes></element></diagram>
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>170</y><w>260</w><h>430</h></coordinates><panel_attributes>lt=-
+m1=0..n
+
+</panel_attributes><additional_attributes>220;410;220;190;10;190;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>500</x><y>170</y><w>170</w><h>220</h></coordinates><panel_attributes>lt=-
+m1=0..n
+
+</panel_attributes><additional_attributes>10;190;150;190;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>640</x><y>170</y><w>50</w><h>320</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=1..1
+</panel_attributes><additional_attributes>10;300;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>250</x><y>360</y><w>110</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>90;10;10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>140</x><y>360</y><w>220</w><h>260</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>200;10;10;10;10;240</additional_attributes></element><element><id>Relation</id><coordinates><x>250</x><y>644</y><w>560</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;540;10</additional_attributes></element><element><id>Text</id><coordinates><x>270</x><y>667</y><w>60</w><h>30</h></coordinates><panel_attributes>0..n
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>730</x><y>627</y><w>60</w><h>30</h></coordinates><panel_attributes>0..n
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>350</x><y>544</y><w>460</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;70;440;70</additional_attributes></element><element><id>Text</id><coordinates><x>740</x><y>577</y><w>60</w><h>30</h></coordinates><panel_attributes>1..n
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>360</x><y>577</y><w>60</w><h>30</h></coordinates><panel_attributes>1..1
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>370</x><y>509</y><w>190</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>170;10;10;10</additional_attributes></element><element><id>Text</id><coordinates><x>380</x><y>523</y><w>60</w><h>30</h></coordinates><panel_attributes>0..n
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Text</id><coordinates><x>490</x><y>528</y><w>40</w><h>30</h></coordinates><panel_attributes>1..n
+</panel_attributes><additional_attributes></additional_attributes></element></diagram>
