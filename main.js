@@ -3,10 +3,6 @@
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
 
-function methodMapping(fun,params) {
-   UNQfy.fun(),
- 
-}
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
@@ -56,11 +52,11 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 */
 
 function main() {
-  try {
+
     const func = process.argv[0]
     const params = process.argv.slice(1)
     
-  }
+ 
 }
 
 main();
