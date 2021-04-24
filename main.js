@@ -1,4 +1,4 @@
-
+const commands = require('./src/commands');
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
@@ -56,7 +56,9 @@ function main() {
 	//process.argv.forEach(argument => console.log(argument));
 
 	const func = process.argv[0]
-	const params = process.argv.slice(1)
+	//const params = process.argv.slice(3)
+	const args = process.argv.slice(3)
+	commands.get(func).paramsBuilder(args)
     
  
 }
