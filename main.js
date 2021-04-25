@@ -13,10 +13,13 @@ function getUNQfy(filename = 'data.json') {
 	return unqfy;
 }
 
+/* agregador por nosotros
 function addArtist(args){
   const {name,country} = args
   getUNQfy(filename = 'data.json').addArtist(name, country)
 }
+*/
+
 function saveUNQfy(unqfy, filename = 'data.json') {
 	unqfy.save(filename);
 }
@@ -51,16 +54,36 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 */
 
-function main() {
-	//console.log('arguments: ');
-	//process.argv.forEach(argument => console.log(argument));
+const unqfy = getUNQfy()
 
+function main() {
+	
+	//consola
+	consoleMethod = process.argv[2] //el metodo que se ingresa en consola
+	consoleArgs = process.argv.slice(3) //los argumentos del metodo ArrLs
+	
+	console.log('los parametros totales son: ', process.argv)
+	console.log('el metodo es: ', consoleMethod)
+	console.log('los argumentos a procesar son: ', consoleArgs)
+
+	//transformando argumentos
+	command = commands[consoleMethod]
+	
+	console.log('Comando creado: ', command)
+
+	//ejecuto el metodo
+
+	command.executeMethod(consoleArgs, unqfy)
+	saveUNQfy(unqfy)
+
+
+	/*
 	const func = process.argv[0]
 	//const params = process.argv.slice(3)
 	const args = process.argv.slice(3)
+
 	commands.get(func).paramsBuilder(args)
-    
- 
+    */ 
 }
 
 main();

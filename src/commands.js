@@ -1,6 +1,7 @@
 const { UNQfy } = require('../unqfy')
 //const AddGenre = require('./genre')
 
+
 function paramsBuilder(args){
     const params = [];
 
@@ -26,14 +27,34 @@ function parseValueByType(value){
     return value;
 }
 
-const AddArtist = UNQfy.addArtist(paramsBuilder(args))
 
-//const unqfy = new UNQfy()
 
+class Command{
+    
+    executeMethod(){
+        throw "Error, this method is not implemented"
+    }
+}
+
+class AddArtist extends Command{
+    
+    executeMethod(lsParams, unqfy){
+        var n_ame = lsParams[1]
+        var country = lsParams[2]
+        
+        unqfy.addArtist(n_ame, country)
+    }
+}
+
+const commands = { // aca se van a ir mapeando los comandos
+    addArtist: new AddArtist() 
+}
+
+/*
+const addArtist = new AddArtist()
 const commands = new Map()
-
-commands.set('addArtist', AddArtist)
-
+commands.set('addArtist', addArtist)
+*/
 
 
 module.exports = commands

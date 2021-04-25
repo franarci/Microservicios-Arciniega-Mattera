@@ -16,6 +16,7 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
   */
+    console.log('-- ARTISTA AGREGADO --') // eliminar
   }
 
 
