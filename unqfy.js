@@ -5,6 +5,7 @@ const ar = require('./src/artist')
 
 
 class UNQfy {
+  artists = [] 
   idGenerator = 0
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
@@ -16,16 +17,20 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
  */  
-      artistData.id = this.idGenerator
-      this.idGenerator++
-
-      if(!this.belongs(artistData.name, this.artists)){
-        this.artists.push(artistData)
+      console.log("quw mierda es esto: "+ artistData)
+      
+     if(!this.belongs(artistData.name, this.artists)){
+       const artist = new ar.Artist(this.idGenerator, name, country )
+       console.log("artista creado: ", artist)
+        this.artists.push(artist)
+        this.idGenerator++
+        console.log("nombre artista: "+this.artists[0].name)
+        return artist.name
       }
   }
-    belongs(artistId, artists){
-      return artists.map(artist =>{
-        artist.id === artistId
+  belongs(name, artists){
+      return artists.find(artist =>{
+        artist.name === name
       })
     }
 
