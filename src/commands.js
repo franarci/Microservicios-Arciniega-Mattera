@@ -39,9 +39,13 @@ class Command{
 class AddArtist extends Command{
     
     executeMethod(lsParams, unqfy){
-        var n_ame = lsParams[0]
-        var country = lsParams[1]
-        unqfy.addArtist(n_ame, country)
+        //var n_ame = lsParams[0]
+        //var country = lsParams[1]
+        var mapParams = {
+            name: lsParams[0],
+            country: lsParams[1]
+        }
+        unqfy.addArtist(mapParams)
     }
 }
 
