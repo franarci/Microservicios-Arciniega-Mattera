@@ -5,7 +5,7 @@ const ar = require('./src/artist')
 
 
 class UNQfy {
-
+  idGenerator = 0
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
   //   artistData.country (string)
@@ -15,9 +15,19 @@ class UNQfy {
   El objeto artista creado debe soportar (al menos):
     - una propiedad name (string)
     - una propiedad country (string)
-  */
-  }
+ */  
+      artistData.id = this.idGenerator
+      this.idGenerator++
 
+      if(!this.belongs(artistData.name, this.artists)){
+        this.artists.push(artistData)
+      }
+  }
+    belongs(artistId, artists){
+      return artists.map(artist =>{
+        artist.id === artistId
+      })
+    }
 
   // albumData: objeto JS con los datos necesarios para crear un album
   //   albumData.name (string)
