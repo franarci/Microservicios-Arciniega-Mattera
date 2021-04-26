@@ -1,7 +1,6 @@
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
-const ARTIST = require('./src/domain-classes');
 const { Playlist } = require('./src/domain-classes/playlist');
 const { Album } = require('./src/domain-classes/album');
 const { Track } = require('./src/domain-classes/track');
@@ -26,7 +25,7 @@ constructor(){
  */  
       
      if(!this.belongs(artistData.name, this.artists)){
-       const artist = new ar.Artist(this.idGenerator, artistData.name, artistData.country)
+       const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
         this.artists.push(artist)
         this.idGenerator++
         return artist
