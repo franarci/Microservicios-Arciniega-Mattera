@@ -17,15 +17,12 @@ class UNQfy {
     - una propiedad name (string)
     - una propiedad country (string)
  */  
-      console.log("quw mierda es esto: "+ artistData)
       
      if(!this.belongs(artistData.name, this.artists)){
-       const artist = new ar.Artist(this.idGenerator, name, country )
-       console.log("artista creado: ", artist)
+       const artist = new ar.Artist(this.idGenerator, artistData.name, artistData.country)
         this.artists.push(artist)
         this.idGenerator++
-        console.log("nombre artista: "+this.artists[0].name)
-        return artist.name
+        return artist
       }
   }
   belongs(name, artists){

@@ -73,7 +73,6 @@ function main() {
 
 	command.executeMethod(consoleArgs, getUNQfy())
 	saveUNQfy(getUNQfy())
-
 	/*
 	const func = process.argv[0]
 	//const params = process.argv.slice(3)

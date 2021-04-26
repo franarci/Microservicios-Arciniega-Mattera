@@ -41,7 +41,7 @@ class AddArtist extends Command{
     executeMethod(lsParams, unqfy){
         var n_ame = lsParams[0]
         var country = lsParams[1]
-        unqfy.addArtist(n_ame, country)
+        unqfy.addArtist({n_ame, country})
     }
 }
 
