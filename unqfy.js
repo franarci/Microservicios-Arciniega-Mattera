@@ -23,7 +23,6 @@ constructor(){
     - una propiedad name (string)
     - una propiedad country (string)
  */  
-      console.log("artistData; ", artistData)
      if(!this.belongs(artistData.name, this.artists)){
        const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
         this.artists.push(artist)
