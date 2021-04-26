@@ -10,14 +10,24 @@ class Command{
 class AddArtist extends Command{
     
     executeMethod(lsParams, unqfy){
-        var n_ame = lsParams[0]
-        var country = lsParams[1]
-        unqfy.addArtist({n_ame, country})
+        var artist = new Object()
+        artist.name = lsParams[0]
+        artist.country = lsParams[1]
+        unqfy.addArtist(artist)
+    }
+}
+
+class GetArtistById extends Command{
+    
+    executeMethod(lsParams, unqfy){
+        console.log("que es esto: ", lsParams[0])
+        unqfy.getArtistById(lsParams[0])
     }
 }
 
 const commands = { // aca se van a ir mapeando los comandos
-    addArtist: new AddArtist() 
+    addArtist: new AddArtist(),
+    getArtistById: new GetArtistById() 
 }
 
 

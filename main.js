@@ -47,7 +47,7 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 */
 
 function main() {
-	
+	let unqfy = getUNQfy()
 	//consola
 	consoleMethod = process.argv[2] //el metodo que se ingresa en consola
 	consoleArgs = process.argv.slice(3) //los argumentos del metodo ArrLs
@@ -63,8 +63,9 @@ function main() {
 
 	//ejecuto el metodo
 
-	command.executeMethod(consoleArgs, getUNQfy())
-	saveUNQfy(getUNQfy())
+	command.executeMethod(consoleArgs, unqfy)
+	saveUNQfy(unqfy)
+	console.log("unqfy: ", getUNQfy())
 }
 
 main();

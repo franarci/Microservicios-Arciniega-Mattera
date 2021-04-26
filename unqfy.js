@@ -23,17 +23,18 @@ constructor(){
     - una propiedad name (string)
     - una propiedad country (string)
  */  
-     if(!this.belongs(artistData.name, this.artists)){
+
+     if(!this.belongs(artistData.name)){
        const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
         this.artists.push(artist)
         this.idGenerator++
         return artist
+      } else {
+        console.log("ya existe ese artista")
       }
   }
-  belongs(name, artists){
-      return artists.find(artist =>{
-        artist.name === name
-      })
+  belongs(name){
+      return this.artists.map(artist =>artist.name).includes(name)
     }
 
   // albumData: objeto JS con los datos necesarios para crear un album
@@ -64,7 +65,9 @@ constructor(){
   }
 
   getArtistById(id) {
-
+      if(this.artists.map(artist =>artist.id).includes(id)){
+         return this.artists.find(a => a.id ==id)
+      }
   }
 
   getAlbumById(id) {
