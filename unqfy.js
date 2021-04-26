@@ -1,12 +1,19 @@
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
-const ar = require('./src/artist')
+const ARTIST = require('./src/domain-classes');
+const { Playlist } = require('./src/domain-classes/playlist');
+const { Album } = require('./src/domain-classes/album');
+const { Track } = require('./src/domain-classes/track');
+const { TrackList } = require('./src/domain-classes/tracklist');
+const { Artist } = require('./src/domain-classes/artist');
 
 
 class UNQfy {
-  artists = [] 
-  idGenerator = 0
+constructor(){
+  this.artists = []
+  this.idGenerator = 0
+}
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
   //   artistData.country (string)
@@ -117,6 +124,6 @@ class UNQfy {
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
-  UNQfy: UNQfy,
+	UNQfy: UNQfy,
 };
 
