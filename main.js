@@ -54,8 +54,6 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 */
 
-const unqfy = getUNQfy()
-
 function main() {
 	
 	//consola
@@ -73,9 +71,8 @@ function main() {
 
 	//ejecuto el metodo
 
-	command.executeMethod(consoleArgs, unqfy)
-	saveUNQfy(unqfy)
-
+	command.executeMethod(consoleArgs, getUNQfy())
+	saveUNQfy(getUNQfy())
 
 	/*
 	const func = process.argv[0]
