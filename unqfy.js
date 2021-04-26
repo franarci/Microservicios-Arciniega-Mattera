@@ -1,7 +1,7 @@
 
 const picklify = require('picklify'); // para cargar/guarfar unqfy
 const fs = require('fs'); // para cargar/guarfar unqfy
-const ARTIST = require('./src/domain-classes/');
+const ARTIST = require('./src/domain-classes');
 const { Playlist } = require('./src/domain-classes/playlist');
 const { Album } = require('./src/domain-classes/album');
 const { Track } = require('./src/domain-classes/track');
@@ -10,8 +10,10 @@ const { Artist } = require('./src/domain-classes/artist');
 
 
 class UNQfy {
-	artists = []
-	idGenerator = 0
+	constructor(){
+		this.artists = []
+		this.idGenerator = 0
+	}
 	// artistData: objeto JS con los datos necesarios para crear un artista
 	//   artistData.name (string)
 	//   artistData.country (string)
@@ -22,13 +24,16 @@ class UNQfy {
 		- una propiedad name (string)
 		- una propiedad country (string)
  	*/  
-		console.log("quw mierda es esto: "+ artistData)
+		console.log("artistData: " + artistData)
 			
 		if(!this.belongs(artistData.name, this.artists)){
-			const artist = new ARTIST.Artist(this.idGenerator, name, country )
+			const artist = new ARTIST.Artist(this.idGenerator, artistData.name, country )
+		
 			console.log("artista creado: ", artist)
-				this.artists.push(artist)
+		
+			this.artists.push(artist)
 				this.idGenerator++
+		
 				console.log("nombre artista: "+this.artists[0].name)
 				return artist.name
 		}
