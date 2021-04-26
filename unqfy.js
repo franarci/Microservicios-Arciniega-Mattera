@@ -23,7 +23,7 @@ constructor(){
     - una propiedad name (string)
     - una propiedad country (string)
  */  
-      
+      console.log("artistData; ", artistData)
      if(!this.belongs(artistData.name, this.artists)){
        const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
         this.artists.push(artist)
@@ -115,7 +115,7 @@ constructor(){
   static load(filename) {
     const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
     //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy];
+    const classes = [UNQfy, Playlist, Artist, Album, Track, TrackList];
     return picklify.unpicklify(JSON.parse(serializedData), classes);
   }
 }
