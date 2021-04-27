@@ -23,14 +23,13 @@ class UNQfy {
 	- una propiedad name (string)
 	- una propiedad country (string)
 	*/  
-
 		if(!this.belongs(artistData.name)){
 			const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
 			this.artists.push(artist)
 			this.idGenerator++
 			return artist
 		} else {
-		console.log("ya existe ese artista")
+			console.log("ya existe ese artista")
 		}
 	}
 	belongs(name){
@@ -49,7 +48,6 @@ class UNQfy {
 	*/
 	}
 
-
 	// trackData: objeto JS con los datos necesarios para crear un track
 	//   trackData.name (string)
 	//   trackData.duration (number)
@@ -65,37 +63,28 @@ class UNQfy {
 	}
 
 	getArtistById(id) {
-		console.log('entra al metodo')
-
-		if(this.artists.map(artist => artist.id).includes(id)){
-			return this.artists.find(a => a.id == id)
+		let _id = parseInt(id)
+		if(this.artists.map(artist => artist.id).includes(_id)){
+			console.log(this.artists.find(a => a.id ==id))
+			return this.artists.find(a => a.id ==id)
+		} else{
+			console.log(`El artista con ID ${id} no existe`)
 		}
-
 	}
 
-	getAlbumById(id) {
+	getAlbumById(id) {}
 
-	}
+	getTrackById(id) {}
 
-	getTrackById(id) {
-
-	}
-
-	getPlaylistById(id) {
-
-	}
+	getPlaylistById(id) {}
 
 	// genres: array de generos(strings)
 	// retorna: los tracks que contenga alguno de los generos en el parametro genres
-	getTracksMatchingGenres(genres) {
-
-	}
+	getTracksMatchingGenres(genres) {}
 
 	// artistName: nombre de artista(string)
 	// retorna: los tracks interpredatos por el artista con nombre artistName
-	getTracksMatchingArtist(artistName) {
-
-	}
+	getTracksMatchingArtist(artistName) {}
 
 
 	// name: nombre de la playlist
@@ -128,6 +117,6 @@ class UNQfy {
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
-	UNQfy: UNQfy,
+    UNQfy: UNQfy,
 };
 

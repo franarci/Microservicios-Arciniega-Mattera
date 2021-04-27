@@ -65,7 +65,7 @@ function main() {
 
 	command.executeMethod(consoleArgs, unqfy)
 	saveUNQfy(unqfy)
-	console.log("unqfy: ", getUNQfy())
+	//console.log("unqfy: ", getUNQfy())
 }
 
 main();

@@ -20,8 +20,8 @@ class AddArtist extends Command{
 class GetArtistById extends Command{
     
     executeMethod(lsParams, unqfy){
-        console.log("que es esto: ", lsParams[0])
-        unqfy.getArtistById(lsParams[0])
+        var id = lsParams[0]
+        unqfy.getArtistById(id)
     }
 }
 
