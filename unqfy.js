@@ -24,7 +24,12 @@ class UNQfy {
 	- una propiedad country (string)
 	*/  
 		if(!this.belongs(artistData.name)){
-			const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
+			const artist = 
+				new Artist(
+					this.idGenerator, 
+					artistData.name, 
+					artistData.country
+				)
 			this.artists.push(artist)
 			this.idGenerator++
 			return artist
@@ -32,6 +37,7 @@ class UNQfy {
 			console.log("ya existe ese artista")
 		}
 	}
+	
 	belongs(name){
 		return this.artists.map(artist =>artist.name).includes(name)
 	}
@@ -62,9 +68,10 @@ class UNQfy {
 	*/
 	}
 
-	getArtistById(id) {
+	getArtistById(id){
 		let _id = parseInt(id)
 		if(this.artists.map(artist => artist.id).includes(_id)){
+			//console.log('el artista que se busca es:')
 			console.log(this.artists.find(a => a.id ==id))
 			return this.artists.find(a => a.id ==id)
 		} else{
@@ -109,7 +116,12 @@ class UNQfy {
 	static load(filename) {
 	const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
 	//COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-	const classes = [UNQfy, Playlist, Artist, Album, Track, TrackList];
+	const classes = [UNQfy, 
+					Playlist, 
+					Artist, 
+					Album, 
+					Track, 
+					TrackList];
 	return picklify.unpicklify(JSON.parse(serializedData), classes);
 	}
 }
