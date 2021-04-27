@@ -34,12 +34,12 @@ class UNQfy {
 			this.idGenerator++
 			return artist
 		} else {
-			console.log("ya existe ese artista")
+			console.log("ya existe ese artista") //levantar excepcion
 		}
 	}
 	
 	belongs(name){
-		return this.artists.map(artist =>artist.name).includes(name)
+		return this.artists.map(artist =>artist.name).includes(name) //revisar la busqueda
 	}
 
 	// albumData: objeto JS con los datos necesarios para crear un album

@@ -47,6 +47,9 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 */
 
 function main() {
+
+	//manejar la excepcion de un comando que no va
+
 	let unqfy = getUNQfy()
 	//consola
 	consoleMethod = process.argv[2] //el metodo que se ingresa en consola
