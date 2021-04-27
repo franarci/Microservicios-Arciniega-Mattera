@@ -9,10 +9,10 @@ const { Artist } = require('./src/domain-classes/artist');
 
 
 class UNQfy {
-constructor(){
-  this.artists = []
-  this.idGenerator = 0
-}
+  constructor(){
+    this.artists = []
+    this.idGenerator = 0
+  }
   // artistData: objeto JS con los datos necesarios para crear un artista
   //   artistData.name (string)
   //   artistData.country (string)
@@ -23,15 +23,14 @@ constructor(){
     - una propiedad name (string)
     - una propiedad country (string)
  */  
-
-     if(!this.belongs(artistData.name)){
-       const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
+    if(!this.belongs(artistData.name)){
+        const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
         this.artists.push(artist)
         this.idGenerator++
         return artist
-      } else {
+    } else {
         console.log("ya existe ese artista")
-      }
+    }
   }
   belongs(name){
       return this.artists.map(artist =>artist.name).includes(name)
@@ -65,9 +64,13 @@ constructor(){
   }
 
   getArtistById(id) {
-      if(this.artists.map(artist =>artist.id).includes(id)){
-         return this.artists.find(a => a.id ==id)
-      }
+    let _id = parseInt(id)
+    if(this.artists.map(artist => artist.id).includes(_id)){
+          console.log(this.artists.find(a => a.id ==id))
+          return this.artists.find(a => a.id ==id)
+    } else{
+        console.log(`El artista con ID ${id} no existe`)
+    }
   }
 
   getAlbumById(id) {
