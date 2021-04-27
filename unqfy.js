@@ -9,117 +9,120 @@ const { Artist } = require('./src/domain-classes/artist');
 
 
 class UNQfy {
-constructor(){
-  this.artists = []
-  this.idGenerator = 0
-}
-  // artistData: objeto JS con los datos necesarios para crear un artista
-  //   artistData.name (string)
-  //   artistData.country (string)
-  // retorna: el nuevo artista creado
-  addArtist(artistData) {
-  /* Crea un artista y lo agrega a unqfy.
-  El objeto artista creado debe soportar (al menos):
-    - una propiedad name (string)
-    - una propiedad country (string)
- */  
+	constructor(){
+		this.artists = []
+		this.idGenerator = 0
+	}
+	// artistData: objeto JS con los datos necesarios para crear un artista
+	//   artistData.name (string)
+	//   artistData.country (string)
+	// retorna: el nuevo artista creado
+	addArtist(artistData) {
+	/* Crea un artista y lo agrega a unqfy.
+	El objeto artista creado debe soportar (al menos):
+	- una propiedad name (string)
+	- una propiedad country (string)
+	*/  
 
-     if(!this.belongs(artistData.name)){
-       const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
-        this.artists.push(artist)
-        this.idGenerator++
-        return artist
-      } else {
-        console.log("ya existe ese artista")
-      }
-  }
-  belongs(name){
-      return this.artists.map(artist =>artist.name).includes(name)
-    }
+		if(!this.belongs(artistData.name)){
+			const artist = new Artist(this.idGenerator, artistData.name, artistData.country)
+			this.artists.push(artist)
+			this.idGenerator++
+			return artist
+		} else {
+		console.log("ya existe ese artista")
+		}
+	}
+	belongs(name){
+		return this.artists.map(artist =>artist.name).includes(name)
+	}
 
-  // albumData: objeto JS con los datos necesarios para crear un album
-  //   albumData.name (string)
-  //   albumData.year (number)
-  // retorna: el nuevo album creado
-  addAlbum(artistId, albumData) {
-  /* Crea un album y lo agrega al artista con id artistId.
-    El objeto album creado debe tener (al menos):
-     - una propiedad name (string)
-     - una propiedad year (number)
-  */
-  }
-
-
-  // trackData: objeto JS con los datos necesarios para crear un track
-  //   trackData.name (string)
-  //   trackData.duration (number)
-  //   trackData.genres (lista de strings)
-  // retorna: el nuevo track creado
-  addTrack(albumId, trackData) {
-  /* Crea un track y lo agrega al album con id albumId.
-  El objeto track creado debe tener (al menos):
-      - una propiedad name (string),
-      - una propiedad duration (number),
-      - una propiedad genres (lista de strings)
-  */
-  }
-
-  getArtistById(id) {
-      if(this.artists.map(artist =>artist.id).includes(id)){
-         return this.artists.find(a => a.id ==id)
-      }
-  }
-
-  getAlbumById(id) {
-
-  }
-
-  getTrackById(id) {
-
-  }
-
-  getPlaylistById(id) {
-
-  }
-
-  // genres: array de generos(strings)
-  // retorna: los tracks que contenga alguno de los generos en el parametro genres
-  getTracksMatchingGenres(genres) {
-
-  }
-
-  // artistName: nombre de artista(string)
-  // retorna: los tracks interpredatos por el artista con nombre artistName
-  getTracksMatchingArtist(artistName) {
-
-  }
+	// albumData: objeto JS con los datos necesarios para crear un album
+	//   albumData.name (string)
+	//   albumData.year (number)
+	// retorna: el nuevo album creado
+	addAlbum(artistId, albumData) {
+	/* Crea un album y lo agrega al artista con id artistId.
+	El objeto album creado debe tener (al menos):
+		- una propiedad name (string)
+		- una propiedad year (number)
+	*/
+	}
 
 
-  // name: nombre de la playlist
-  // genresToInclude: array de generos
-  // maxDuration: duración en segundos
-  // retorna: la nueva playlist creada
-  createPlaylist(name, genresToInclude, maxDuration) {
-  /*** Crea una playlist y la agrega a unqfy. ***
-    El objeto playlist creado debe soportar (al menos):
-      * una propiedad name (string)
-      * un metodo duration() que retorne la duración de la playlist.
-      * un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
-  */
+	// trackData: objeto JS con los datos necesarios para crear un track
+	//   trackData.name (string)
+	//   trackData.duration (number)
+	//   trackData.genres (lista de strings)
+	// retorna: el nuevo track creado
+	addTrack(albumId, trackData) {
+	/* Crea un track y lo agrega al album con id albumId.
+	El objeto track creado debe tener (al menos):
+		- una propiedad name (string),
+		- una propiedad duration (number),
+		- una propiedad genres (lista de strings)
+	*/
+	}
 
-  }
+	getArtistById(id) {
+		console.log('entra al metodo')
 
-  save(filename) {
-    const serializedData = picklify.picklify(this);
-    fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
-  }
+		if(this.artists.map(artist => artist.id).includes(id)){
+			return this.artists.find(a => a.id == id)
+		}
 
-  static load(filename) {
-    const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
-    //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-    const classes = [UNQfy, Playlist, Artist, Album, Track, TrackList];
-    return picklify.unpicklify(JSON.parse(serializedData), classes);
-  }
+	}
+
+	getAlbumById(id) {
+
+	}
+
+	getTrackById(id) {
+
+	}
+
+	getPlaylistById(id) {
+
+	}
+
+	// genres: array de generos(strings)
+	// retorna: los tracks que contenga alguno de los generos en el parametro genres
+	getTracksMatchingGenres(genres) {
+
+	}
+
+	// artistName: nombre de artista(string)
+	// retorna: los tracks interpredatos por el artista con nombre artistName
+	getTracksMatchingArtist(artistName) {
+
+	}
+
+
+	// name: nombre de la playlist
+	// genresToInclude: array de generos
+	// maxDuration: duración en segundos
+	// retorna: la nueva playlist creada
+	createPlaylist(name, genresToInclude, maxDuration) {
+	/*** Crea una playlist y la agrega a unqfy. ***
+	El objeto playlist creado debe soportar (al menos):
+		* una propiedad name (string)
+		* un metodo duration() que retorne la duración de la playlist.
+		* un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
+	*/
+
+	}
+
+	save(filename) {
+	const serializedData = picklify.picklify(this);
+	fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
+	}
+
+	static load(filename) {
+	const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
+	//COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
+	const classes = [UNQfy, Playlist, Artist, Album, Track, TrackList];
+	return picklify.unpicklify(JSON.parse(serializedData), classes);
+	}
 }
 
 
