@@ -6,6 +6,7 @@ const { Album } = require('./src/domain-classes/album');
 const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
+const {ArtistAlreadyExist, ArtistDoesNotExist } = require('./src/errors');
 
 
 class UNQfy {
@@ -34,7 +35,7 @@ class UNQfy {
 			this.idGenerator++
 			return artist
 		} else {
-			console.log("ya existe ese artista") //levantar excepcion
+			throw new ArtistAlreadyExist
 		}
 	}
 	
@@ -75,7 +76,7 @@ class UNQfy {
 			console.log(this.artists.find(a => a.id ==id))
 			return this.artists.find(a => a.id ==id)
 		} else{
-			console.log(`El artista con ID ${id} no existe`)
+			throw new ArtistDoesNotExist(id)
 		}
 	}
 
