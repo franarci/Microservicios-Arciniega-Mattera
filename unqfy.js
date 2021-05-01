@@ -6,6 +6,7 @@ const { Album } = require('./src/domain-classes/album');
 const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
+const {ArtistAlreadyExist, ArtistDoesNotExist } = require('./src/errors');
 
 
 class UNQfy {
@@ -34,12 +35,12 @@ class UNQfy {
 			this.idGenerator++
 			return artist
 		} else {
-			console.log("ya existe ese artista") //levantar excepcion
+			throw new ArtistAlreadyExist
 		}
 	}
 	
 	belongs(name){
-		return this.artists.map(artist =>artist.name).includes(name) //revisar la busqueda
+		return this.artists.some(artist =>artist.name === name) //revisar la busqueda
 	}
 
 	// albumData: objeto JS con los datos necesarios para crear un album
@@ -70,13 +71,12 @@ class UNQfy {
 
 	getArtistById(id){
 		let _id = parseInt(id)
-		
-		if(this.artists.map(artist => artist.id).includes(_id)){
+		if(this.artists.some(artist => artist.id == id)){
 			//console.log('el artista que se busca es:')
 			console.log(this.artists.find(a => a.id ==id))
 			return this.artists.find(a => a.id ==id)
 		} else{
-			console.log(`El artista con ID ${id} no existe`)
+			throw new ArtistDoesNotExist(id)
 		}
 	}
 
