@@ -70,6 +70,7 @@ class UNQfy {
 
 	getArtistById(id){
 		let _id = parseInt(id)
+		
 		if(this.artists.map(artist => artist.id).includes(_id)){
 			//console.log('el artista que se busca es:')
 			console.log(this.artists.find(a => a.id ==id))

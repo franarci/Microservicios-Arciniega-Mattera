@@ -67,6 +67,7 @@ function main() {
 	//ejecuto el metodo
 
 	command.executeMethod(consoleArgs, unqfy)
+	
 	saveUNQfy(unqfy)
 	//console.log( getUNQfy())
 }
