@@ -1,5 +1,7 @@
+const { Tracklist } = require('./src/domain-classes/tracklist');
+//const tracklist = require('./tracklist');
 
-class Album {
+class Album extends Tracklist {
     
 }
 

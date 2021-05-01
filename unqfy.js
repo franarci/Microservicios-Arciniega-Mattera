@@ -12,6 +12,9 @@ const {ArtistAlreadyExist, ArtistDoesNotExist } = require('./src/errors');
 class UNQfy {
 	constructor(){
 		this.artists = []
+		this.tracks = []
+		this.playlists = []
+		this.albums = []
 		this.idGenerator = 0
 	}
 	// artistData: objeto JS con los datos necesarios para crear un artista
@@ -65,8 +68,9 @@ class UNQfy {
 	El objeto track creado debe tener (al menos):
 		- una propiedad name (string),
 		- una propiedad duration (number),
-		- una propiedad genres (lista de strings)
-	*/
+		- una propiedad genres (lista de strings) */
+		
+		
 	}
 
 	getArtistById(id){
