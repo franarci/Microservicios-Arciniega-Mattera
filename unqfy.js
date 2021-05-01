@@ -6,6 +6,7 @@ const { Album } = require('./src/domain-classes/album');
 const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
+const { User } = require('./src/domain-classes/user')
 const {ArtistAlreadyExist, ArtistDoesNotExist } = require('./src/errors');
 
 
@@ -122,7 +123,8 @@ class UNQfy {
 					Artist, 
 					Album, 
 					Track, 
-					TrackList];
+					TrackList,
+					User];
 	return picklify.unpicklify(JSON.parse(serializedData), classes);
 	}
 }
