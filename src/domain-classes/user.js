@@ -6,7 +6,7 @@ class User {
 
     listenTrack(track){
         if(Object.keys(this.listened).includes(track)){
-            this.listened[track] = this.listened[track]++
+            this.listened[track]++
         } else {
             this.listened[track] = 1
         }
@@ -20,6 +20,7 @@ class User {
        return this.listened[track] 
     }
 }
+
 
 module.exports = {
     User: User,
