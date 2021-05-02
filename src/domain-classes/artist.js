@@ -11,6 +11,8 @@ class Artist {
      getName(){
         return this.name
     }
+
+
 }
 
 module.exports = {

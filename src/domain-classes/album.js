@@ -1,5 +1,9 @@
+const { TrackList } = require("./tracklist");
 
-class Album {
+class Album extends TrackList {
+  constructor(artist){
+    this.artist = artist;
+  }
     
 }
 

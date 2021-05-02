@@ -7,7 +7,8 @@ const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user')
-const {ArtistAlreadyExist, ArtistDoesNotExist } = require('./src/errors');
+const {ArtistAlreadyExist, ArtistDoesNotExist, ArtistNameDoesNotExist } = require('./src/errors');
+const artist = require('./src/domain-classes/artist');
 
 
 class UNQfy {
@@ -81,9 +82,12 @@ class UNQfy {
 		}
 	}
 
-	getAlbumById(id) {}
+	getAlbumById(id) {
+	}
 
-	getTrackById(id) {}
+	getTrackById(id) {
+
+	}
 
 	getPlaylistById(id) {}
 
@@ -93,7 +97,16 @@ class UNQfy {
 
 	// artistName: nombre de artista(string)
 	// retorna: los tracks interpredatos por el artista con nombre artistName
-	getTracksMatchingArtist(artistName) {}
+	getTracksMatchingArtist(artistName) {
+		if(this.artists.some(artist.name === artistName)){
+		const artist = this.artists.find(artist => artist.name === artistName)
+		let allTracks = [];
+		artist.albums.map(album => allTracks.push(...album.tracks))
+		return allTracks}
+		else{
+			throw new ArtistNameDoesNotExist(artistName)
+		}
+	}
 
 
 	// name: nombre de la playlist
