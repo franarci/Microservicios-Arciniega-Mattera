@@ -17,8 +17,15 @@ class ArtistNameDoesNotExist extends Error {
     }
 }
 
+class ThisAlbumDoesNotExist extends Error{
+    constructor(id){
+        super(`The album doesn't exist`)
+    }
+}
+
 module.exports = {
     ArtistAlreadyExist: ArtistAlreadyExist,
     ArtistDoesNotExist: ArtistDoesNotExist,
-    ArtistNameDoesNotExist: ArtistNameDoesNotExist
+    ArtistNameDoesNotExist: ArtistNameDoesNotExist,
+    ThisAlbumDoesNotExist: ThisAlbumDoesNotExist
 }

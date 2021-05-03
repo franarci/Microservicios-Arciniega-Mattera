@@ -7,7 +7,10 @@ const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
-const {ArtistAlreadyExist, ArtistDoesNotExist, ArtistNameDoesNotExist } = require('./src/errors');
+const {ArtistAlreadyExist, 
+        ArtistDoesNotExist, 
+        ArtistNameDoesNotExist, 
+        ThisAlbumDoesNotExist } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
 const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
 const { AlbumBelongs } = require('./src/belongs-classes/albumBelongs');
@@ -88,7 +91,9 @@ class UNQfy {
 				trackData.genres
 			)
 		
-	}
+        this.tracks.push(track)
+        this.getAlbumById(albumId).addTrack(track)
+    }
 
 	getArtistById(id){
 		let _id = parseInt(id)
@@ -101,7 +106,16 @@ class UNQfy {
 		}
 	}
 
-	getAlbumById(id) {}
+	getAlbumById(id) {
+        let _id = parseInt(id)
+        if(this.album.some(album => album.id == id)){
+			//console.log('el artista que se busca es:')
+			console.log(this.albums.find(a => a.id == id))
+			return this.album.find(a => a.id == id)
+		} else{
+			throw new ThisAlbumDoesNotExist(id)
+		}
+    }
 
 	getTrackById(id) {}
 
