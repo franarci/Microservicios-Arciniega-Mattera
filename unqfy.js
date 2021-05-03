@@ -101,12 +101,9 @@ class UNQfy {
 		}
 	}
 
-	getAlbumById(id) {
-	}
+	getAlbumById(id) {}
 
-	getTrackById(id) {
-
-	}
+	getTrackById(id) {}
 
 	getPlaylistById(id) {}
 
@@ -185,33 +182,12 @@ class UNQfy {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	getAndIncrementId(input){
-		//const ret
-
         const attribute = `${input}IdGenerator`
         const ret = this[attribute]
         this[attribute]++ 
 		
 		return ret
 	}
-    /*
-	belongs(class, attribute){
-		if (class == 'playlist') {
-			this.playlist.some(artist =>playlist.attribute === name) //revisar la busqueda
-		}
-		else if (class == 'artist') {
-			this.artist.some(artist =>artist.attribute === name) //revisar la busqueda
-		}
-		else if (class == 'album') {
-			this.album.some(artist =>album.attribute === name) //revisar la busqueda
-		}
-		else if (class == 'track') {
-			this.track.some(artist =>track.attribute === name) //revisar la busqueda
-		}
-		else {throw 'no se ingreso una clase valida'}
-
-		return this.artists.some(artist =>artist.name === name) //revisar la busqueda
-	}
-    */
 }
 
 

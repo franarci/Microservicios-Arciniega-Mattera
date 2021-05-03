@@ -1,8 +1,8 @@
 const { Belongs } = require('./belongs')
 
 class PlaylistBelongs extends Belongs{
-    execute(args){
-
+    execute(){
+        
     }
 }
 

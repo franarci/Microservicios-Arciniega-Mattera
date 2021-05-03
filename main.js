@@ -50,7 +50,7 @@ function main() {
 
 	//manejar la excepcion de un comando que no va
 
-	let unqfy = getUNQfy()
+	const unqfy = getUNQfy()
 	//consola
 	consoleMethod = process.argv[2] //el metodo que se ingresa en consola
 	consoleArgs = process.argv.slice(3) //los argumentos del metodo ArrLs

@@ -1,8 +1,14 @@
 const { Belongs } = require('./belongs')
 
 class AlbumBelongs extends Belongs{
-    execute(args){
-        //this.[domain-class].some([domain-class] => [domain-class].[attribute] === [attribute]) 
+    execute(albumData){
+        const n_ame = albumData[0]
+        const year = albumData[1]
+
+        let check_name = this.instances_of_domain.some(album => album.name === n_ame) 
+        let check_year = this.instances_of_domain.some(album => album.country === year) 
+
+        return check_name && check_year
     }
 }
 
