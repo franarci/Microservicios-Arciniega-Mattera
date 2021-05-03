@@ -11,6 +11,8 @@ class Artist {
      getName(){
         return this.name
     }
+
+
 }
 new Artist(id= 1)
 

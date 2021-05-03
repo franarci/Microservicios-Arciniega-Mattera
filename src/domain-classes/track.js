@@ -1,12 +1,13 @@
 
 class Track {
-	constructor(id=null, album=null, genre=null, artist=null, name=null){
-		this.id = id
-		this.album = album
-		this.genres = genre
-		this.artist = artist
-		this.name = name
-	}
+  constructor(idTrack=null, trackName=null, duration=null, album=null){
+    this.idTrack = idTrack;
+    this.trackName = trackName;
+    this.duration = duration;
+    this.album = album;
+    this.genres = [];
+    this.artists = [];
+  }
 }
 
 module.exports = {

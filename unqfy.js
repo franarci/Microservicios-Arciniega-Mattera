@@ -6,7 +6,9 @@ const { Album } = require('./src/domain-classes/album');
 const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
-const {ArtistAlreadyExist, ArtistDoesNotExist } = require('./src/errors');
+const { User } = require('./src/domain-classes/user')
+const {ArtistAlreadyExist, ArtistDoesNotExist, ArtistNameDoesNotExist } = require('./src/errors');
+const artist = require('./src/domain-classes/artist');
 
 
 class UNQfy {
@@ -90,19 +92,44 @@ class UNQfy {
 		}
 	}
 
-	getAlbumById(id) {}
+	getAlbumById(id) {
+	}
 
-	getTrackById(id) {}
+	getTrackById(id) {
+
+	}
 
 	getPlaylistById(id) {}
 
 	// genres: array de generos(strings)
 	// retorna: los tracks que contenga alguno de los generos en el parametro genres
-	getTracksMatchingGenres(genres) {}
+	getTracksMatchingGenres(genres) {
+		let res = []
+        this.tracks.map(track => {
+            for(let genre of genres){
+                if(track.genres.includes(genre)){
+                    res.push(track)
+                }
+            }
+        })
+        console.log(res)
+		return res
+	}
+}
 
 	// artistName: nombre de artista(string)
 	// retorna: los tracks interpredatos por el artista con nombre artistName
-	getTracksMatchingArtist(artistName) {}
+	getTracksMatchingArtist(artistName) {
+		if(this.artists.some(artist.name === artistName)){
+		const artist = this.artists.find(artist => artist.name === artistName)
+		let allTracks = [];
+		artist.albums.map(album => allTracks.push(...album.tracks))
+		console.log(allTracks)
+		return allTracks}
+		else{
+			throw new ArtistNameDoesNotExist(artistName)
+		}
+	}
 
 
 	// name: nombre de la playlist
@@ -132,7 +159,8 @@ class UNQfy {
 					Artist, 
 					Album, 
 					Track, 
-					TrackList];
+					TrackList,
+					User];
 	return picklify.unpicklify(JSON.parse(serializedData), classes);
 	}
 
