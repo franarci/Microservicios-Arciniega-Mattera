@@ -15,7 +15,10 @@ class UNQfy {
 		this.tracks = []
 		this.playlists = []
 		this.albums = []
-		this.idGenerator = 0
+		this.artistIdGenerator = 0
+		this.trackIdGenerator = 0
+		this.playlistIdGenerator = 0
+		this.albumIdGenerator = 0
 	}
 	// artistData: objeto JS con los datos necesarios para crear un artista
 	//   artistData.name (string)
@@ -27,25 +30,21 @@ class UNQfy {
 	- una propiedad name (string)
 	- una propiedad country (string)
 	*/  
-		if(!this.belongs(artistData.name)){
+		if(!this.belongs(artistData.name) && !this.belongs(artistData.country)){ 
 			const artist = 
 				new Artist(
-					this.idGenerator, 
+					this.artistIdGenerator, 
 					artistData.name, 
 					artistData.country
 				)
 			this.artists.push(artist)
-			this.idGenerator++
+			this.artistIdGenerator++
 			return artist
 		} else {
 			throw new ArtistAlreadyExist
 		}
 	}
 	
-	belongs(name){
-		return this.artists.some(artist =>artist.name === name) //revisar la busqueda
-	}
-
 	// albumData: objeto JS con los datos necesarios para crear un album
 	//   albumData.name (string)
 	//   albumData.year (number)
@@ -69,7 +68,14 @@ class UNQfy {
 		- una propiedad name (string),
 		- una propiedad duration (number),
 		- una propiedad genres (lista de strings) */
-		
+		track = 
+			new Track(
+				this.getAndIncrementId('track'),
+				album
+				name
+				artist
+				genres
+			)
 		
 	}
 
@@ -129,6 +135,54 @@ class UNQfy {
 					TrackList];
 	return picklify.unpicklify(JSON.parse(serializedData), classes);
 	}
+
+	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	getAndIncrementId(input){
+		const ret
+		
+		if (input == 'playlist') {
+			ret = this.playlistIdGenerator
+			this.playlistIdGenerator++
+		}
+		else if (input == 'artist') {
+			ret = this.artistIdGenerator
+			this.artistIdGenerator++
+		}
+		else if (input == 'album') {
+			ret = this.albumIdGenerator
+			this.albumIdGenerator++
+		}
+		else if (input == 'track') {
+			ret = this.trackIdGenerator
+			this.trackIdGenerator++
+		}
+		else {throw 'no se ingreso un campo asignable valido'}
+
+		return ret
+	}
+
+	belongs(class, attribute){
+
+		
+
+		if (class == 'playlist') {
+			this.playlist.some(artist =>playlist.attribute === name) //revisar la busqueda
+		}
+		else if (class == 'artist') {
+			this.artist.some(artist =>artist.attribute === name) //revisar la busqueda
+		}
+		else if (class == 'album') {
+			this.album.some(artist =>album.attribute === name) //revisar la busqueda
+		}
+		else if (class == 'track') {
+			this.track.some(artist =>track.attribute === name) //revisar la busqueda
+		}
+		else {throw 'no se ingreso una clase valida'}
+
+		return this.artists.some(artist =>artist.name === name) //revisar la busqueda
+	}
+
 }
 
 
