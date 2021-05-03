@@ -1,6 +1,11 @@
 
 class Artist {
-    constructor(id= null, name= null, country= null){
+    constructor(
+            id= null, 
+            name= null, 
+            country= null
+        ){
+        
         this.id = id
         this.name = name
         this.country = country
@@ -12,6 +17,9 @@ class Artist {
         return this.name
     }
 
+    addAlbum(album){
+        this.albums.push(album)
+    }
 
 }
 new Artist(id= 1)
