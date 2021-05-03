@@ -14,6 +14,7 @@ const artist = require('./src/domain-classes/artist');
 class UNQfy {
 	constructor(){
 		this.artists = []
+		this.tracks = []
 		this.idGenerator = 0
 	}
 	// artistData: objeto JS con los datos necesarios para crear un artista
@@ -93,7 +94,19 @@ class UNQfy {
 
 	// genres: array de generos(strings)
 	// retorna: los tracks que contenga alguno de los generos en el parametro genres
-	getTracksMatchingGenres(genres) {}
+	getTracksMatchingGenres(genres) {
+		let res = []
+        this.tracks.map(track => {
+            for(let genre of genres){
+                if(track.genres.includes(genre)){
+                    res.push(track)
+                }
+            }
+        })
+        console.log(res)
+		return res
+	}
+}
 
 	// artistName: nombre de artista(string)
 	// retorna: los tracks interpredatos por el artista con nombre artistName
