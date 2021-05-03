@@ -67,8 +67,18 @@ class UNQfy {
 	/* Crea un album y lo agrega al artista con id artistId.
 	El objeto album creado debe tener (al menos):
 		- una propiedad name (string)
-		- una propiedad year (number)
-	*/
+		- una propiedad year (number)*/
+        album = 
+            new Album(
+                this.getAndIncrementId('album'),
+                albumData.name,
+                this.getArtistById(adtistId),
+                albumData.year
+            )
+
+        const artist = this.getArtistById(artistId)
+        artist.addAlbum(album)
+        this.albums.push(album)
 	}
 
 	// trackData: objeto JS con los datos necesarios para crear un track
@@ -91,8 +101,9 @@ class UNQfy {
 				trackData.genres
 			)
 		
+        const album = this.getAlbumById(albumId)
+        album.addTrack(track)
         this.tracks.push(track)
-        this.getAlbumById(albumId).addTrack(track)
     }
 
 	getArtistById(id){
