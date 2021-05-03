@@ -6,9 +6,15 @@ const { Album } = require('./src/domain-classes/album');
 const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
-const { User } = require('./src/domain-classes/user')
+const { User } = require('./src/domain-classes/user');
 const {ArtistAlreadyExist, ArtistDoesNotExist, ArtistNameDoesNotExist } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
+const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
+const { AlbumBelongs } = require('./src/belongs-classes/albumBelongs');
+const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
+const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
+const { UserBelongs } = require('./src/belongs-classes/userBelongs');
+//const artistBelongs = require('./src/belongs-classes/artistBelongs');
 
 
 class UNQfy {
@@ -32,15 +38,18 @@ class UNQfy {
 	- una propiedad name (string)
 	- una propiedad country (string)
 	*/  
-		if(!this.belongs(artistData.name) && !this.belongs(artistData.country)){ 
+        const artistBelongs = new ArtistBelongs(this.artists)
+
+		//if(!this.belongs(artistData.name) && !this.belongs(artistData.country)){ 
+        if(!artistBelongs.execute(artistData)){
 			const artist = 
 				new Artist(
-					this.artistIdGenerator, 
+					this.getAndIncrementId('artist'), 
 					artistData.name, 
 					artistData.country
 				)
 			this.artists.push(artist)
-			this.artistIdGenerator++
+			//this.artistIdGenerator++
 			return artist
 		} else {
 			throw new ArtistAlreadyExist
@@ -73,10 +82,10 @@ class UNQfy {
 		track = 
 			new Track(
 				this.getAndIncrementId('track'),
-				album
-				name
-				artist
-				genres
+				albumId,
+				trackData.name,
+				trackData.artist,
+				trackData.genres
 			)
 		
 	}
@@ -115,7 +124,7 @@ class UNQfy {
         console.log(res)
 		return res
 	}
-}
+
 
 	// artistName: nombre de artista(string)
 	// retorna: los tracks interpredatos por el artista con nombre artistName
@@ -147,53 +156,45 @@ class UNQfy {
 	}
 
 	save(filename) {
-	const serializedData = picklify.picklify(this);
-	fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
+        const serializedData = picklify.picklify(this);
+        fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
 	}
 
-	static load(filename) {
-	const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
-	//COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
-	const classes = [UNQfy, 
-					Playlist, 
-					Artist, 
-					Album, 
-					Track, 
-					TrackList,
-					User];
-	return picklify.unpicklify(JSON.parse(serializedData), classes);
+	load(filename) {
+        const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
+        //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
+        const classes = [UNQfy, 
+                        Playlist, 
+                        Artist, 
+                        Album, 
+                        Track, 
+                        TrackList,
+                        User,
+                        ArtistAlreadyExist, 
+                        ArtistDoesNotExist, 
+                        ArtistNameDoesNotExist,
+                        ArtistBelongs,
+                        AlbumBelongs,
+                        PlaylistBelongs,
+                        TrackBelongs,
+                        UserBelongs
+                    ];
+        return picklify.unpicklify(JSON.parse(serializedData), classes);
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	getAndIncrementId(input){
-		const ret
-		
-		if (input == 'playlist') {
-			ret = this.playlistIdGenerator
-			this.playlistIdGenerator++
-		}
-		else if (input == 'artist') {
-			ret = this.artistIdGenerator
-			this.artistIdGenerator++
-		}
-		else if (input == 'album') {
-			ret = this.albumIdGenerator
-			this.albumIdGenerator++
-		}
-		else if (input == 'track') {
-			ret = this.trackIdGenerator
-			this.trackIdGenerator++
-		}
-		else {throw 'no se ingreso un campo asignable valido'}
+		//const ret
 
+        const attribute = `${input}IdGenerator`
+        const ret = this[attribute]
+        this[attribute]++ 
+		
 		return ret
 	}
-
+    /*
 	belongs(class, attribute){
-
-		
-
 		if (class == 'playlist') {
 			this.playlist.some(artist =>playlist.attribute === name) //revisar la busqueda
 		}
@@ -210,7 +211,7 @@ class UNQfy {
 
 		return this.artists.some(artist =>artist.name === name) //revisar la busqueda
 	}
-
+    */
 }
 
 
