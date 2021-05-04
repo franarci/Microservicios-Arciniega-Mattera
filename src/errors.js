@@ -23,6 +23,12 @@ class ThisAlbumDoesNotExist extends Error{
     }
 }
 
+class UsernameAlreadyExist extends Error{
+    constructor(){
+        super('That username already exist')
+    }
+}
+
 module.exports = {
     ArtistAlreadyExist: ArtistAlreadyExist,
     ArtistDoesNotExist: ArtistDoesNotExist,

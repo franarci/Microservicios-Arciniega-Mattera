@@ -25,9 +25,18 @@ class GetArtistById extends Command{
     }
 }
 
+class createUser extends Command{
+    
+    executeMethod(lsParams, unqfy){
+        var username = lsParams[0]
+        unqfy.createUser(username)
+    }
+}
+
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
-    getArtistById: new GetArtistById() 
+    getArtistById: new GetArtistById(), 
+    createUser: new createUser()
 }
 
 
