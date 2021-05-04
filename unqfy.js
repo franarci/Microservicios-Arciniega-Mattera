@@ -33,6 +33,7 @@ class UNQfy {
 		this.trackIdGenerator = 0
 		this.playlistIdGenerator = 0
 		this.albumIdGenerator = 0
+		this.userIdGenerator = 0
 	}
 	// artistData: objeto JS con los datos necesarios para crear un artista
 	//   artistData.name (string)
@@ -180,14 +181,15 @@ class UNQfy {
 
 	}
 
-	createUser(userData){
-		if(!new UserBelongs(this.users).execute(userData)){
-			id = this.getAndIncrementId('user')
-		   	this.users.push(
-			   new User(
-				   	id,
-					userData.username
-			))
+	createUser(userName){
+		if(!new UserBelongs(this.users).execute(userName)){
+			let id = this.getAndIncrementId('user');
+			let newser = new User(
+				id,
+			 	userName
+			);
+		   	this.users.push(newser);
+			return newser;
 		} 
 		else {
 			 throw new UsernameAlreadyExist;

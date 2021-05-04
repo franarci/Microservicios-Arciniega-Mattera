@@ -33,5 +33,6 @@ module.exports = {
     ArtistAlreadyExist: ArtistAlreadyExist,
     ArtistDoesNotExist: ArtistDoesNotExist,
     ArtistNameDoesNotExist: ArtistNameDoesNotExist,
-    ThisAlbumDoesNotExist: ThisAlbumDoesNotExist
+    ThisAlbumDoesNotExist: ThisAlbumDoesNotExist,
+    UsernameAlreadyExist: UsernameAlreadyExist
 }

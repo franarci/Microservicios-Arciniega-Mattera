@@ -17,6 +17,10 @@ function createAndAddTrack(unqfy, albumId, trackName, trackDuraction, trackGenre
   return unqfy.addTrack(albumId, { name: trackName, duration: trackDuraction, genres: trackGenres });
 }
 
+function createAndAddUser(unqfy, username){
+  return unqfy.createUser(username);
+}
+
 
 describe('Add, remove and filter data', () => {
   let unqfy = null;
@@ -144,5 +148,20 @@ describe('Playlist Creation and properties', () => {
     assert.isTrue(playlist.hasTrack(t3));
     assert.isTrue(playlist.hasTrack(t4));
     assert.lengthOf(playlist.tracks, 4);
+  });
+})
+
+describe('User Creation and properties', () => {
+  let unqfy = null;
+
+  beforeEach(() => {
+    unqfy = new libunqfy.UNQfy();
+  });
+  
+  it('should create an user', () => {
+    const user = createAndAddUser(unqfy, 'MasterUser');
+
+    assert.equal(user.username, 'MasterUser');
+
   });
 });
