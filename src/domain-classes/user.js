@@ -1,7 +1,8 @@
 class User {
-    constructor(id){
+    constructor(id, username){
         this.id = id
-        this.listened = new Object()
+        this.username = username
+        this.listened = new Object()   
     }
 
     listenTrack(track){
@@ -24,4 +25,4 @@ class User {
 
 module.exports = {
     User: User,
-  };
+};

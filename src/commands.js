@@ -35,7 +35,15 @@ class AddAlbum extends Command{
 class AddTrack extends Command{
     
     executeMethod(lsParams, unqfy){
+        
+    }
+}
 
+class createUser extends Command{
+    
+    executeMethod(lsParams, unqfy){
+        var username = lsParams[0]
+        unqfy.createUser(username)
     }
 }
 
@@ -43,7 +51,9 @@ const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
     getArtistById: new GetArtistById(),
     addAlbum: new AddAlbum(),
-    addTrack: new AddTrack()
+    addTrack: new AddTrack(),
+    getArtistById: new GetArtistById(), 
+    createUser: new createUser()
 }
 
 

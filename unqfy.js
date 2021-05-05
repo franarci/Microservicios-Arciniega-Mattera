@@ -10,13 +10,15 @@ const { User } = require('./src/domain-classes/user');
 const {ArtistAlreadyExist, 
         ArtistDoesNotExist, 
         ArtistNameDoesNotExist, 
-        ThisAlbumDoesNotExist } = require('./src/errors');
+        ThisAlbumDoesNotExist,
+		UsernameAlreadyExist } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
 const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
 const { AlbumBelongs } = require('./src/belongs-classes/albumBelongs');
 const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
 const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
+const { createSecureServer } = require('./node_modules/http2');
 
 
 class UNQfy {
@@ -25,10 +27,12 @@ class UNQfy {
 		this.tracks = []
 		this.playlists = []
 		this.albums = []
+		this.users = []
 		this.artistIdGenerator = 0
 		this.trackIdGenerator = 0
 		this.playlistIdGenerator = 0
 		this.albumIdGenerator = 0
+		this.userIdGenerator = 0
 	}
 	// artistData: objeto JS con los datos necesarios para crear un artista
 	//   artistData.name (string)
@@ -176,6 +180,21 @@ class UNQfy {
 
 	}
 
+	createUser(userName){
+		if(!new UserBelongs(this.users).execute(userName)){
+			let id = this.getAndIncrementId('user');
+			let newser = new User(
+				id,
+			 	userName
+			);
+		   	this.users.push(newser);
+			return newser;
+		} 
+		else {
+			 throw new UsernameAlreadyExist;
+		}
+   }
+
 	save(filename) {
         const serializedData = picklify.picklify(this);
         fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
@@ -194,6 +213,7 @@ class UNQfy {
                         ArtistAlreadyExist, 
                         ArtistDoesNotExist, 
                         ArtistNameDoesNotExist,
+						UsernameAlreadyExist,
                         ArtistBelongs,
                         AlbumBelongs,
                         PlaylistBelongs,
