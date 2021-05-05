@@ -15,3 +15,6 @@ class AlbumBelongs extends Belongs{
 module.exports = {
     AlbumBelongs:AlbumBelongs
 }
+
+// estimacion de dia de finalizacion para arturo
+// dudas que puedan surgir

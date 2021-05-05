@@ -17,7 +17,6 @@ const { AlbumBelongs } = require('./src/belongs-classes/albumBelongs');
 const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
 const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
-//const artistBelongs = require('./src/belongs-classes/artistBelongs');
 
 
 class UNQfy {
@@ -208,7 +207,7 @@ class UNQfy {
 
 	getAndIncrementId(input){
         const attribute = `${input}IdGenerator`
-        const ret = this[attribute]
+        const ret = this[attribute] 
         this[attribute]++ 
 		
 		return ret
