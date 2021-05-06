@@ -18,7 +18,7 @@ function createAndAddTrack(unqfy, albumId, trackName, trackDuraction, trackGenre
 }
 
 function createAndAddUser(unqfy, username){
-  return unqfy.createUser(username);
+    return unqfy.createUser(username);
 }
 
 function listenTrack(unqfy, userId, track){
@@ -159,19 +159,39 @@ describe('Playlist Creation and properties', () => {
   });
 })
 
-describe('User Creation and properties', () => {
-  let unqfy = null;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  beforeEach(() => {
-    unqfy = new libunqfy.UNQfy();
+describe('Test nuestro - User Creation and properties', () => {
+    let unqfy = null;
+
+    beforeEach(() => {
+        unqfy = new libunqfy.UNQfy();
+    });
+
+    it('should create an user', () => {
+        const user = createAndAddUser(unqfy, 'MasterUser');
+
+        assert.equal(user.username, 'MasterUser');
+
+    });
+});
+
+/*
+describe('Test nuestro - Album creation and properties', () => {
+    let unqfy = null;
+
+    beforeEach(() => {
+        unqfy = new libunqfy.UNQfy();
+    });
+
+    it('should create an album', () => {
+        const album = createAndAddAlbum(unqfy, 'album negro', 1);
+
+        assert.equal(album.name, 'album negro');
+    });
+
   });
-  
-  it('should create an user', () => {
-    const user = createAndAddUser(unqfy, 'MasterUser');
-
-    assert.equal(user.username, 'MasterUser');
-
-  });
+  */
   
   it('should listen a track and know listened tracks', () => {
     const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
@@ -190,5 +210,5 @@ describe('User Creation and properties', () => {
     assert.equal(user.timesListened(track2), 0)
   });
 
-});
+
 
