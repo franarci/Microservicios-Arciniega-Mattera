@@ -7,7 +7,13 @@ const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
-const error = require('./src/errors');
+const { ArtistAlreadyExist,
+        ArtistDoesNotExist,
+        ArtistNameDoesNotExist,
+        ThisAlbumDoesNotExist,
+        UsernameAlreadyExist,
+        AlbumAlreadyExists,
+        TrackAlreadyExists } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
 const albumBelongs = require('./src/belongs-classes/albumBelongs');
 const trackBelongs = require('./src/belongs-classes/trackBelongs');
@@ -51,7 +57,6 @@ class UNQfy {
 	*/  
         const artistBelongs = new ArtistBelongs(this.artists)
 
-		//if(!this.belongs(artistData.name) && !this.belongs(artistData.country)){ 
         if(!artistBelongs.execute(artistData)){
 			const artist = 
 				new Artist(
@@ -60,10 +65,9 @@ class UNQfy {
 					artistData.country
 				)
 			this.artists.push(artist)
-			//this.artistIdGenerator++
 			return artist
 		} else {
-			throw error.ArtistAlreadyExist
+			throw ArtistAlreadyExist;
 		}
 	}
 	
@@ -90,8 +94,9 @@ class UNQfy {
             const artist = this.getArtistById(artistId);
             artist.addAlbum(album);
             this.albums.push(album);
+            return album;
         } else{
-            throw error.AlbumAlreadyExists;
+            throw AlbumAlreadyExists;
         }
 	}
 
@@ -107,43 +112,45 @@ class UNQfy {
 		- una propiedad duration (number),
 		- una propiedad genres (lista de strings) */
 
+        const trackBelongs = new TrackBelongs(this.tracks);
+        const album = this.getAlbumById(albumId);
+        const artist = album.getArtist();
+
         if(!trackBelongs.execute(trackData)){
             const track = 
                 new Track(
                     this.getAndIncrementId('track'),
-                    albumId,
                     trackData.name,
-                    trackData.artist,
-                    trackData.genres
+                    trackData.duration,
+                    albumId,
+                    trackData.genres,
+                    [artist]
                 );
             
             const album = this.getAlbumById(albumId);
             album.addTrack(track);
             this.tracks.push(track);
+            return track;
         } else {
-            throw error.TrackAlreadyExists;
+            throw TrackAlreadyExists;
         }
     }
 
-	getArtistById(id){
-		let _id = parseInt(id)
+	getArtistById(idParam){
+		let id = parseInt(idParam)
 		if(this.artists.some(artist => artist.id == id)){
-			//console.log('el artista que se busca es:')
-			console.log(this.artists.find(a => a.id ==id))
 			return this.artists.find(a => a.id ==id)
 		} else{
-			throw error.ArtistDoesNotExist(id)
+			throw ArtistDoesNotExist(id)
 		}
 	}
 
-	getAlbumById(id) {
-        let _id = parseInt(id)
-        if(this.album.some(album => album.id == id)){
-			//console.log('el artista que se busca es:')
-			console.log(this.albums.find(a => a.id == id))
-			return this.album.find(a => a.id == id)
+	getAlbumById(idParam) {
+        let id = parseInt(idParam)
+        if(this.albums.some(album => album.id == id)){
+			return this.albums.find(a => a.id == id)
 		} else{
-			throw error.ThisAlbumDoesNotExist(id)
+			throw ThisAlbumDoesNotExist(id)
 		}
     }
 
@@ -177,7 +184,7 @@ class UNQfy {
 		console.log(allTracks)
 		return allTracks}
 		else{
-			throw error.ArtistNameDoesNotExist(artistName)
+			throw ArtistNameDoesNotExist(artistName)
 		}
 	}
 
@@ -207,7 +214,7 @@ class UNQfy {
 			return newser;
 		} 
 		else {
-			 throw error.UsernameAlreadyExist;
+			 throw UsernameAlreadyExist;
 		}
    }
 
