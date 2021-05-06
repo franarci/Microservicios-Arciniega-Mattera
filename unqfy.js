@@ -72,11 +72,11 @@ class UNQfy {
 	El objeto album creado debe tener (al menos):
 		- una propiedad name (string)
 		- una propiedad year (number)*/
-        album = 
+       let album = 
             new Album(
                 this.getAndIncrementId('album'),
                 albumData.name,
-                this.getArtistById(adtistId),
+                this.getArtistById(artistId),
                 albumData.year
             )
 

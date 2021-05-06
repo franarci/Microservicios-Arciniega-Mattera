@@ -1,27 +1,34 @@
 class User {
     constructor(id, username){
-        this.id = id
-        this.username = username
+        this.id = id,
+        this.username = username,
         this.listened = new Object()   
     }
 
     listenTrack(track){
-        if(Object.keys(this.listened).includes(track)){
-            this.listened[track]++
+        if(this.hasListened(track)){
+            this.listened[track]++;
         } else {
-            this.listened[track] = 1
+            this.listened[track] = 1;
         }
+    }
+    
+    hasListened(track){
+     return Object.keys(this.listened).includes(track);
     }
 
     getListened(){
-       return Object.keys(this.listened)
+       return Object.keys(this.listened);
     }
 
     timesListened(track){
-       return this.listened[track] 
+    if(this.hasListened(track)){
+        return this.listened[track] 
+        } else {
+            return 0
+        }
     }
 }
-
 
 module.exports = {
     User: User,

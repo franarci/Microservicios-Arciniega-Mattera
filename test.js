@@ -21,6 +21,14 @@ function createAndAddUser(unqfy, username){
   return unqfy.createUser(username);
 }
 
+function listenTrack(unqfy, userId, track){
+  return unqfy.listenTrack(userId, track);
+}
+
+function getListened(unqfy, userId){
+  return unqfy.getListened(userId)
+}
+
 
 describe('Add, remove and filter data', () => {
   let unqfy = null;
@@ -164,4 +172,23 @@ describe('User Creation and properties', () => {
     assert.equal(user.username, 'MasterUser');
 
   });
+  
+  it('should listen a track and know listened tracks', () => {
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+    const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock'])
+    const track2 =createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+    const user = createAndAddUser(unqfy, 'Listener');
+    user = listenTrack(unqfy, user.id, track1)
+    
+    timesListened = timesListened(unqfy, user.id, track1)
+
+    
+    assert.isTrue(user.hasListened(track1));
+    assert.equal(user.getListened()[0].trackName, 'Welcome to the jungle')
+    assert.equal(user.timesListened(track1), 1)
+    assert.equal(user.timesListened(track2), 0)
+  });
+
 });
+
