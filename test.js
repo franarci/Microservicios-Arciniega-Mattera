@@ -2,6 +2,7 @@
 
 const assert = require('chai').assert;
 const libunqfy = require('./unqfy');
+const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
 
 
 function createAndAddArtist(unqfy, artistName, country) {
@@ -193,22 +194,30 @@ describe('Test nuestro - User Creation and properties', () => {
     });
 
 
-/*
-describe('Test nuestro - Album creation and properties', () => {
+
+describe('Test nuestro - Belongs tests', () => {
     let unqfy = null;
 
     beforeEach(() => {
         unqfy = new libunqfy.UNQfy();
     });
+    
+            
+    it('it should tell if the artist is in the UNQfy', () => {
+                
+        const artist = createAndAddArtist(unqfy, 'bob', 'jamaica');
+        const artistBelongs = new ArtistBelongs(unqfy.artists);
 
-    it('should create an album', () => {
-        const album = createAndAddAlbum(unqfy, 'album negro', 1);
+        const boolean = artistBelongs.execute({
+                            name: artist.name,
+                            country: artist.country
+                        });
 
-        assert.equal(album.name, 'album negro');
+        assert.isTrue(boolean);
     });
 
   });
-  */
+  
   
 });
 

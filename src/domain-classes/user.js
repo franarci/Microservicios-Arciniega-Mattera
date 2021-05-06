@@ -10,7 +10,7 @@ class User {
     }
 
     listenTrack(track){
-        //listened tracks es un map donde la clave es el nombre de un track y el valor es un [Track, vecesEscuchada<Int>]
+        //listened tracks es un map donde la clave es el nombre de un track y el valor es un par [Track, vecesEscuchada<Int>]
         if(!this.hasListened(track)){
             this.listened[track.trackName] = [track, 1];
         } else {

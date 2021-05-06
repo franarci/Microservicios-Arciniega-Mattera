@@ -79,7 +79,6 @@ function main() {
     console.log('*****************************')
 	saveUNQfy(unqfy);
 	console.log( getUNQfy());
-    console.log(unqfy.getArtistById(0));
 }
 
 main();

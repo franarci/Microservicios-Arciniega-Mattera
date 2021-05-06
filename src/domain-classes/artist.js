@@ -13,13 +13,16 @@ class Artist {
         this.genres = []
     }
 
-     getName(){
-        return this.name
-    }
+    getId(){return this.id;}
+    getname(){return this.name;}
+    getCountry(){return this.country;}
+    getAlbums(){return this.albums;}
+    getGenres(){return this.genres;}
 
     addAlbum(album){
         this.albums.push(album)
     }
+
 
 }
 new Artist(id= 1)

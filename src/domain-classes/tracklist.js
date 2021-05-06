@@ -11,7 +11,10 @@ class TrackList {
         this.tracks.push(track)
     }
 
-    
+    getId(){return this.id;}
+    getName(){return this.name;}
+    getTracks(){return this.tracks;}
+    getGenres(){return this.genres;}
 }
 
 module.exports = {

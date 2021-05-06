@@ -14,6 +14,8 @@ class Album extends TrackList {
         this.year = year
     }    
 
+    getArtist(){ return this.artist; }
+    getYear(){ return this.year; }
 }
 
 module.exports = {
