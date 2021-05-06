@@ -1,29 +1,43 @@
+const { Album } = require("./album");
+const { Artist } = require("./artist");
+const { Track } = require("./track");
+
 class User {
     constructor(id, username){
         this.id = id,
         this.username = username,
-        this.listened = new Object()   
+        this.listened = new Map()
     }
 
     listenTrack(track){
-        if(this.hasListened(track)){
-            this.listened[track]++;
+        //listened tracks es un map donde la clave es el nombre de un track y el valor es un [Track, vecesEscuchada<Int>]
+        if(!this.hasListened(track)){
+            this.listened[track.trackName] = [track, 1];
         } else {
-            this.listened[track] = 1;
+            let newTrack = this.listened[track.trackName][0]
+            this.listened[track.trackName] = [newTrack, this.timesListened(track)+parseInt(1)];
         }
     }
     
     hasListened(track){
-     return Object.keys(this.listened).includes(track);
+        let tracks = Object.keys(this.listened)
+
+        return tracks.some(t => 
+                        this.sameTrackName(t, track.trackName)
+                        )
     }
 
-    getListened(){
-       return Object.keys(this.listened);
+    sameTrackName(tn1,tn2){
+            return(tn1.localeCompare(tn2) === 0)
+    }
+
+    getListened(){  
+       return Object.values(this.listened).map(([track,n]) => track)
     }
 
     timesListened(track){
     if(this.hasListened(track)){
-        return this.listened[track] 
+        return this.listened[track.trackName][1] 
         } else {
             return 0
         }

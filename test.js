@@ -208,7 +208,7 @@ describe('Test nuestro - Album creation and properties', () => {
     assert.equal(user.getListened()[0].trackName, 'Welcome to the jungle')
     assert.equal(user.timesListened(track1), 1)
     assert.equal(user.timesListened(track2), 0)
-  });
+});
 
 
 
