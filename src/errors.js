@@ -1,3 +1,5 @@
+const { Track } = require("./domain-classes/track")
+
 class ArtistAlreadyExist extends Error{
     constructor(){
         super('That artist already exist')
@@ -29,10 +31,24 @@ class UsernameAlreadyExist extends Error{
     }
 }
 
+class AlbumAlreadyExists extends Error{
+    constructor(){
+        super('That album already exist')
+    }
+}
+
+class TrackAlreadyExists extends Error{
+    constructor(){
+        super('That track already exist')
+    }
+}
+
 module.exports = {
     ArtistAlreadyExist: ArtistAlreadyExist,
     ArtistDoesNotExist: ArtistDoesNotExist,
     ArtistNameDoesNotExist: ArtistNameDoesNotExist,
     ThisAlbumDoesNotExist: ThisAlbumDoesNotExist,
-    UsernameAlreadyExist: UsernameAlreadyExist
+    UsernameAlreadyExist: UsernameAlreadyExist,
+    AlbumAlreadyExists: AlbumAlreadyExists,
+    TrackAlreadyExists: TrackAlreadyExists
 }

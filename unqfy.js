@@ -7,18 +7,23 @@ const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
-const {ArtistAlreadyExist, 
-        ArtistDoesNotExist, 
-        ArtistNameDoesNotExist, 
-        ThisAlbumDoesNotExist,
-		UsernameAlreadyExist } = require('./src/errors');
+const error = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
+const albumBelongs = require('./src/belongs-classes/albumBelongs');
+const trackBelongs = require('./src/belongs-classes/trackBelongs');
 const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
 const { AlbumBelongs } = require('./src/belongs-classes/albumBelongs');
 const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
 const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
+/*
+por el error 
+node:internal/modules/cjs/loader:927
+  throw err;
+  ^
+descomentar la siguiente linea
 const { createSecureServer } = require('./node_modules/http2');
+*/
 
 
 class UNQfy {
@@ -58,7 +63,7 @@ class UNQfy {
 			//this.artistIdGenerator++
 			return artist
 		} else {
-			throw new ArtistAlreadyExist
+			throw error.ArtistAlreadyExist
 		}
 	}
 	
@@ -71,17 +76,23 @@ class UNQfy {
 	El objeto album creado debe tener (al menos):
 		- una propiedad name (string)
 		- una propiedad year (number)*/
-        album = 
-            new Album(
-                this.getAndIncrementId('album'),
-                albumData.name,
-                this.getArtistById(adtistId),
-                albumData.year
-            )
+        const albumBelongs = new AlbumBelongs(this.albums);
 
-        const artist = this.getArtistById(artistId)
-        artist.addAlbum(album)
-        this.albums.push(album)
+        if(!albumBelongs.execute(albumData)){
+            const album = 
+                new Album(
+                    this.getAndIncrementId('album'),
+                    albumData.name,
+                    this.getArtistById(artistId),
+                    albumData.year
+                );
+    
+            const artist = this.getArtistById(artistId);
+            artist.addAlbum(album);
+            this.albums.push(album);
+        } else{
+            throw error.AlbumAlreadyExists;
+        }
 	}
 
 	// trackData: objeto JS con los datos necesarios para crear un track
@@ -95,18 +106,23 @@ class UNQfy {
 		- una propiedad name (string),
 		- una propiedad duration (number),
 		- una propiedad genres (lista de strings) */
-		track = 
-			new Track(
-				this.getAndIncrementId('track'),
-				albumId,
-				trackData.name,
-				trackData.artist,
-				trackData.genres
-			)
-		
-        const album = this.getAlbumById(albumId)
-        album.addTrack(track)
-        this.tracks.push(track)
+
+        if(!trackBelongs.execute(trackData)){
+            const track = 
+                new Track(
+                    this.getAndIncrementId('track'),
+                    albumId,
+                    trackData.name,
+                    trackData.artist,
+                    trackData.genres
+                );
+            
+            const album = this.getAlbumById(albumId);
+            album.addTrack(track);
+            this.tracks.push(track);
+        } else {
+            throw error.TrackAlreadyExists;
+        }
     }
 
 	getArtistById(id){
@@ -116,7 +132,7 @@ class UNQfy {
 			console.log(this.artists.find(a => a.id ==id))
 			return this.artists.find(a => a.id ==id)
 		} else{
-			throw new ArtistDoesNotExist(id)
+			throw error.ArtistDoesNotExist(id)
 		}
 	}
 
@@ -127,7 +143,7 @@ class UNQfy {
 			console.log(this.albums.find(a => a.id == id))
 			return this.album.find(a => a.id == id)
 		} else{
-			throw new ThisAlbumDoesNotExist(id)
+			throw error.ThisAlbumDoesNotExist(id)
 		}
     }
 
@@ -161,7 +177,7 @@ class UNQfy {
 		console.log(allTracks)
 		return allTracks}
 		else{
-			throw new ArtistNameDoesNotExist(artistName)
+			throw error.ArtistNameDoesNotExist(artistName)
 		}
 	}
 
@@ -191,7 +207,7 @@ class UNQfy {
 			return newser;
 		} 
 		else {
-			 throw new UsernameAlreadyExist;
+			 throw error.UsernameAlreadyExist;
 		}
    }
 
