@@ -20,6 +20,8 @@ class User {
     timesListened(track){
        return this.listened[track] 
     }
+
+    getUsername(){return this.username;}
 }
 
 

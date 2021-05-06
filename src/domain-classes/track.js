@@ -8,6 +8,13 @@ class Track {
     this.genres = [];
     this.artists = [];
   }
+
+    getIdTrack(){return this.idTrack = idTrack;}
+    getTrackName(){return this.trackName = trackName;}
+    getDuration(){return this.duration = duration;}
+    getAlbum(){return this.album = album;}
+    getGenres(){return this.genres = [];}
+    getArtists(){return this.artists = [];}
 }
 
 module.exports = {
