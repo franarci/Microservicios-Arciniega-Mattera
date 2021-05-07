@@ -7,13 +7,13 @@ const { Track } = require('./src/domain-classes/track');
 const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
-const { ArtistAlreadyExist,
-        ArtistDoesNotExist,
-        ArtistNameDoesNotExist,
-        ThisAlbumDoesNotExist,
+const { InstanceDoesNotExist,
+
+        ArtistAlreadyExist,
         UsernameAlreadyExist,
         AlbumAlreadyExists,
-        TrackAlreadyExists } = require('./src/errors');
+        TrackAlreadyExists
+    } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
 const albumBelongs = require('./src/belongs-classes/albumBelongs');
 const trackBelongs = require('./src/belongs-classes/trackBelongs');
@@ -136,28 +136,6 @@ class UNQfy {
         }
     }
 
-	getArtistById(idParam){
-		let id = parseInt(idParam)
-		if(this.artists.some(artist => artist.id == id)){
-			return this.artists.find(a => a.id ==id)
-		} else{
-			throw ArtistDoesNotExist(id)
-		}
-	}
-
-	getAlbumById(idParam) {
-        let id = parseInt(idParam)
-        if(this.albums.some(album => album.id == id)){
-			return this.albums.find(a => a.id == id)
-		} else{
-			throw ThisAlbumDoesNotExist(id)
-		}
-    }
-
-	getTrackById(id) {}
-
-	getPlaylistById(id) {}
-
 	// genres: array de generos(strings)
 	// retorna: los tracks que contenga alguno de los generos en el parametro genres
 	getTracksMatchingGenres(genres) {
@@ -173,18 +151,18 @@ class UNQfy {
 		return res
 	}
 
-
 	// artistName: nombre de artista(string)
 	// retorna: los tracks interpredatos por el artista con nombre artistName
 	getTracksMatchingArtist(artistName) {
-		if(this.artists.some(artist.name === artistName)){
-		const artist = this.artists.find(artist => artist.name === artistName)
-		let allTracks = [];
-		artist.albums.map(album => allTracks.push(...album.tracks))
-		console.log(allTracks)
-		return allTracks}
+        if(this.artists.some(artist.name === artistName)){
+            const artist = this.artists.find(artist => artist.name === artistName)
+            let allTracks = [];
+            artist.albums.map(album => allTracks.push(...album.tracks))
+            console.log(allTracks)
+		    return allTracks
+        }
 		else{
-			throw ArtistNameDoesNotExist(artistName)
+			throw InstanceDoesNotExist(artisName, 'artist')
 		}
 	}
 
@@ -216,7 +194,27 @@ class UNQfy {
 		else {
 			 throw UsernameAlreadyExist;
 		}
-   }
+    }
+
+    deleteTrack(trackId){
+        const track = this.getTrackById(trackId);
+        var newTrackList;
+
+        // el album y artista al que apunto son referencias a 
+        // el album y artista que esta guardado en unqfy?
+        track.getAlbum().deleteTrack();
+
+        for( track in this.tracks ){
+            if( track.getIdTrack() != trackId ){
+                newTrackList.push(track);
+            }
+        }
+        this.tracks = newTrackList;
+    }
+
+    deleteArtist(artistId){}
+    deleteAlbum(albumId){}
+    deletePlaylist(playlistId){}
 
 	save(filename) {
         const serializedData = picklify.picklify(this);
@@ -255,6 +253,16 @@ class UNQfy {
 		
 		return ret
 	}
+
+    getInstanceById(idParam, classOfInstance) {
+        let id = parseInt(idParam)
+        const listOfInstances = `${classOfInstance}s`
+        if(this[listOfInstances].some(instance => instance.id == id)){
+			return this[listOfInstances].find(instance => instance.id == id);
+		} else{
+			throw InstanceDoesNotExist(id, classOfInstance);
+		}
+    }
 }
 
 
