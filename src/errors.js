@@ -36,6 +36,12 @@ class ArtistAlreadyExist extends Error{
     }
 }
 
+class PlaylistAlreadyExists extends Error{
+    constructor(){
+        super(`That playlist name isn´t available`)
+    }
+}
+
 //////////////////////////////////////////////////
 
 class InstanceDoesNotExist extends Error{
@@ -47,10 +53,10 @@ class InstanceDoesNotExist extends Error{
 
 module.exports = {
     InstanceDoesNotExist: InstanceDoesNotExist,
-
     ArtistAlreadyExist: ArtistAlreadyExist,
     AlbumAlreadyExists: AlbumAlreadyExists,
     TrackAlreadyExists: TrackAlreadyExists,
     UserDoesNotExist: UserDoesNotExist,
-    TrackDoesNotExist: TrackDoesNotExist
+    TrackDoesNotExist: TrackDoesNotExist,
+    PlaylistAlreadyExists: PlaylistAlreadyExists
 }

@@ -9,7 +9,7 @@ class Track {
             artists=null
         ){
         
-        this.idTrack = idTrack;
+        this.id = id;
         this.name = name;
         this.duration = duration;
         this.album = album;

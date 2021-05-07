@@ -8,11 +8,11 @@ const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
 const { InstanceDoesNotExist,
-
         ArtistAlreadyExist,
         UsernameAlreadyExist,
         AlbumAlreadyExists,
-        TrackAlreadyExists
+        TrackAlreadyExists,
+		PlaylistAlreadyExists
     } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
 const albumBelongs = require('./src/belongs-classes/albumBelongs');
@@ -178,9 +178,37 @@ class UNQfy {
 		* un metodo duration() que retorne la duración de la playlist.
 		* un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
 	*/
-	let matchGenres = this.tracks.filter(track => 
-									this.matchGenres(track.genres, genresToInclude)
-									)
+		const playlistBelongs = new PlaylistBelongs(this.playlists)
+		if(!playlistBelongs.execute(name)){
+
+			let matchedTracks = this.tracks.filter(track => 
+							this.matchGenres(track.genres, genresToInclude)
+						)
+			let durationLimit = maxDuration
+			let playlistTracks = []
+			let totalDuration = 0
+
+			while(durationLimit>0 && matchedTracks.length>0){
+				let randomN = Math.floor(Math.random() * matchedTracks.length);
+				let randomTrack= matchedTracks.splice(randomN)[0]
+			
+				playlistTracks.push(randomTrack)
+				durationLimit = durationLimit - randomTrack.duration
+				totalDuration += randomTrack.duration
+			}
+		
+			let playlist = new Playlist(
+								this.getAndIncrementId('playlist'),
+								name,
+								playlistTracks,
+								genresToInclude,
+								totalDuration
+							)
+			this.playlists.push(playlist)
+			return playlist
+		 } else {
+			throw PlaylistAlreadyExists();
+		}
 	}
 
 	matchGenres(trackGenres, matchingGenres){
@@ -314,14 +342,6 @@ class UNQfy {
 		}
     }
 }
-
-
-let unqfy = new UNQfy()
-let generosAMatchear = ["Rock", "Pop"]
-let generosMatcheables = ["Gen1", "Jazz", "Metal", "Pop"]
-let res = unqfy.matchGenres(generosAMatchear, generosMatcheables)
-console.log(res)
-
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
