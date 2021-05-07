@@ -1,7 +1,7 @@
 
 class Track {
   constructor(
-            idTrack=null,
+            id=null,
             name=null,
             duration=null,
             album=null,
@@ -17,7 +17,7 @@ class Track {
         this.artists = artists;
   }
 
-    getIdTrack(){return this.idTrack;}
+    getIdTrack(){return this.id;}
     getName(){return this.name;}
     getDuration(){return this.duration;}
     getAlbum(){return this.album;}
