@@ -181,9 +181,7 @@ class UNQfy {
 		const playlistBelongs = new PlaylistBelongs(this.playlists)
 		if(!playlistBelongs.execute(name)){
 
-			let matchedTracks = this.tracks.filter(track => 
-							this.matchGenres(track.genres, genresToInclude)
-						)
+			let matchedTracks = this.getTracksMatchingGenres(genresToInclude)
 			let durationLimit = maxDuration
 			let playlistTracks = []
 			let totalDuration = 0
@@ -211,19 +209,6 @@ class UNQfy {
 		}
 	}
 
-	matchGenres(trackGenres, matchingGenres){
-		let ret = false
-		trackGenres.forEach(genre => 
-						ret = ret || this.isMatch(genre, matchingGenres)
-					)
-		return ret
-	}
-
-	isMatch(genre, matchingGenres){
-		return matchingGenres.some(matchingGenre => 
-								matchingGenre.localeCompare(genre) == 0
-							)
-	}
 
 	createUser(userName){
 		if(!new UserBelongs(this.users).execute(userName)){
