@@ -55,13 +55,39 @@ class CreateUser extends Command{
     }
 }
 
+class ListenTrack extends Command{
+    executeMethod(lsParams, unqfy){
+        let userName = lsParams[0]
+        let trackName = lsParams[1]
+        unqfy.listenTrack(userName, trackName)
+    }
+}
+
+class GetListened extends Command{
+    executeMethod(lsParams, unqfy){
+        let userName = lsParams[0]
+        unqfy.getListened(userName)
+    }
+}
+
+class TimesListened extends Command{
+    executeMethod(lsParams, unqfy){
+        let userName = lsParams[0]
+        let trackName = lsParams[1]
+        unqfy.getListened(userName, trackName)
+    }
+}
+
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
     getArtistById: new GetArtistById(),
     addAlbum: new AddAlbum(),
     addTrack: new AddTrack(),
     getArtistById: new GetArtistById(), 
-    createUser: new CreateUser()
+    createUser: new CreateUser(),
+    listenTrack: new ListenTrack(),
+    getListened: new GetListened(),
+    timesListened: new TimesListened()
 }
 
 

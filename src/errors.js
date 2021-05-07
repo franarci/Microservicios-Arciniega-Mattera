@@ -31,6 +31,18 @@ class UsernameAlreadyExist extends Error{
     }
 }
 
+class UserDoesNotExist extends Error{
+    constructor(userName){
+        super(`The user with name ${userName} does not exist`)
+    }
+}
+
+class TrackDoesNotExist extends Error{
+    constructor(trackName){
+        super(`The track with name ${trackName} does not exist`)
+    }
+}
+
 class AlbumAlreadyExists extends Error{
     constructor(){
         super('That album already exist')
@@ -50,5 +62,7 @@ module.exports = {
     ThisAlbumDoesNotExist: ThisAlbumDoesNotExist,
     UsernameAlreadyExist: UsernameAlreadyExist,
     AlbumAlreadyExists: AlbumAlreadyExists,
-    TrackAlreadyExists: TrackAlreadyExists
+    TrackAlreadyExists: TrackAlreadyExists,
+    UserDoesNotExist: UserDoesNotExist,
+    TrackDoesNotExist: TrackDoesNotExist
 }

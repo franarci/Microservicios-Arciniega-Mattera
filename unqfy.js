@@ -193,7 +193,23 @@ class UNQfy {
 		* un metodo duration() que retorne la duración de la playlist.
 		* un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
 	*/
+	let matchGenres = this.tracks.filter(track => 
+									this.matchGenres(track.genres, genresToInclude)
+									)
+	}
 
+	matchGenres(trackGenres, matchingGenres){
+		let ret = false
+		trackGenres.forEach(genre => 
+						ret = ret || this.isMatch(genre, matchingGenres)
+					)
+		return ret
+	}
+
+	isMatch(genre, matchingGenres){
+		return matchingGenres.some(matchingGenre => 
+								matchingGenre.localeCompare(genre) == 0
+							)
 	}
 
 	createUser(userName){
@@ -207,9 +223,40 @@ class UNQfy {
 			return newser;
 		} 
 		else {
-			 throw error.UsernameAlreadyExist;
+			throw error.UsernameAlreadyExist;
 		}
    }
+   getUser(userName){
+	   
+	   if(this.users.some(user => user.userName == userName)){
+		   return this.users.find(u => u.userName ==userName)
+	   } else {
+		   throw error.UserDoesNotExist(userName)
+	   }
+   }
+
+	getTrack(trackName){
+		if(this.tracks.some(track => track.trackName == trackName)){
+			return this.tracks.find(t => t.trackName == trackName)
+		} else {
+			throw error.TrackDoesNotExist(trackName)
+		}
+	}
+
+   	listenTrack(userName, trackName){
+		let user = this.getUser(userName)
+		user.listenTrack(getTrack(trackName))
+		return user
+   	}
+
+	getListened(userName){
+		return this.getUser(userName).getListened()
+	}
+
+	timesListened(userName, trackName){
+		let track = this.getTrack(trackName)
+		return this.getUser(userName).timesListened(track)
+	}
 
 	save(filename) {
         const serializedData = picklify.picklify(this);
@@ -230,6 +277,8 @@ class UNQfy {
                         ArtistDoesNotExist, 
                         ArtistNameDoesNotExist,
 						UsernameAlreadyExist,
+						UserDoesNotExist,
+						TrackDoesNotExist,
                         ArtistBelongs,
                         AlbumBelongs,
                         PlaylistBelongs,
@@ -249,6 +298,14 @@ class UNQfy {
 		return ret
 	}
 }
+
+
+let unqfy = new UNQfy()
+let generosAMatchear = ["Rock", "Pop"]
+let generosMatcheables = ["Gen1", "Jazz", "Metal", "Pop"]
+let res = unqfy.matchGenres(generosAMatchear, generosMatcheables)
+console.log(res)
+
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
