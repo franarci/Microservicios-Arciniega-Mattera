@@ -10,7 +10,7 @@ class InstanceAlreadyExist extends Error{
 
 class InstanceDoesNotExist extends Error{
     constructor(atribute, className){
-        super(`The ${className} with name ${atribute} does not exist`)
+        super(`The ${className} with id ${atribute} does not exist`)
     }
 }
 
