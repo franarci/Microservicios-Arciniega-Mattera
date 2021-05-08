@@ -8,7 +8,16 @@ const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
 const { InstanceDoesNotExist,
+<<<<<<< HEAD
         InstanceAlreadyExist } = require('./src/errors');
+=======
+        ArtistAlreadyExist,
+        UsernameAlreadyExist,
+        AlbumAlreadyExists,
+        TrackAlreadyExists,
+		PlaylistAlreadyExists
+    } = require('./src/errors');
+>>>>>>> 9733e5311bd9e3cb9e21c44f945cd115f1b36291
 const artist = require('./src/domain-classes/artist');
 const albumBelongs = require('./src/belongs-classes/albumBelongs');
 const trackBelongs = require('./src/belongs-classes/trackBelongs');
@@ -173,8 +182,37 @@ class UNQfy {
 		* un metodo duration() que retorne la duración de la playlist.
 		* un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
 	*/
+		const playlistBelongs = new PlaylistBelongs(this.playlists)
+		if(!playlistBelongs.execute(name)){
 
+			let matchedTracks = this.getTracksMatchingGenres(genresToInclude)
+			let durationLimit = maxDuration
+			let playlistTracks = []
+			let totalDuration = 0
+
+			while(durationLimit>0 && matchedTracks.length>0){
+				let randomN = Math.floor(Math.random() * matchedTracks.length);
+				let randomTrack= matchedTracks.splice(randomN)[0]
+			
+				playlistTracks.push(randomTrack)
+				durationLimit = durationLimit - randomTrack.duration
+				totalDuration += randomTrack.duration
+			}
+		
+			let playlist = new Playlist(
+								this.getAndIncrementId('playlist'),
+								name,
+								playlistTracks,
+								genresToInclude,
+								totalDuration
+							)
+			this.playlists.push(playlist)
+			return playlist
+		 } else {
+			throw PlaylistAlreadyExists();
+		}
 	}
+
 
 	createUser(userName){
 		if(!new UserBelongs(this.users).execute(userName)){
@@ -190,6 +228,38 @@ class UNQfy {
 			 throw InstanceAlreadyExist('user');
 		}
     }
+
+	getUser(userName){
+	   
+		if(this.users.some(user => user.userName == userName)){
+			return this.users.find(u => u.userName ==userName)
+		} else {
+			throw error.UserDoesNotExist(userName)
+		}
+	}
+ 
+	getTrack(trackName){
+		 if(this.tracks.some(track => track.trackName == trackName)){
+			 return this.tracks.find(t => t.trackName == trackName)
+		 } else {
+			 throw error.TrackDoesNotExist(trackName)
+		 }
+	}
+ 
+	listenTrack(userName, trackName){
+		 let user = this.getUser(userName)
+		 user.listenTrack(getTrack(trackName))
+		 return user
+	}
+ 
+	getListened(userName){
+		 return this.getUser(userName).getListened()
+	}
+ 
+	timesListened(userName, trackName){
+		 let track = this.getTrack(trackName)
+		 return this.getUser(userName).timesListened(track)
+	}
 
     deleteTrack(trackId){
         const track = this.getInstanceById(trackId, 'track');

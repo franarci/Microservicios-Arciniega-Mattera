@@ -14,6 +14,10 @@ class Playlist extends TrackList {
     }
 
     getDuration(){ return this.duration; }
+
+    hasTrack(){
+        //TODO
+    }
 }
 
 module.exports = {

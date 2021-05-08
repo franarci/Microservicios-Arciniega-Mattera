@@ -22,14 +22,17 @@ function createAndAddUser(unqfy, username){
     return unqfy.createUser(username);
 }
 
-function listenTrack(unqfy, userId, track){
-  return unqfy.listenTrack(userId, track);
+function listenTrack(unqfy, userName, trackName){
+  return unqfy.listenTrack(userName, trackName);
 }
 
-function getListened(unqfy, userId){
-  return unqfy.getListened(userId)
+function getListened(unqfy, userName){
+  return unqfy.getListened(userName)
 }
 
+function timesListened(unqfy, userName, trackName){
+  return unqfy.timesListened(userName,trackName)
+}
 
 describe('Add, remove and filter data', () => {
   let unqfy = null;
@@ -182,15 +185,13 @@ describe('Test nuestro - User Creation and properties', () => {
       const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock'])
       const track2 =createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
       const user = createAndAddUser(unqfy, 'Listener');
-      user = listenTrack(unqfy, user.id, track1)
+      user = listenTrack(unqfy, user.userName, track1.trackName)
       
-      timesListened = timesListened(unqfy, user.id, track1)
+      timesListened = timesListened(unqfy, user.userName, track1.trackName)
   
-      
-      assert.isTrue(user.hasListened(track1));
-      assert.equal(user.getListened()[0].trackName, 'Welcome to the jungle')
-      assert.equal(user.timesListened(track1), 1)
-      assert.equal(user.timesListened(track2), 0)
+      assert.equal(getListened(unqfy, user.userName)[0].trackName.localeCompare( 'Welcome to the jungle'.c), 0)
+      assert.equal(timesListened(user.userName, track1.trackName), 1)
+      assert.equal(timesListened(user.userName, track2.trackName), 0)
     });
 
 

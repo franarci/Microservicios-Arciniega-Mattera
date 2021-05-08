@@ -14,30 +14,29 @@ class User {
         if(!this.hasListened(track)){
             this.listened[track.trackName] = [track, 1];
         } else {
-            let newTrack = this.listened[track.trackName][0]
-            this.listened[track.trackName] = [newTrack, this.timesListened(track)+parseInt(1)];
+            let sameTrack = this.listened[track.trackName][0]
+            this.listened[track.trackName] = [sameTrack, this.timesListened(track)+parseInt(1)];
         }
     }
     
     hasListened(track){
         let tracks = Object.keys(this.listened)
-
         return tracks.some(t => 
                         this.sameTrackName(t, track.trackName)
                         )
     }
 
     sameTrackName(tn1,tn2){
-            return(tn1.localeCompare(tn2) === 0)
+        return(tn1.localeCompare(tn2) === 0)
     }
 
     getListened(){  
-       return Object.values(this.listened).map(([track,n]) => track)
+        return Object.values(this.listened).map(([track,n]) => track)
     }
 
     timesListened(track){
-    if(this.hasListened(track)){
-        return this.listened[track.trackName][1] 
+        if(this.hasListened(track)){
+            return this.listened[track.trackName][1] 
         } else {
             return 0
         }
