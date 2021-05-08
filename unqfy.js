@@ -117,7 +117,7 @@ class UNQfy {
                     this.getAndIncrementId('track'),
                     trackData.name,
                     trackData.duration,
-                    albumId,
+                    album,
                     trackData.genres,
                     [artist]
                 );
@@ -253,20 +253,23 @@ class UNQfy {
 
     deleteTrack(trackId){
         const track = this.getInstanceById(trackId, 'track');
-        const albumOfTrack = 
-                    this.getInstanceById(
-                        track.getAlbumId(), 
-                        'album' );
-        // el album y artista al que apunto son referencias a 
-        // el album y artista que esta guardado en unqfy?
+        const albumOfTrack = track.album;
+        
         albumOfTrack.deleteTrack(track);
 
         this.tracks = this.tracks.filter( deltaTrack => !deltaTrack === track );
     }
 
-    deleteArtist(artistId){}
+    deleteAlbum(albumId){
+        const album = this.getInstanceById(albumId, 'album');
+        const artistOfAlbum = album.artist;
 
-    deleteAlbum(albumId){}
+        artistOfAlbum.deleteAlbum(album);
+        album.tracks.forEach( deltaTrack => this.deletetrack(deltaTrack) ); // vacio el album y actualizo la lista de tracks de unqfy
+        this.albums = this.albums.filter( deltaAlbum => !deltaAlbum === album ); // actualizo la lista de albums de unqfy
+    }
+    
+    deleteArtist(artistId){}
     deletePlaylist(playlistId){}
 
 	save(filename) {
