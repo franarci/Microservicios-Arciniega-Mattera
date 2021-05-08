@@ -73,20 +73,55 @@ describe('Add, remove and filter data', () => {
     assert.lengthOf(track.genres, 2);
   });
 
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
     /*
-    it('test nuestro - should delete an artist', () => {
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        unqfy
+    it('test nuestro - when delete a track should delete a track from the playlists', () => {   });
+    it('test nuestro - when delete an artist should delete it from the UNQfy', () => {   });
+    it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => {  });
+    it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => {  });
+    it('test nuestro - when delete an artist should delete all his tracks from the playlists', () => {  });
+    it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
+        crear el artista
+        crear el album
+        crear playlists
+        agregar temas de un album a distintas playlists
+        borrar el album
 
-        assert.isEmpty(unqfy.artists);
+        chequear que cada item en unqfy.playlists cumple la condidicion de que no contiene alguno o todos los tracks del album
     });
-
-    it('should delete an album from an artist', () => {
-        
-    });
+    
     */
+    it('test nuestro - when delete an album should delete it from the artist', () => {     
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const idAlbum = album.id;
 
-    it('test nuestro - should delete a track from an album', () => {
+        unqfy.deleteAlbum(idAlbum);
+
+        assert.isFalse(artist.albums.includes(album));
+    });
+    
+    it('test nuestro - when delete an album should delete it from UNQfy', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const idAlbum = album.id;
+
+        unqfy.deleteAlbum(idAlbum);
+
+        try{
+            unqfy.getInstanceById(idAlbum, 'album');
+        } catch(e){
+            if( e instanceof AssertionError ){ throw e; }
+            assert.equal(e.message, 'The album with id 0 does not exist');
+        }
+    });
+    
+
+    it('test nuestro - when delete a track should delete it from UNQfy', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -100,9 +135,26 @@ describe('Add, remove and filter data', () => {
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, 'The track with id 0 does not exist');
         }
+    });
+
+
+    it('test nuestro - when delete a track should delete a track from an album', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+        const idTrack = track.id;
+
+        unqfy.deleteTrack(track.id);
 
         assert.isFalse(album.tracks.includes(track));
     });
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
   it('should find different things by name', () => {
     const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
