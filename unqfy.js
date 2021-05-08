@@ -8,16 +8,7 @@ const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
 const { InstanceDoesNotExist,
-<<<<<<< HEAD
         InstanceAlreadyExist } = require('./src/errors');
-=======
-        ArtistAlreadyExist,
-        UsernameAlreadyExist,
-        AlbumAlreadyExists,
-        TrackAlreadyExists,
-		PlaylistAlreadyExists
-    } = require('./src/errors');
->>>>>>> 9733e5311bd9e3cb9e21c44f945cd115f1b36291
 const artist = require('./src/domain-classes/artist');
 const albumBelongs = require('./src/belongs-classes/albumBelongs');
 const trackBelongs = require('./src/belongs-classes/trackBelongs');
@@ -209,7 +200,7 @@ class UNQfy {
 			this.playlists.push(playlist)
 			return playlist
 		 } else {
-			throw PlaylistAlreadyExists();
+			throw InstanceAlreadyExist(name, 'playlist');
 		}
 	}
 
