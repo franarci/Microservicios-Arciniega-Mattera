@@ -3,7 +3,7 @@
 class Command{
     
     executeMethod(){
-        throw "Error, this method is not implemented"
+        throw "Error, this method is not implemented";
     }
 }
 
@@ -20,8 +20,8 @@ class AddArtist extends Command{
 class GetArtistById extends Command{
     
     executeMethod(lsParams, unqfy){
-        var id = lsParams[0]
-        unqfy.getArtistById(id)
+        var id = lsParams[0];
+        unqfy.getInstanceById(id, 'artist');
     }
 }
 
@@ -50,8 +50,8 @@ class AddTrack extends Command{
 class CreateUser extends Command{
     
     executeMethod(lsParams, unqfy){
-        var username = lsParams[0]
-        unqfy.createUser(username)
+        var username = lsParams[0];
+        unqfy.createUser(username);
     }
 }
 
@@ -65,4 +65,4 @@ const commands = { // aca se van a ir mapeando los comandos
 }
 
 
-module.exports = commands
+module.exports = commands;

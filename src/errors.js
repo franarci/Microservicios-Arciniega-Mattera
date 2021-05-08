@@ -2,7 +2,7 @@ const { Track } = require("./domain-classes/track")
 
 class InstanceAlreadyExist extends Error{
     constructor(className){
-        super(`That ${className} already exist`)
+        super(`That ${className} already exist`);
     }
 }
 

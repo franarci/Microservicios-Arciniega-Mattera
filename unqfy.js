@@ -82,11 +82,11 @@ class UNQfy {
                 new Album(
                     this.getAndIncrementId('album'),
                     albumData.name,
-                    this.getArtistById(artistId),
+                    this.getInstanceById(artistId, 'artist'),
                     albumData.year
                 );
     
-            const artist = this.getArtistById(artistId);
+            const artist = this.getInstanceById(artistId, 'artist');
             artist.addAlbum(album);
             this.albums.push(album);
             return album;
@@ -108,7 +108,7 @@ class UNQfy {
 		- una propiedad genres (lista de strings) */
 
         const trackBelongs = new TrackBelongs(this.tracks);
-        const album = this.getAlbumById(albumId);
+        const album = this.getInstanceById(albumId, 'album');
         const artist = album.getArtist();
 
         if(!trackBelongs.execute(trackData)){
@@ -122,7 +122,7 @@ class UNQfy {
                     [artist]
                 );
             
-            const album = this.getAlbumById(albumId);
+            const album = this.getInstanceById(albumId, 'album');
             album.addTrack(track);
             this.tracks.push(track);
             return track;
@@ -192,7 +192,7 @@ class UNQfy {
     }
 
     deleteTrack(trackId){
-        const track = this.getTrackById(trackId);
+        const track = this.getInstanceById(trackId, 'track');
         var newTrackList;
 
         // el album y artista al que apunto son referencias a 
@@ -226,10 +226,6 @@ class UNQfy {
                         Track, 
                         TrackList,
                         User,
-                        ArtistAlreadyExist, 
-                        ArtistDoesNotExist, 
-                        ArtistNameDoesNotExist,
-						UsernameAlreadyExist,
                         ArtistBelongs,
                         AlbumBelongs,
                         PlaylistBelongs,
