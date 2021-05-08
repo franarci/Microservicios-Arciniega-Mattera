@@ -122,7 +122,6 @@ class UNQfy {
                     [artist]
                 );
             
-            const album = this.getInstanceById(albumId, 'album');
             album.addTrack(track);
             this.tracks.push(track);
             return track;
@@ -254,21 +253,19 @@ class UNQfy {
 
     deleteTrack(trackId){
         const track = this.getInstanceById(trackId, 'track');
-        var newTrackList;
-
+        const albumOfTrack = 
+                    this.getInstanceById(
+                        track.getAlbumId(), 
+                        'album' );
         // el album y artista al que apunto son referencias a 
         // el album y artista que esta guardado en unqfy?
-        track.getAlbum().deleteTrack();
+        albumOfTrack.deleteTrack(track);
 
-        for( track in this.tracks ){
-            if( track.getIdTrack() != trackId ){
-                newTrackList.push(track);
-            }
-        }
-        this.tracks = newTrackList;
+        this.tracks = this.tracks.filter( deltaTrack => !deltaTrack === track );
     }
 
     deleteArtist(artistId){}
+
     deleteAlbum(albumId){}
     deletePlaylist(playlistId){}
 
@@ -309,10 +306,11 @@ class UNQfy {
     getInstanceById(idParam, classOfInstance) {
         let id = parseInt(idParam);
         const listOfInstances = `${classOfInstance}s`;
-        if(this[listOfInstances].some(instance => instance.id == id)){
+
+        if( this[listOfInstances].some(instance => instance.id == id) ){
 			return this[listOfInstances].find(instance => instance.id == id);
 		} else{
-			throw InstanceDoesNotExist(id, classOfInstance);
+			throw new InstanceDoesNotExist(id, classOfInstance);
 		}
     }
 }
