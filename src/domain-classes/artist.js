@@ -23,6 +23,10 @@ class Artist {
         this.albums.push(album)
     }
 
+    deleteAlbum(album){
+        this.albums = this.albums.filter( deltaAlbum => !deltaAlbum === album );
+    }
+
 
 }
 new Artist(id= 1)
