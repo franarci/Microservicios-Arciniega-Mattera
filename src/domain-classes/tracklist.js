@@ -1,14 +1,18 @@
 
 class TrackList {
-    constructor(id=null, name=null, tracks=null){
+    constructor(id=null, name=null){
         this.id = id
         this.name = name
-        this.tracks = tracks
+        this.tracks = []
         this.genres = []
     }
 
     addTrack(track){
-        this.tracks.push(track)
+        this.tracks.push(track);
+    }
+
+    deleteTrack(track){
+        this.tracks = this.tracks.filter( deltaTrack => !deltaTrack === track );
     }
 
     getId(){return this.id;}
