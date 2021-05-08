@@ -8,12 +8,7 @@ const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
 const { InstanceDoesNotExist,
-
-        ArtistAlreadyExist,
-        UsernameAlreadyExist,
-        AlbumAlreadyExists,
-        TrackAlreadyExists
-    } = require('./src/errors');
+        InstanceAlreadyExist } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
 const albumBelongs = require('./src/belongs-classes/albumBelongs');
 const trackBelongs = require('./src/belongs-classes/trackBelongs');
@@ -64,10 +59,10 @@ class UNQfy {
 					artistData.name, 
 					artistData.country
 				)
-			this.artists.push(artist)
-			return artist
+			this.artists.push(artist);
+			return artist;
 		} else {
-			throw ArtistAlreadyExist;
+			throw InstanceAlreadyExist('artist');
 		}
 	}
 	
@@ -96,7 +91,7 @@ class UNQfy {
             this.albums.push(album);
             return album;
         } else{
-            throw AlbumAlreadyExists;
+            throw InstanceAlreadyExist('album');
         }
 	}
 
@@ -132,37 +127,37 @@ class UNQfy {
             this.tracks.push(track);
             return track;
         } else {
-            throw TrackAlreadyExists;
+            throw InstanceAlreadyExist("track");
         }
     }
 
 	// genres: array de generos(strings)
 	// retorna: los tracks que contenga alguno de los generos en el parametro genres
 	getTracksMatchingGenres(genres) {
-		let res = []
+		let res = [];
         this.tracks.map(track => {
             for(let genre of genres){
                 if(track.genres.includes(genre)){
-                    res.push(track)
+                    res.push(track);
                 }
             }
         })
         console.log(res)
-		return res
+		return res;
 	}
 
 	// artistName: nombre de artista(string)
 	// retorna: los tracks interpredatos por el artista con nombre artistName
 	getTracksMatchingArtist(artistName) {
         if(this.artists.some(artist.name === artistName)){
-            const artist = this.artists.find(artist => artist.name === artistName)
+            const artist = this.artists.find(artist => artist.name === artistName);
             let allTracks = [];
             artist.albums.map(album => allTracks.push(...album.tracks))
-            console.log(allTracks)
-		    return allTracks
+            console.log(allTracks);
+		    return allTracks;
         }
 		else{
-			throw InstanceDoesNotExist(artisName, 'artist')
+			throw InstanceDoesNotExist(artisName, 'artist');
 		}
 	}
 
@@ -187,12 +182,12 @@ class UNQfy {
 			let newser = new User(
 				id,
 			 	userName
-			);
+			)
 		   	this.users.push(newser);
 			return newser;
 		} 
 		else {
-			 throw UsernameAlreadyExist;
+			 throw InstanceAlreadyExist('user');
 		}
     }
 
@@ -247,16 +242,16 @@ class UNQfy {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	getAndIncrementId(input){
-        const attribute = `${input}IdGenerator`
-        const ret = this[attribute] 
-        this[attribute]++ 
+        const attribute = `${input}IdGenerator`;
+        const ret = this[attribute] ;
+        this[attribute]++ ;
 		
-		return ret
+		return ret;
 	}
 
     getInstanceById(idParam, classOfInstance) {
-        let id = parseInt(idParam)
-        const listOfInstances = `${classOfInstance}s`
+        let id = parseInt(idParam);
+        const listOfInstances = `${classOfInstance}s`;
         if(this[listOfInstances].some(instance => instance.id == id)){
 			return this[listOfInstances].find(instance => instance.id == id);
 		} else{
