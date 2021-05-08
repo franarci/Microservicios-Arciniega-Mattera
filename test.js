@@ -3,6 +3,10 @@
 const assert = require('chai').assert;
 const libunqfy = require('./unqfy');
 const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
+const { InstanceDoesNotExist,
+        InstanceAlreadyExist } = require('./src/errors');
+const { AssertionError } = require('assert');
+
 
 
 function createAndAddArtist(unqfy, artistName, country) {
@@ -68,6 +72,37 @@ describe('Add, remove and filter data', () => {
     assert.equal(track.genres.includes('hard rock'), true);
     assert.lengthOf(track.genres, 2);
   });
+
+    /*
+    it('test nuestro - should delete an artist', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        unqfy
+
+        assert.isEmpty(unqfy.artists);
+    });
+
+    it('should delete an album from an artist', () => {
+        
+    });
+    */
+
+    it('test nuestro - should delete a track from an album', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+        const idTrack = track.id;
+
+        unqfy.deleteTrack(track.id);
+
+        try{
+            unqfy.getInstanceById(idTrack, 'track');
+        } catch(e){
+            if( e instanceof AssertionError ){ throw e; }
+            assert.equal(e.message, 'The track with id 0 does not exist');
+        }
+
+        assert.isFalse(album.tracks.includes(track));
+    });
 
   it('should find different things by name', () => {
     const artist1 = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
