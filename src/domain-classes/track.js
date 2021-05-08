@@ -20,7 +20,7 @@ class Track {
     getIdTrack(){return this.id;}
     getName(){return this.name;}
     getDuration(){return this.duration;}
-    getAlbum(){return this.album;}
+    getAlbumId(){return this.album;}
     getGenres(){return this.genres;}
     getArtists(){return this.artists;}
 }
