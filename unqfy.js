@@ -82,11 +82,11 @@ class UNQfy {
                 new Album(
                     this.getAndIncrementId('album'),
                     albumData.name,
-                    this.getInstanceById(artistId, 'artist'),
+                    this.getInstanceByAttribute(artistId, 'artist'),
                     albumData.year
                 );
     
-            const artist = this.getInstanceById(artistId, 'artist');
+            const artist = this.getInstanceByAttribute(artistId, 'artist');
             artist.addAlbum(album);
             this.albums.push(album);
             return album;
@@ -108,7 +108,7 @@ class UNQfy {
 		- una propiedad genres (lista de strings) */
 
         const trackBelongs = new TrackBelongs(this.tracks);
-        const album = this.getInstanceById(albumId, 'album');
+        const album = this.getInstanceByAttribute(albumId, 'album');
         const artist = album.getArtist();
 
         if(!trackBelongs.execute(trackData)){
@@ -321,14 +321,13 @@ class UNQfy {
 		return ret;
 	}
 
-    getInstanceById(idParam, classOfInstance) {
-        let id = parseInt(idParam);
+    getInstanceByAttribute(attribute, classOfInstance, attributeName='id') {
         const listOfInstances = `${classOfInstance}s`;
 
-        if( this[listOfInstances].some(instance => instance.id == id) ){
-			return this[listOfInstances].find(instance => instance.id == id);
+        if( this[listOfInstances].some(instance => instance[attributeName] == attribute) ){
+			return this[listOfInstances].find(instance => instance[attributeName] == attribute);
 		} else{
-			throw new InstanceDoesNotExist(id, classOfInstance);
+			throw new InstanceDoesNotExist(attribute, classOfInstance);
 		}
     }
 
