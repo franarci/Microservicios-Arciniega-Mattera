@@ -103,14 +103,14 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
         unqfy.deleteArtist(artist);
 
         try{
-            unqfy.getInstanceById(idTrack1, 'track');
+            unqfy.getInstanceByAttribute(idTrack1, 'track');
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The track with id ${idTrack1} does not exist`);
         }
 
         try{
-            unqfy.getInstanceById(idTrack2, 'track');
+            unqfy.getInstanceByAttribute(idTrack2, 'track');
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The track with id ${idTrack2} does not exist`);
@@ -127,14 +127,14 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
         unqfy.deleteArtist(artist);
 
         try{
-            unqfy.getInstanceById(idAlbumA, 'album');
+            unqfy.getInstanceByAttribute(idAlbumA, 'album');
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The album with id ${idAlbumA} does not exist`);
         }
 
         try{
-            unqfy.getInstanceById(idAlbumB, 'album');
+            unqfy.getInstanceByAttribute(idAlbumB, 'album');
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The album with id ${idAlbumB} does not exist`);
@@ -168,7 +168,7 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
         unqfy.deleteAlbum(album);
 
         try{
-            unqfy.getInstanceById(idAlbum, 'album');
+            unqfy.getInstanceByAttribute(idAlbum, 'album');
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The album with id ${idAlbum} does not exist`);
@@ -185,7 +185,7 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
         unqfy.deleteTrack(track);
 
         try{
-            unqfy.getInstanceById(idTrack, 'track');
+            unqfy.getInstanceByAttribute(idTrack, 'track');
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The track with id ${idTrack} does not exist`);

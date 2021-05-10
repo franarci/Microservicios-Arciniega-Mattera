@@ -54,13 +54,14 @@ function main() {
 	//manejar la excepcion de un comando que no va
 
 	const unqfy = getUNQfy()
-	//consola
+	
+    //consola
 	consoleMethod = process.argv[2] //el metodo que se ingresa en consola
 	consoleArgs = process.argv.slice(3) //los argumentos del metodo ArrLs
 	
-    console.log('********************');
-    console.log('*****ENTRADA*******');
-    console.log('********************');
+    console.log('   ********************');
+    console.log('       ENTRADA         ');
+    console.log('   ********************');
 	console.log('los parametros totales son: ', process.argv);
 	console.log('el metodo es: ', consoleMethod);
 	console.log('los argumentos a procesar son: ', consoleArgs);
@@ -74,11 +75,11 @@ function main() {
 
 	command.executeMethod(consoleArgs, unqfy);
 	
-    console.log('*****************************')
-    console.log('      ******SALIDA*****')
-    console.log('*****************************')
+    console.log('   *****************************')
+    console.log('           SALIDA');
+    console.log('   *****************************')
 	saveUNQfy(unqfy);
-	console.log( getUNQfy());
+	//console.log( getUNQfy());
 
 }
 

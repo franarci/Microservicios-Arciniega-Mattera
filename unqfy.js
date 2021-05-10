@@ -17,6 +17,7 @@ const { AlbumBelongs } = require('./src/belongs-classes/albumBelongs');
 const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
 const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
+const { isRegExp } = require('util');
 /*
 por el error 
 node:internal/modules/cjs/loader:927
@@ -161,7 +162,6 @@ class UNQfy {
 		}
 	}
 
-
 	//stringParcial: string
 	//retorna: la busqueda por matching parcial de los artistas, albumes o tracks 
 	getMatchingParcial(stringParcial){
@@ -232,7 +232,7 @@ class UNQfy {
 		}
     }
 
-	getUser(userName){
+	getUser(userName){ // se puede reemplazar por getInstanceByAttribute
 	   
 		if(this.users.some(user => user.userName == userName)){
 			return this.users.find(u => u.userName ==userName)
@@ -241,7 +241,7 @@ class UNQfy {
 		}
 	}
  
-	getTrack(trackName){
+	getTrack(trackName){ // se puede reemplazar por getInstanceByAttribute
 		 if(this.tracks.some(track => track.trackName == trackName)){
 			 return this.tracks.find(t => t.trackName == trackName)
 		 } else {
@@ -321,7 +321,9 @@ class UNQfy {
 		return ret;
 	}
 
-    getInstanceByAttribute(attribute, classOfInstance, attributeName='id') {
+    getInstanceByAttribute(attributeP, classOfInstance, attributeName='id') {
+        let attribute = attributeP;
+        if(attributeName='id'){attribute = parseInt(attribute);}
         const listOfInstances = `${classOfInstance}s`;
 
         if( this[listOfInstances].some(instance => instance[attributeName] == attribute) ){
@@ -330,6 +332,32 @@ class UNQfy {
 			throw new InstanceDoesNotExist(attribute, classOfInstance);
 		}
     }
+
+    getInstancesMatchingByAttribute(attributeValue, classOfReturnedInstances, attributeName){
+        const listOfInstances = `${attributeName}s`;
+
+        if(this[listOfInstances].some(instance => instance.name === attributeValue)){
+            const instance = this[listOfInstances].find(instance => instance.name === attributeValue);
+            let allInstances = [];
+            instance[attributeName]()
+        }
+    } 
+
+    /* 
+    getTracksMatchingArtist
+        if(this.artists.some(artist => artist.name === artistName)){
+            const artist = this.artists.find(artist => artist.name === artistName);
+            let allTracks = [];
+            artist.albums.map(album => allTracks.push(...album.tracks))
+            //console.log(allTracks);
+            return allTracks;
+        }
+        else{
+            throw InstanceDoesNotExist(artisName, 'artist');
+        } */
+    getTracksMatchingName(artistName) {} 
+    getAlbumsMatchingName(albumName){}
+    getAlbumsMatchingArtist(artistName){}
 
 }
 
