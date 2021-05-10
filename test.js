@@ -1,5 +1,3 @@
-/* eslint-env node, mocha */
-
 const assert = require('chai').assert;
 const libunqfy = require('./unqfy');
 const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
@@ -90,7 +88,6 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
     
     chequear que cada item en unqfy.playlists cumple la condidicion de que no contiene alguno o todos los tracks del album
 });
-
 */
     it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
@@ -302,10 +299,10 @@ describe('Playlist Creation and properties', () => {
   });
 
   it('should create a playlist as requested', () => {
-    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const artist = createAndAddArtist(unqfy, 'Guns Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
-    createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+    createAndAddTrack(unqfy, album.id, 'Sweet Child  Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
 
     const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
     const album2 = createAndAddAlbum(unqfy, artist2.id, 'Thriller', 1987);
@@ -313,15 +310,15 @@ describe('Playlist Creation and properties', () => {
     const t3 = createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['pop']);
     const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
 
-    const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+    const playlist2 = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
 
-    assert.equal(playlist.name, 'my playlist');
-    assert.isAtMost(playlist.duration(), 1400);
-    assert.isTrue(playlist.hasTrack(t1));
-    assert.isTrue(playlist.hasTrack(t2));
-    assert.isTrue(playlist.hasTrack(t3));
-    assert.isTrue(playlist.hasTrack(t4));
-    assert.lengthOf(playlist.tracks, 4);
+    assert.equal(playlist2.name, 'my playlist');
+    assert.isAtMost(playlist2.getDuration(), 1400);
+    assert.isTrue(playlist2.hasTrack(t1));
+    assert.isTrue(playlist2.hasTrack(t2));
+    assert.isTrue(playlist2.hasTrack(t3));
+    assert.isTrue(playlist2.hasTrack(t4));
+    assert.lengthOf(playlist2.tracks, 4);
   });
 })
 
@@ -383,4 +380,3 @@ describe('Test nuestro - Belongs tests', () => {
   
 
 });
-

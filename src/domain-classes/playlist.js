@@ -15,8 +15,8 @@ class Playlist extends TrackList {
 
     getDuration(){ return this.duration; }
 
-    hasTrack(){
-        //TODO
+    hasTrack(trackSearched){
+        return this.tracks.some(track => track.name.localeCompare(trackSearched.name))
     }
 }
 

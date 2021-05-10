@@ -154,7 +154,6 @@ class UNQfy {
             const artist = this.artists.find(artist => artist.name === artistName);
             let allTracks = [];
             artist.albums.map(album => allTracks.push(...album.tracks))
-            //console.log(allTracks);
 		    return allTracks;
         }
 		else{
@@ -195,11 +194,17 @@ class UNQfy {
 
 			while(durationLimit>0 && matchedTracks.length>0){
 				let randomN = Math.floor(Math.random() * matchedTracks.length);
-				let randomTrack= matchedTracks.splice(randomN)[0]
-			
-				playlistTracks.push(randomTrack)
-				durationLimit = durationLimit - randomTrack.duration
-				totalDuration += randomTrack.duration
+				let randomTrack= matchedTracks[randomN]
+
+				matchedTracks =	matchedTracks.filter( track => 
+					track.name !== randomTrack.name
+				)
+				
+				if(durationLimit - randomTrack.duration>=0){
+					playlistTracks.push(randomTrack)
+					durationLimit = durationLimit - randomTrack.duration
+					totalDuration += randomTrack.duration
+				}		
 			}
 		
 			let playlist = new Playlist(
