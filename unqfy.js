@@ -142,13 +142,15 @@ class UNQfy {
             }
         })
         console.log(res)
-		return res;
+		const res1 = new Set(res)
+		let result = [...res1]
+		return result;
 	}
 
 	// artistName: nombre de artista(string)
 	// retorna: los tracks interpredatos por el artista con nombre artistName
 	getTracksMatchingArtist(artistName) {
-        if(this.artists.some(artist.name === artistName)){
+        if(this.artists.some(artist => artist.name === artistName)){
             const artist = this.artists.find(artist => artist.name === artistName);
             let allTracks = [];
             artist.albums.map(album => allTracks.push(...album.tracks))
@@ -160,6 +162,18 @@ class UNQfy {
 		}
 	}
 
+
+	//stringParcial: string
+	//retorna: la busqueda por matching parcial de los artistas, albumes o tracks 
+	getMatchingParcial(stringParcial){
+		
+		let matchingByArtist = this.artists.filter(artist => artist.name.match(stringParcial))/* artist.name.match(/stringParcial/gi) */
+		let matchingByAlbum = this.albums.filter(album => album.name.match(stringParcial))
+		let matchingByTrack = this.tracks.filter(track => track.name.match(stringParcial))
+		
+		return(matchingByArtist || matchingByAlbum || matchingByTrack)
+	}
+	
 
 	// name: nombre de la playlist
 	// genresToInclude: array de generos
@@ -322,7 +336,9 @@ class UNQfy {
 			throw new InstanceDoesNotExist(id, classOfInstance);
 		}
     }
+
 }
+
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente

@@ -38,7 +38,7 @@ function timesListened(unqfy, userName, trackName){
   return unqfy.timesListened(userName,trackName)
 }
 
-describe('Add, remove and filter data', () => {
+  describe('Add, remove and filter data', () => {
   let unqfy = null;
 
   beforeEach(() => {
@@ -184,8 +184,9 @@ describe('Add, remove and filter data', () => {
     const t3 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['movie']);
 
     const tracksMatching = unqfy.getTracksMatchingGenres(['pop', 'movie']);
+    
 
-    // assert.equal(tracks.matching.constructor.name, Array);
+    //assert.equal(tracks.matching.constructor.name, Array);
     assert.isArray(tracksMatching);
     assert.lengthOf(tracksMatching, 4);
     assert.equal(tracksMatching.includes(t0), true);
@@ -210,12 +211,32 @@ describe('Add, remove and filter data', () => {
     createAndAddTrack(unqfy, album3.id, 'Another song II', 500, ['movie']);
 
     const matchingTracks = unqfy.getTracksMatchingArtist(artist.name);
+    
 
     assert.isArray(matchingTracks);
     assert.lengthOf(matchingTracks, 3);
     assert.isTrue(matchingTracks.includes(t1));
     assert.isTrue(matchingTracks.includes(t2));
     assert.isTrue(matchingTracks.includes(t3));
+  });
+
+  it('should get all tracks,artists,albums matching string parcial', () => {
+    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+    const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+
+    const artist2 = createAndAddArtist(unqfy, 'Michael Gun', 'USA');
+    const album2 = createAndAddAlbum(unqfy, artist2.id, 'Well', 1987);
+    const t4 =createAndAddTrack(unqfy, album2.id, 'Give to me', 500, ['classic']);
+    
+
+    const matchingParcial = unqfy.getMatchingParcial('Gun');
+    
+    assert.isArray(matchingParcial);
+    assert.lengthOf(matchingParcial, 2);
+    assert.isTrue(matchingParcial.includes(artist));
+    assert.isTrue(matchingParcial.includes(artist2))
+  
   });
 });
 
@@ -307,6 +328,6 @@ describe('Test nuestro - Belongs tests', () => {
 
   });
   
-  
+
 });
 
