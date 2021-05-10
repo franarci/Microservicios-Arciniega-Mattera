@@ -1,5 +1,6 @@
 const { Album } = require("./album");
 const { Artist } = require("./artist");
+const track = require("./track");
 const { Track } = require("./track");
 
 class User {
@@ -41,6 +42,13 @@ class User {
             return 0
         }
     }
+
+   /* getTracks(artist){
+        Object.values(this.listened).filter(([track, n]) => this.isMatch(track.artists, artist))
+    }
+
+    isMatch(artists, artist)
+*/
 }
 
 module.exports = {
