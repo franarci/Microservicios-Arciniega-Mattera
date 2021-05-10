@@ -200,7 +200,7 @@ class UNQfy {
 					track.name !== randomTrack.name
 				)
 				
-				if(durationLimit - randomTrack.duration>0){
+				if(durationLimit - randomTrack.duration>=0){
 					playlistTracks.push(randomTrack)
 					durationLimit = durationLimit - randomTrack.duration
 					totalDuration += randomTrack.duration
