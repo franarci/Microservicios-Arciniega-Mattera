@@ -141,7 +141,6 @@ class UNQfy {
                 }
             }
         })
-        console.log(res)
 		return res;
 	}
 
@@ -263,12 +262,13 @@ class UNQfy {
         const artistOfAlbum = album.artist;
 
         artistOfAlbum.deleteAlbum(album);
-        album.tracks.forEach( deltaTrack => this.deletetrack(deltaTrack) ); // vacio el album y actualizo la lista de tracks de unqfy
+        album.tracks.forEach( deltaTrack => this.deleteTrack(deltaTrack) ); // vacio el album y actualizo la lista de tracks de unqfy
         this.albums = this.albums.filter( deltaAlbum => !deltaAlbum === album ); // actualizo la lista de albums de unqfy
     }
     
     deleteArtist(artist){
         this.artists = this.artists.filter( deltaArtist => !deltaArtist === artist );
+        artist.albums.forEach( deltaAlbum => this.deleteAlbum(deltaAlbum) );
     }
 
     deletePlaylist(playlistId){}
