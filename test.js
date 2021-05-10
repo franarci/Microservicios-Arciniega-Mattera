@@ -225,15 +225,17 @@ function timesListened(unqfy, userName, trackName){
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
 
-    const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+    const artist2 = createAndAddArtist(unqfy, 'Michael Gun', 'USA');
     const album2 = createAndAddAlbum(unqfy, artist2.id, 'Well', 1987);
     const t4 =createAndAddTrack(unqfy, album2.id, 'Give to me', 500, ['classic']);
     
 
-    const matchingParcial = unqfy.getMatchingParcial('Guns');
+    const matchingParcial = unqfy.getMatchingParcial('Gun');
     
     assert.isArray(matchingParcial);
+    assert.lengthOf(matchingParcial, 2);
     assert.isTrue(matchingParcial.includes(artist));
+    assert.isTrue(matchingParcial.includes(artist2))
   
   });
 });
