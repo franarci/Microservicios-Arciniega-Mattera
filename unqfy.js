@@ -120,7 +120,7 @@ class UNQfy {
                     trackData.duration,
                     album,
                     trackData.genres,
-                    [artist]
+                    artist
                 );
             
             album.addTrack(track);

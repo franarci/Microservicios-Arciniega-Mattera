@@ -357,7 +357,7 @@ describe('Test nuestro - User Creation and properties', () => {
       assert.equal(timesListened(unqfy, user, track1), 1)
       assert.equal(timesListened(unqfy, user, track2), 0)
     });
-
+})
 
 describe('Test nuestro - Belongs tests', () => {
     let unqfy = null;
@@ -381,6 +381,3 @@ describe('Test nuestro - Belongs tests', () => {
     });
 
   });
-  
-
-});

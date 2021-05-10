@@ -6,7 +6,7 @@ class Track {
             duration=null,
             album=null,
             genres=null,
-            artists=null
+            artist=null
         ){
         
         this.id = id;
@@ -14,7 +14,7 @@ class Track {
         this.duration = duration;
         this.album = album;
         this.genres = genres;
-        this.artists = artists;
+        this.artist = artist;
   }
 
     getIdTrack(){return this.id;}
@@ -22,7 +22,7 @@ class Track {
     getDuration(){return this.duration;}
     getAlbumId(){return this.album;}
     getGenres(){return this.genres;}
-    getArtists(){return this.artists;}
+    getArtists(){return this.artist;}
 }
 
 module.exports = {
