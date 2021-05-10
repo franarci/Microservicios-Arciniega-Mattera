@@ -78,29 +78,42 @@ describe('Add, remove and filter data', () => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    /*
-    it('test nuestro - when delete a track should delete a track from the playlists', () => {   });
-    it('test nuestro - when delete an artist should delete it from the UNQfy', () => {   });
-    it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => {  });
-    it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => {  });
-    it('test nuestro - when delete an artist should delete all his tracks from the playlists', () => {  });
-    it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
-        crear el artista
-        crear el album
-        crear playlists
-        agregar temas de un album a distintas playlists
-        borrar el album
-
-        chequear que cada item en unqfy.playlists cumple la condidicion de que no contiene alguno o todos los tracks del album
-    });
+/*
+it('test nuestro - when delete a track should delete a track from the playlists', () => {   });
+it('test nuestro - when delete an artist should delete all his tracks from the playlists', () => {  });
+it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => {  });
+it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
+    crear el artista
+    crear el album
+    crear playlists
+    agregar temas de un album a distintas playlists
+    borrar el album
     
-    */
+    chequear que cada item en unqfy.playlists cumple la condidicion de que no contiene alguno o todos los tracks del album
+});
+
+*/
+    it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => { 
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        
+        unqfy.deleteArtist(artist)
+    });
+
+    it('test nuestro - when delete an artist should delete it from the UNQfy', () => {  
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+
+        unqfy.deleteArtist(artist);
+
+        assert.isFalse(unqfy.artists.includes(artist));
+
+    });
+
     it('test nuestro - when delete an album should delete it from the artist', () => {     
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const idAlbum = album.id;
 
-        unqfy.deleteAlbum(idAlbum);
+        unqfy.deleteAlbum(album);
 
         assert.isFalse(artist.albums.includes(album));
     });
@@ -110,7 +123,7 @@ describe('Add, remove and filter data', () => {
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const idAlbum = album.id;
 
-        unqfy.deleteAlbum(idAlbum);
+        unqfy.deleteAlbum(album);
 
         try{
             unqfy.getInstanceById(idAlbum, 'album');
@@ -127,7 +140,7 @@ describe('Add, remove and filter data', () => {
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
         const idTrack = track.id;
 
-        unqfy.deleteTrack(track.id);
+        unqfy.deleteTrack(track);
 
         try{
             unqfy.getInstanceById(idTrack, 'track');
@@ -142,9 +155,8 @@ describe('Add, remove and filter data', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-        const idTrack = track.id;
 
-        unqfy.deleteTrack(track.id);
+        unqfy.deleteTrack(track);
 
         assert.isFalse(album.tracks.includes(track));
     });
