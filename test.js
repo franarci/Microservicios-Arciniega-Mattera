@@ -227,10 +227,10 @@ describe('Playlist Creation and properties', () => {
   });
 
   it('should create a playlist as requested', () => {
-    const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+    const artist = createAndAddArtist(unqfy, 'Guns n Roses', 'USA');
     const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
     const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
-    createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+    createAndAddTrack(unqfy, album.id, 'Sweet Child o Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
 
     const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
     const album2 = createAndAddAlbum(unqfy, artist2.id, 'Thriller', 1987);
@@ -239,9 +239,10 @@ describe('Playlist Creation and properties', () => {
     const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
 
     const playlist = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+    const duracion = playlist.duration
 
     assert.equal(playlist.name, 'my playlist');
-    assert.isAtMost(playlist.duration(), 1400);
+    assert.isAtMost(playlist.duration, 1400);
     assert.isTrue(playlist.hasTrack(t1));
     assert.isTrue(playlist.hasTrack(t2));
     assert.isTrue(playlist.hasTrack(t3));

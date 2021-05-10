@@ -13,7 +13,7 @@ class Playlist extends TrackList {
         this.duration = duration;
     }
 
-    getDuration(){ return this.duration; }
+    duration(){ return this.duration; }
 
     hasTrack(){
         //TODO
