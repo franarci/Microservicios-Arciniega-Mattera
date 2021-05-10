@@ -63,7 +63,7 @@ class UNQfy {
 			this.artists.push(artist);
 			return artist;
 		} else {
-			throw InstanceAlreadyExist('artist');
+			throw new InstanceAlreadyExist('artist', artistData.name);
 		}
 	}
 	
@@ -92,7 +92,7 @@ class UNQfy {
             this.albums.push(album);
             return album;
         } else{
-            throw InstanceAlreadyExist('album');
+            throw new InstanceAlreadyExist('album', albumData.name);
         }
 	}
 
@@ -127,7 +127,7 @@ class UNQfy {
             this.tracks.push(track);
             return track;
         } else {
-            throw InstanceAlreadyExist("track");
+            throw new InstanceAlreadyExist("track", trackData.name);
         }
     }
 
@@ -157,7 +157,7 @@ class UNQfy {
 		    return allTracks;
         }
 		else{
-			throw InstanceDoesNotExist(artisName, 'artist');
+			throw new InstanceDoesNotExist('artist', artistName);
 		}
 	}
 
@@ -217,7 +217,7 @@ class UNQfy {
 			this.playlists.push(playlist)
 			return playlist
 		 } else {
-			throw InstanceAlreadyExist(name, 'playlist');
+			throw new InstanceAlreadyExist('playlist', name);
 		}
 	}
 
@@ -233,40 +233,41 @@ class UNQfy {
 			return newser;
 		} 
 		else {
-			 throw InstanceAlreadyExist('user');
+			 throw new InstanceAlreadyExist('user', userName);
 		}
     }
 
-	getUser(userName){ // se puede reemplazar por getInstanceByAttribute
-	   
-		if(this.users.some(user => user.userName == userName)){
-			return this.users.find(u => u.userName ==userName)
+	getUser(userToSearch){ // se puede reemplazar por getInstanceByAttribute
+		let userName = userToSearch.username
+		if(this.users.some(user => user.username == userName)){
+			return this.users.find(u => u.username ==userName)
 		} else {
-			throw error.UserDoesNotExist(userName)
+			throw new InstanceDoesNotExist('user', 'name', userName)
 		}
 	}
  
-	getTrack(trackName){ // se puede reemplazar por getInstanceByAttribute
-		 if(this.tracks.some(track => track.trackName == trackName)){
-			 return this.tracks.find(t => t.trackName == trackName)
-		 } else {
-			 throw error.TrackDoesNotExist(trackName)
-		 }
+	getTrack(trackToSearch){ // se puede reemplazar por getInstanceByAttribute
+		let trackName = trackToSearch.name 
+		if(this.tracks.some(track => track.name == trackName)){
+			 return this.tracks.find(t => t.name == trackName)
+		} else {
+			 throw new InstanceDoesNotExist('track', 'name', trackName)
+		}
 	}
  
-	listenTrack(userName, trackName){
-		 let user = this.getUser(userName)
-		 user.listenTrack(getTrack(trackName))
+	listenTrack(userToSearch, track){
+		 let user = this.getUser(userToSearch)
+		 user.listenTrack(this.getTrack(track))
 		 return user
 	}
  
-	getListened(userName){
-		 return this.getUser(userName).getListened()
+	getListened(user){
+		 return this.getUser(user).getListened()
 	}
  
-	timesListened(userName, trackName){
-		 let track = this.getTrack(trackName)
-		 return this.getUser(userName).timesListened(track)
+	timesListened(userToSearch, trackToSearch){
+		 let track = this.getTrack(trackToSearch)
+		 return this.getUser(userToSearch).timesListened(track)
 	}
 
     deleteTrack(track){
@@ -326,15 +327,15 @@ class UNQfy {
 		return ret;
 	}
 
-    getInstanceByAttribute(attributeP, classOfInstance, attributeName='id') {
-        let attribute = attributeP;
-        if(attributeName='id'){attribute = parseInt(attribute);}
+    getInstanceByAttribute(atributeP, classOfInstance, atributeName='id') {
+        let atribute = atributeP;
+        if(atributeName='id'){atribute = parseInt(atribute);}
         const listOfInstances = `${classOfInstance}s`;
 
-        if( this[listOfInstances].some(instance => instance[attributeName] == attribute) ){
-			return this[listOfInstances].find(instance => instance[attributeName] == attribute);
+        if( this[listOfInstances].some(instance => instance[atributeName] == atribute) ){
+			return this[listOfInstances].find(instance => instance[atributeName] == atribute);
 		} else{
-			throw new InstanceDoesNotExist(attribute, classOfInstance);
+			throw new InstanceDoesNotExist(classOfInstance,atributeName, atribute);
 		}
     }
 

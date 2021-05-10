@@ -1,16 +1,16 @@
 const { Track } = require("./domain-classes/track")
 
 class InstanceAlreadyExist extends Error{
-    constructor(className){
-        super(`That ${className} already exist`);
+    constructor(className, name){
+        super(`The ${className} with name ${name} already exist`);
     }
 }
 
 //////////////////////////////////////////////////////////
 
 class InstanceDoesNotExist extends Error{
-    constructor(atribute, className){
-        super(`The ${className} with id ${atribute} does not exist`)
+    constructor(className, field, atribute){
+        super(`The ${className} with ${field} ${atribute} does not exist`)
     }
 }
 

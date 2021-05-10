@@ -12,17 +12,17 @@ class User {
     listenTrack(track){
         //listened tracks es un map donde la clave es el nombre de un track y el valor es un par [Track, vecesEscuchada<Int>]
         if(!this.hasListened(track)){
-            this.listened[track.trackName] = [track, 1];
+            this.listened[track.name] = [track, 1];
         } else {
-            let sameTrack = this.listened[track.trackName][0]
-            this.listened[track.trackName] = [sameTrack, this.timesListened(track)+parseInt(1)];
+            let sameTrack = this.listened[track.name][0]
+            this.listened[track.name] = [sameTrack, this.timesListened(track)+parseInt(1)];
         }
     }
     
     hasListened(track){
         let tracks = Object.keys(this.listened)
         return tracks.some(t => 
-                        this.sameTrackName(t, track.trackName)
+                        this.sameTrackName(t, track.name)
                         )
     }
 
@@ -36,7 +36,7 @@ class User {
 
     timesListened(track){
         if(this.hasListened(track)){
-            return this.listened[track.trackName][1] 
+            return this.listened[track.name][1] 
         } else {
             return 0
         }
