@@ -13,10 +13,10 @@ class Playlist extends TrackList {
         this.duration = duration;
     }
 
-    duration(){ return this.duration; }
+    getDuration(){ return this.duration; }
 
-    hasTrack(){
-        //TODO
+    hasTrack(trackSearched){
+        return this.tracks.some(track => track.name.localeCompare(trackSearched.name))
     }
 }
 

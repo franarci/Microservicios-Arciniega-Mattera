@@ -269,8 +269,7 @@ class UNQfy {
 		 return this.getUser(userName).timesListened(track)
 	}
 
-    deleteTrack(trackId){
-        const track = this.getInstanceById(trackId, 'track');
+    deleteTrack(track){
         const albumOfTrack = track.album;
         
         albumOfTrack.deleteTrack(track);
@@ -278,16 +277,19 @@ class UNQfy {
         this.tracks = this.tracks.filter( deltaTrack => !deltaTrack === track );
     }
 
-    deleteAlbum(albumId){
-        const album = this.getInstanceById(albumId, 'album');
+    deleteAlbum(album){
         const artistOfAlbum = album.artist;
 
         artistOfAlbum.deleteAlbum(album);
-        album.tracks.forEach( deltaTrack => this.deletetrack(deltaTrack) ); // vacio el album y actualizo la lista de tracks de unqfy
+        album.tracks.forEach( deltaTrack => this.deleteTrack(deltaTrack) ); // vacio el album y actualizo la lista de tracks de unqfy
         this.albums = this.albums.filter( deltaAlbum => !deltaAlbum === album ); // actualizo la lista de albums de unqfy
     }
     
-    deleteArtist(artistId){}
+    deleteArtist(artist){
+        this.artists = this.artists.filter( deltaArtist => !deltaArtist === artist );
+        artist.albums.forEach( deltaAlbum => this.deleteAlbum(deltaAlbum) );
+    }
+
     deletePlaylist(playlistId){}
 
 	save(filename) {

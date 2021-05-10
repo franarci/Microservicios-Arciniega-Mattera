@@ -1,10 +1,10 @@
 
 class TrackList {
-    constructor(id=null, name=null){
+    constructor(id=null, name=null, tracks=[], genres=[]){
         this.id = id
         this.name = name
-        this.tracks = []
-        this.genres = []
+        this.tracks = tracks
+        this.genres = genres
     }
 
     addTrack(track){
