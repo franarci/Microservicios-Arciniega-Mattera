@@ -25,6 +25,15 @@ class GetArtistById extends Command{
     }
 }
 
+/*
+class GetArtistByName extends Command{
+
+    executeMethod(lsParams, unqfy){
+        var 
+    }
+}
+*/
+
 class AddAlbum extends Command{
     
     executeMethod(lsParams, unqfy){
@@ -83,7 +92,6 @@ const commands = { // aca se van a ir mapeando los comandos
     getArtistById: new GetArtistById(),
     addAlbum: new AddAlbum(),
     addTrack: new AddTrack(),
-    getArtistById: new GetArtistById(), 
     createUser: new CreateUser(),
     listenTrack: new ListenTrack(),
     getListened: new GetListened(),

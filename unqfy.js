@@ -153,7 +153,7 @@ class UNQfy {
             const artist = this.artists.find(artist => artist.name === artistName);
             let allTracks = [];
             artist.albums.map(album => allTracks.push(...album.tracks))
-            console.log(allTracks);
+            //console.log(allTracks);
 		    return allTracks;
         }
 		else{
