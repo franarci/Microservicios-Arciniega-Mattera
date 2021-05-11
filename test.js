@@ -89,21 +89,7 @@ function getTop3FromArtist(unqfy, artist){
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-/*
-it('test nuestro - when delete a track should delete a track from the playlists', () => {   });
-it('test nuestro - when delete an artist should delete all his tracks from the playlists', () => {  });
-it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
-    crear el artista
-    crear el album
-    crear playlists
-    agregar temas de un album a distintas playlists
-    borrar el album
-    
-    chequear que cada item en unqfy.playlists cumple la condidicion de que no contiene alguno o todos los tracks del album
-});
-*/
-    it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => { 
+  it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -119,16 +105,31 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The track with id ${idTrack1} does not exist`);
         }
+  });
+    
+  it('test nuestro - when delete an artist should delete all his tracks from the playlists', () => { 
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+      const track2 = createAndAddTrack(unqfy, album.id, 'californication', 100, ['rock', 'funk']);
+          
+      unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
+      unqfy.deleteArtist(artist);
+  
 
-        try{
-            unqfy.getInstanceByAttribute(idTrack2, 'track');
-        } catch(e){
-            if( e instanceof AssertionError ){ throw e; }
-            assert.equal(e.message, `The track with id ${idTrack2} does not exist`);
-        }
-    });
+    const track1Belongs = unqfy.playlists[0].tracks.includes(track1)
+    const track2Belongs = unqfy.playlists[0].tracks.includes(track2)
+    
+    assert.isFalse(track1Belongs)
+    assert.isFalse(track2Belongs)
 
-    it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => { 
+
+      
+  });
+
+
+
+  it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const albumA = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const albumB = createAndAddAlbum(unqfy, artist.id, 'Californication', 200);
@@ -151,30 +152,28 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
             assert.equal(e.message, `The album with id ${idAlbumB} does not exist`);
         }
 
-    });
+  });
 
-    it('test nuestro - when delete an artist should delete it from the UNQfy', () => {  
+  it('test nuestro - when delete an artist should delete it from the UNQfy', () => {  
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
 
         unqfy.deleteArtist(artist);
 
         assert.isFalse(unqfy.artists.includes(artist));
 
-    });
+  });
 
-    it('test nuestro - when delete an album should delete it from the artist', () => {     
+  it('test nuestro - when delete an album should delete it from the artist', () => {     
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
         unqfy.deleteAlbum(album);
-        try{
+      
         assert.isFalse(artist.albums.includes(album));
-        } catch(e) {
-          if( e instanceof AssertionError ){ throw e; }
-        }
-    });
+       
+  });
     
-    it('test nuestro - when delete an album should delete it from UNQfy', () => {
+  it('test nuestro - when delete an album should delete it from UNQfy', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const idAlbum = album.id;
@@ -187,10 +186,49 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The album with id ${idAlbum} does not exist`);
         }
-    });
+  });
+
+  it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+      const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
+      
+      unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
+
+      unqfy.deleteAlbum(album)
+
+      assert.isFalse(unqfy.playlists[0].tracks.includes(track1));
+      assert.isFalse(unqfy.playlists[0].tracks.includes(track2));
+
+  });
+
+  it('test nuestro - when delete an album should delete all the tracks stored in UNQfy that belongs to the album', () => { 
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+      const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
+      const idTrack1 = track1.id
+      const idTrack2 = track2.id
+      unqfy.deleteAlbum(album)
+
+      try{
+        unqfy.getInstanceByAttribute(idTrack1, 'track');
+      } catch(e) {
+        if( e instanceof AssertionError ){throw e}
+        assert.equal(e.message, `The track with id ${idTrack1} does not exist`);
+      }
+
+      try{
+        unqfy.getInstanceByAttribute(idTrack2, 'track');
+      } catch(e) {
+        if( e instanceof AssertionError ){throw e}
+        assert.equal(e.message, `The track with id ${idTrack2} does not exist`);
+      }
+  });
     
 
-    it('test nuestro - when delete a track should delete it from UNQfy', () => {
+  it('test nuestro - when delete a track should delete it from UNQfy', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -204,10 +242,10 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The track with id ${idTrack} does not exist`);
         }
-    });
+  });
 
 
-    it('test nuestro - when delete a track should delete a track from an album', () => {
+  it('test nuestro - when delete a track should delete a track from an album', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -215,17 +253,25 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
         unqfy.deleteTrack(track);
 
         assert.isFalse(album.tracks.includes(track));
-    });
+  });
 
-    it('test nuestro - when delete a track should delete it from the playlists', () => { 
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+  it('test nuestro - when delete a track should delete a track from the playlists', () => { 
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+      const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
+      
+      unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
 
-        unqfy.deleteTrack(track);
-
+      unqfy.deleteTrack(track1)
+ 
+      const track1Belongs = unqfy.playlists[0].tracks.includes(track1)
+      const track2Belongs = unqfy.playlists[0].tracks.includes(track2)
         
-    });
+      assert.isFalse(track1Belongs);
+      assert.isTrue(track2Belongs);
+    
+  });
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
