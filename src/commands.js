@@ -58,8 +58,16 @@ class GetArtistByName extends Command{
     }
 } 
 
-class GetPlaylistByNameAndUser extends Command{
+class GetPlaylistByName extends Command{
 
+    executeMethod(lsParams, unqfy){
+        const playlistName = lsParams[0];
+
+        const lsPlaylistsMatching = unqfy.getPlaylistsMatchingName(playlistName);
+        
+        // busco en los matches de nombre el que machee con el artista pasado
+        console.log(lsPlaylistsMatching[0]);
+    }
 }
 
 class AddAlbum extends Command{
@@ -80,10 +88,10 @@ class AddTrack extends Command{
         track.name = lsParams[0];
         track.albumId = lsParams[1]
         track.duration = lsParams[2];
-        track.genre = JSON.parse(lsParams[3]);
+        track.genre = lsParams.splice(3);
         
         console.log(track.genre);
-        unqfy.addTrack(track.albumId, {name: track.name, duration: track.duration, genre: track.genre});
+        unqfy.addTrack(track.albumId, {name: track.name, duration: track.duration, genres: track.genre});
     }
 }
 
@@ -130,32 +138,47 @@ class GetInstanceById extends Command{
     }
 }
 
-    class GetMatchingParcial{
+class GetMatchingParcial extends Command{
 
-        executeMethod(lsParams, unqfy){
-            let stringParcial = lsParams[0]
-            console.log(unqfy.getMatchingParcial(stringParcial))
-        }
-        
-    }  
+    executeMethod(lsParams, unqfy){
+        let stringParcial = lsParams[0]
+        console.log(unqfy.getMatchingParcial(stringParcial))
+    }
+    
+}  
+
+class AddPlaylist extends Command{
+
+    executeMethod(lsParams, unqfy){
+        const name = lsParams[0];
+        const user = unqfy.getInstanceByAttribute(lsParams[1], 'user', 'username');
+        const maxDuration = lsParams[2];
+        const genresToInclude = lsParams.slice(3);
+
+        unqfy.createPlaylist(name, user, maxDuration, genresToInclude);
+    }
+}
 
 
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
-    getArtistById: new GetArtistById(),
     addAlbum: new AddAlbum(),
     addTrack: new AddTrack(),
+    addPlaylist: new AddPlaylist(),
+
     createUser: new CreateUser(),
     listenTrack: new ListenTrack(),
-    getListened: new GetListened(),
     timesListened: new TimesListened(),
+    
+    getArtistById: new GetArtistById(),
+    getAlbumById: new GetInstanceById('album'),
+    
+    getListened: new GetListened(),
     getAlbum: new GetInstanceByNameAndArtist('album'),
     getTrack: new GetInstanceByNameAndArtist('track'),
-
     getArtist: new GetArtistByName(),
-    getPlaylist: new GetPlaylistByNameAndUser(),
+    getPlaylist: new GetPlaylistByName(),
 
-    getAlbumById: new GetInstanceById('album'),
     getMatchingParcial: new GetMatchingParcial('stringParcial')
 }
 
