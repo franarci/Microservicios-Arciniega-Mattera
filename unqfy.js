@@ -373,6 +373,19 @@ class UNQfy {
 		this.playlists = this.playlists.filter(playlist => {playlist.name !== playlistName})
 	}
 
+	deleteUser(user){
+		this.users = this.users.filter(deltaUser => user.username !== deltaUser.username)
+		this.playlists.forEach(playlist => {
+			
+			if(playlist.user.username=== user.username){
+
+				playlist.user = []
+				
+			}
+			
+		})
+	}
+
 	save(filename) {
         const serializedData = picklify.picklify(this);
         fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));

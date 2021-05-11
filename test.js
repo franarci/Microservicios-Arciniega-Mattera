@@ -273,6 +273,29 @@ function getTop3FromArtist(unqfy, artist){
     
   });
 
+  it('test nuestro - when delete a user should delete it from UNQfy', () => { 
+    const user1  = createAndAddUser(unqfy, 'user1')
+    const idUser = user1.id
+    unqfy.deleteUser(user1)
+
+    try{
+      unqfy.getInstanceByAttribute(idUser, 'user');
+    } catch(e){
+      if( e instanceof AssertionError ){ throw e; }
+      assert.equal(e.message, `The user with id ${idUser} does not exist`);
+    }
+  
+  });
+
+  it('test nuestro - when delete a user should delete it from the playlists', () => { 
+    const user1  = createAndAddUser(unqfy, 'user1')
+    const playL = unqfy.createPlaylist('my playlist', user1, 1400, ['pop', 'rock']);
+    
+    unqfy.deleteUser(user1)
+    assert.isFalse(playL.user.includes(user1))  
+  
+  });
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

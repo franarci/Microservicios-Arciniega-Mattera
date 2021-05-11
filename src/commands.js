@@ -224,6 +224,10 @@ class Delete extends Command {
             unqfy.deletePlaylist(unqfy.getInstanceByAttribute(name, 'playlist', 'name'))
         }
 
+        if(this.classOfInstance === 'user'){
+            unqfy.deleteUser(unqfy.getInstanceByAttribute(name, 'user', 'username'))
+        }
+
         console.log(`The ${this.classOfInstance} ${name} was deleted`)
     }
 }
@@ -241,6 +245,7 @@ const commands = { // aca se van a ir mapeando los comandos
     deleteAlbum: new Delete('album'),
     deleteTrack: new Delete('track'),
     deletePlaylist: new Delete('playlist'),
+    deleteUser: new Delete('user'),
 
     createUser: new CreateUser(),
     listenTrack: new ListenTrack(),
