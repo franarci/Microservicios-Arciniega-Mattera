@@ -170,7 +170,9 @@ class UNQfy {
 		let matchingByAlbum = this.albums.filter(album => album.name.match(stringParcial))
 		let matchingByTrack = this.tracks.filter(track => track.name.match(stringParcial))
 		
-		return(matchingByArtist || matchingByAlbum || matchingByTrack)
+		let resMatching = [...matchingByArtist, ...matchingByAlbum, ...matchingByTrack]
+		
+		return(resMatching)
 	}
 	
 
@@ -368,44 +370,68 @@ class UNQfy {
 		
 		return ret;
 	}
-
-    getInstanceByAttribute(atributeP, classOfInstance, atributeName='id') {
-        let atribute = atributeP;
-        if(atributeName='id'){atribute = parseInt(atribute);}
-        const listOfInstances = `${classOfInstance}s`;
-
-        if( this[listOfInstances].some(instance => instance[atributeName] == atribute) ){
-			return this[listOfInstances].find(instance => instance[atributeName] == atribute);
+//                         2            Track            
+    getInstanceByAttribute(atributeValue, classOfInstance, atributeName='id') {
+        let atribute = atributeValue;
+        
+        if(atributeName=='id'){atribute = parseInt(atribute);}
+        if( this[`${classOfInstance}s`].some(instance => instance[atributeName] == atribute) ){
+			return this[`${classOfInstance}s`].find(instance => instance[atributeName] == atribute);
 		} else{
 			throw new InstanceDoesNotExist(classOfInstance,atributeName, atribute);
 		}
     }
-
-    getInstancesMatchingByAttribute(attributeValue, classOfReturnedInstances, attributeName){
-        const listOfInstances = `${attributeName}s`;
-
-        if(this[listOfInstances].some(instance => instance.name === attributeValue)){
-            const instance = this[listOfInstances].find(instance => instance.name === attributeValue);
+    /*    
+//                                  Track/Album                   artist        metallica   
+    getInstancesMatchingByAttribute(classOfReturnedInstances, attributeName, attributeValue){
+        let ret = [];
+        
+        if(this[`${attributeName}s`].some(instance => instance.name.localeCompare(attributeValue)) == 0){
+            ret = this[`${classOfReturnedInstances}s`].filter(instance => instance[attributeName].localeCompare(attributeValue) == 0);
             let allInstances = [];
             instance[attributeName]()
         }
+        return ret;
     } 
-
-    /* 
-    getTracksMatchingArtist
-        if(this.artists.some(artist => artist.name === artistName)){
+    
+tracks matching by artist
+    if(this.artists.some(artist => artist.name === artistName)){
             const artist = this.artists.find(artist => artist.name === artistName);
             let allTracks = [];
             artist.albums.map(album => allTracks.push(...album.tracks))
-            //console.log(allTracks);
-            return allTracks;
+		    return allTracks;
         }
-        else{
-            throw InstanceDoesNotExist(artisName, 'artist');
-        } */
-    getTracksMatchingName(artistName) {} 
-    getAlbumsMatchingName(albumName){}
-    getAlbumsMatchingArtist(artistName){}
+		else{
+			throw new InstanceDoesNotExist('artist', artistName);
+		}
+ */
+    getTracksMatchingName(trackName) {
+        let ret = [];
+        this.tracks.map(track => {
+            if(track.name == trackName){
+                ret.push(track);
+            }
+        });
+        
+        if(ret.length == 0){throw new InstanceDoesNotExist('track', 'name',trackName)};
+        
+        return ret;
+    } 
+    
+
+    getAlbumsMatchingName(albumName){
+        let ret = [];
+        this.albums.map(album => {
+            if(album.name == albumName){
+                ret.push(album);
+            }
+        });
+        
+        if(ret.length == 0){throw new InstanceDoesNotExist('album', 'name', albumName)};
+        
+        return ret;
+    }
+
 
 }
 const artist1 = new Artist(0)

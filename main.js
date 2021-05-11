@@ -71,13 +71,13 @@ function main() {
 	
 	console.log('Comando creado: ', command);
 
-	//ejecuto el metodo
-
-	command.executeMethod(consoleArgs, unqfy);
-	
     console.log('   *****************************')
     console.log('           SALIDA');
     console.log('   *****************************')
+    
+	//ejecuto el metodo
+	command.executeMethod(consoleArgs, unqfy);
+	
 	saveUNQfy(unqfy);
 	//console.log( getUNQfy());
 
