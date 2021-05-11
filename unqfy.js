@@ -169,7 +169,9 @@ class UNQfy {
 		let matchingByAlbum = this.albums.filter(album => album.name.match(stringParcial))
 		let matchingByTrack = this.tracks.filter(track => track.name.match(stringParcial))
 		
-		return(matchingByArtist || matchingByAlbum || matchingByTrack)
+		let resMatching = [...matchingByArtist, ...matchingByAlbum, ...matchingByTrack]
+		
+		return(resMatching)
 	}
 	
 

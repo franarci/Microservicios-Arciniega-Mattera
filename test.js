@@ -314,12 +314,16 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
     const t4 =createAndAddTrack(unqfy, album2.id, 'Give to me', 500, ['classic']);
     
 
-    const matchingParcial = unqfy.getMatchingParcial('Gun');
+    const matchingParcial = unqfy.getMatchingParcial('e');
     
     assert.isArray(matchingParcial);
-    assert.lengthOf(matchingParcial, 2);
+    assert.lengthOf(matchingParcial, 6);
     assert.isTrue(matchingParcial.includes(artist));
-    assert.isTrue(matchingParcial.includes(artist2))
+    assert.isTrue(matchingParcial.includes(artist2));
+    assert.isTrue(matchingParcial.includes(t1));
+    assert.isTrue(matchingParcial.includes(t4));
+    assert.isTrue(matchingParcial.includes(album));
+    assert.isTrue(matchingParcial.includes(album2));
   
   });
 });
