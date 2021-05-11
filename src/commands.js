@@ -137,7 +137,16 @@ class GetInstanceById extends Command{
             console.log(unqfy.getMatchingParcial(stringParcial))
         }
         
-    }  
+    } 
+    
+    class GetTracksMatchingArtist{
+    
+        executeMethod(lsParams, unqfy){
+        let artistName = lsParams[0]
+        console.log(unqfy.getTracksMatchingArtist(artistName))
+        }
+    }
+    
 
 
 const commands = { // aca se van a ir mapeando los comandos
@@ -156,7 +165,8 @@ const commands = { // aca se van a ir mapeando los comandos
     getPlaylist: new GetPlaylistByNameAndUser(),
 
     getAlbumById: new GetInstanceById('album'),
-    getMatchingParcial: new GetMatchingParcial('stringParcial')
+    getMatchingParcial: new GetMatchingParcial('stringParcial'),
+    getTracksMatchingArtist: new GetTracksMatchingArtist('artist')
 }
 
 
