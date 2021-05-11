@@ -182,6 +182,14 @@ class GetTracksMatchingArtist{
     console.log(unqfy.getTracksMatchingArtist(artistName))
     }
 }
+
+class GetTracksMatchingGenres{
+
+    executeMethod(lsParams, unqfy){
+        let genres = lsParams[0]
+        console.log(unqfy.getTracksMatchingGenres(genres))
+    }
+}
     
 class GetThisIs extends Command {
     executeMethod(lsParams, unqfy){
@@ -252,6 +260,7 @@ const commands = { // aca se van a ir mapeando los comandos
     getAlbumById: new GetInstanceById('album'),
     getMatchingParcial: new GetMatchingParcial('stringParcial'),
     getTracksMatchingArtist: new GetTracksMatchingArtist('artist'),
+    getTracksMatchingGenres: new GetTracksMatchingGenres('genres'),
 
     getThisIs: new GetThisIs()
 }
