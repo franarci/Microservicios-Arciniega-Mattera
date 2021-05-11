@@ -50,9 +50,17 @@ class GetInstanceByNameAndArtist extends Command{ //este se usara para track y a
     }
 }
 
-class GetInstanceByName extends Command{
+class GetArtistByName extends Command{
     
-} //este se usara para playlist y artista porque solo pregunta nombre
+    executeMethod(lsParams, unqfy){
+        const name = lsParams[0];
+        console.log(unqfy.getInstanceByAttribute(name, 'artist', 'name'));
+    }
+} 
+
+class GetPlaylistByNameAndUser extends Command{
+
+}
 
 class AddAlbum extends Command{
     
@@ -134,8 +142,8 @@ const commands = { // aca se van a ir mapeando los comandos
     getAlbum: new GetInstanceByNameAndArtist('album'),
     getTrack: new GetInstanceByNameAndArtist('track'),
 
-    getArtist: new GetInstanceByNameAndArtist('artist'),
-    getPlaylist: new GetInstanceByNameAndArtist('playlist'),
+    getArtist: new GetArtistByName(),
+    getPlaylist: new GetPlaylistByNameAndUser(),
 
     getAlbumById: new GetInstanceById('album')
 }
