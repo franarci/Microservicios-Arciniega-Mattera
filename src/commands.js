@@ -195,7 +195,7 @@ class GetThisIs extends Command {
     executeMethod(lsParams, unqfy){
             let artistName = lsParams[0]
             const top3 = unqfy.getTop3FromArtist(unqfy.getInstanceByAttribute(artistName, 'artist', 'name'))
-            console.log("This is..", top3)
+            console.log("This is ", artistName, ": ", top3)
     }
 }
 
@@ -262,7 +262,7 @@ const commands = { // aca se van a ir mapeando los comandos
     getTracksMatchingArtist: new GetTracksMatchingArtist('artist'),
     getTracksMatchingGenres: new GetTracksMatchingGenres('genres'),
 
-    getThisIs: new GetThisIs()
+    thisIs: new GetThisIs()
 }
 
 
