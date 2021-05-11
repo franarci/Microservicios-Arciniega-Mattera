@@ -279,7 +279,6 @@ class UNQfy {
 		const ret = allTracks.sort(function(a,b){
 			return b[1]-a[1]
 		}).slice(0,3).map(([track,n]) => track)
-		console.log("This is..", ret)
 		return ret
 	}
 
