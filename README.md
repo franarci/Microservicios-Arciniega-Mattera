@@ -1,34 +1,40 @@
 # Console commands
 
-#### addArtist(artistName, country)
-#### addAlbum(artistId, name, year)
-#### addTrack(name, albumId, durationInsSegs, genres)
-#### addPlaylist(name, userName, maxDurationInsSegs, genresToInclude)
+### Agregation commands
+addArtist(artistName, country)
+addAlbum(artistId, name, year)
+addTrack(name, albumId, durationInsSegs, genres)
+addPlaylist(name, userName, maxDurationInsSegs, genresToInclude)
+createUser(username)
 
-#### deleteArtist(name)
-#### deleteAlbum(name)
-#### deleteTrack(name)
-#### deletePlaylist(name)
-#### deleteUser(name)
+### Deletion commands
+deleteArtist(name)
+deleteAlbum(name)
+deleteTrack(name)
+deletePlaylist(name)
+deleteUser(name)
 
-#### createUser(username)
-#### listenTrack(username, trackName)
-#### timesListened(username, trackName)
+### Action
+listenTrack(username, trackName)
  
-#### getArtistById
-#### getAlbumById
-#### getUser
+### Getters
+getUser(username)
+getListened(username)
+getAlbum(name, artistName)
+getTrack(name, artistName)
+getArtist(name)
+getPlaylist(name)
+thisIs(artistName)
+timesListened(username, trackName)
 
-#### getListened(username)
-#### getAlbum(name, artistName)
-#### getTrack(name, artistName)
-#### getArtist(name)
-#### getPlaylist(name)
+### Getters by Id
+getArtistById(id)
+getAlbumById(id)
+getAlbumById(id)
+
+### Getters by matching
+getMatchingParcial(stringParcial)
+getMatchingParcial(stringParcial)
+getTracksMatchingArtist(artistName)
+getTracksMatchingGenres(genres)
  
-#### getMatchingParcial(stringParcial)
-#### getAlbumById(id)
-#### getMatchingParcial(stringParcial)
-#### getTracksMatchingArtist(artistName)
-#### getTracksMatchingGenres(genres)
- 
-#### thisIs(artistName)
