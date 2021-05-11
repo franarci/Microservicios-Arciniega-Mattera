@@ -287,9 +287,9 @@ class UNQfy {
 	getListenedArtistTracks(artist){//[[Track, Int]]
 		//Devuelve la lista de cada track del artista "artist" con su respectiva cantidad de reproducciones
 		let tracks = []
-		this.users.forEach( user => 
+		this.users.forEach( user => {
 			this.pushUserTracks(tracks,user.getTracks(artist))
-		)
+		})
 		return tracks
 	}
 
@@ -316,27 +316,62 @@ class UNQfy {
 
 
     deleteTrack(track){
+
         const albumOfTrack = track.album;
         
         albumOfTrack.deleteTrack(track);
 
-        this.tracks = this.tracks.filter( deltaTrack => !deltaTrack === track );
+		this.playlists.forEach(playlist => {
+			
+			if(playlist.tracks.some(t => t.id===track.id)){
+
+				for(i= 0; i < playlist.tracks.length; i++){
+
+					if(playlist.tracks[i] === track){
+						playlist.tracks.splice(i,1)
+						
+						break
+					}
+				}
+				
+				playlist.duration = playlist.duration - track.duration
+				
+			}
+			
+		}) 
+
+		for(var i in this.tracks) {
+			if(this.tracks[i] === track){
+				this.tracks.splice(i,1)
+				break
+			}
+		}
+
+		
     }
 
     deleteAlbum(album){
         const artistOfAlbum = album.artist;
-
-        artistOfAlbum.deleteAlbum(album);
-        album.tracks.forEach( deltaTrack => this.deleteTrack(deltaTrack) ); // vacio el album y actualizo la lista de tracks de unqfy
-        this.albums = this.albums.filter( deltaAlbum => !deltaAlbum === album ); // actualizo la lista de albums de unqfy
+        
+		artistOfAlbum.deleteAlbum(album);
+        album.tracks.forEach( deltaTrack =>
+			 this.deleteTrack(deltaTrack)
+		); // vacio el album y actualizo la lista de tracks de unqfy
+        this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album ); // actualizo la lista de albums de unqfy
     }
     
     deleteArtist(artist){
-        this.artists = this.artists.filter( deltaArtist => !deltaArtist === artist );
-        artist.albums.forEach( deltaAlbum => this.deleteAlbum(deltaAlbum) );
+		
+        this.artists = this.artists.filter( deltaArtist => {deltaArtist !== artist} );
+        artist.albums.forEach( deltaAlbum => {
+			this.deleteAlbum(deltaAlbum) 
+		}
+		);
     }
 
-    deletePlaylist(playlistId){}
+    deletePlaylist(playlistName){
+		this.playlists = this.playlists.filter(playlist => {playlist.name !== playlistName})
+	}
 
 	save(filename) {
         const serializedData = picklify.picklify(this);
