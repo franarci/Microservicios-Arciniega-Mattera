@@ -103,6 +103,13 @@ class CreateUser extends Command{
     }
 }
 
+class GetUser extends Command{
+    executeMethod(lsParams,unqfy){
+        const username = lsParams[0]
+        console.log(unqfy.getInstanceByAttribute(username,'user','username'))
+    }
+}
+
 class ListenTrack extends Command{
     executeMethod(lsParams, unqfy){
         let userName = lsParams[0]
@@ -167,13 +174,44 @@ class GetTracksMatchingArtist{
     }
 }
     
-    class GetThisIs extends Command {
-        executeMethod(lsParams, unqfy){
+class GetThisIs extends Command {
+    executeMethod(lsParams, unqfy){
             let artistName = lsParams[0]
             const top3 = unqfy.getTop3FromArtist(unqfy.getInstanceByAttribute(artistName, 'artist', 'name'))
             console.log("This is..", top3)
-        }
     }
+}
+
+class Delete extends Command {
+    constructor(classOfInstance) {
+        super()
+        this.classOfInstance = classOfInstance
+    }
+    
+    executeMethod(lsParams,unqfy){
+        let name = lsParams[0]
+        
+        if(this.classOfInstance === 'artist'){
+            unqfy.deleteArtist(unqfy.getInstanceByAttribute(name, 'artist', 'name'))
+        }
+        
+        if(this.classOfInstance === 'album'){
+            unqfy.deleteAlbum(unqfy.getInstanceByAttribute(name, 'album', 'name'))
+        }
+
+        if(this.classOfInstance === 'track'){
+            unqfy.deleteTrack(unqfy.getInstanceByAttribute(name, 'track', 'name'))
+        }
+
+        if(this.classOfInstance === 'playlist'){
+            unqfy.deletePlaylist(unqfy.getInstanceByAttribute(name, 'playlist', 'name'))
+        }
+
+        console.log(`The ${this.classOfInstance} ${name} was deleted`)
+    }
+}
+
+
 
 
 const commands = { // aca se van a ir mapeando los comandos
@@ -182,12 +220,18 @@ const commands = { // aca se van a ir mapeando los comandos
     addTrack: new AddTrack(),
     addPlaylist: new AddPlaylist(),
 
+    deleteArtist: new Delete('artist'),
+    deleteAlbum: new Delete('album'),
+    deleteTrack: new Delete('track'),
+    deletePlaylist: new Delete('playlist'),
+
     createUser: new CreateUser(),
     listenTrack: new ListenTrack(),
     timesListened: new TimesListened(),
     
     getArtistById: new GetArtistById(),
     getAlbumById: new GetInstanceById('album'),
+    getUser: new GetUser(),
     
     getListened: new GetListened(),
     getAlbum: new GetInstanceByNameAndArtist('album'),
