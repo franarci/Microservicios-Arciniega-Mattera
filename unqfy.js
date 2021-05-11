@@ -179,7 +179,7 @@ class UNQfy {
 	// genresToInclude: array de generos
 	// maxDuration: duración en segundos
 	// retorna: la nueva playlist creada
-	createPlaylist(name, genresToInclude, maxDuration) {
+	createPlaylist(name, user=null, maxDuration, genresToInclude){
 	/*** Crea una playlist y la agrega a unqfy. ***
 	El objeto playlist creado debe soportar (al menos):
 		* una propiedad name (string)
@@ -205,7 +205,7 @@ class UNQfy {
 				if(durationLimit - randomTrack.duration>=0){
 					playlistTracks.push(randomTrack)
 					durationLimit = durationLimit - randomTrack.duration
-					totalDuration += randomTrack.duration
+					totalDuration += parseInt(randomTrack.duration)
 				}		
 			}
 		
@@ -214,7 +214,8 @@ class UNQfy {
 								name,
 								playlistTracks,
 								genresToInclude,
-								totalDuration
+								totalDuration,
+                                user
 							)
 			this.playlists.push(playlist)
 			return playlist
@@ -333,7 +334,7 @@ class UNQfy {
         let atribute = atributeValue;
         
         if(atributeName=='id'){atribute = parseInt(atribute);}
-        if( this[`${classOfInstance}s`].some(instance => instance[atributeName] == atribute) ){
+        if( this[`${classOfInstance}s`].some(instance => instance[atributeName] === atribute) ){
 			return this[`${classOfInstance}s`].find(instance => instance[atributeName] == atribute);
 		} else{
 			throw new InstanceDoesNotExist(classOfInstance,atributeName, atribute);
@@ -390,6 +391,18 @@ tracks matching by artist
         return ret;
     }
 
+    getPlaylistsMatchingName(playlistName){
+        let ret = [];
+        this.playlists.map(pl => {
+            if(pl.name == playlistName){
+                ret.push(pl);
+            }
+        });
+        
+        if(ret.length == 0){throw new InstanceDoesNotExist('playlist', 'name', playlistName)};
+        
+        return ret;
+    }
 
 }
 
