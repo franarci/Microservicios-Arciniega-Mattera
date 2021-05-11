@@ -9,12 +9,12 @@ class InstanceAlreadyExist extends Error{
 //////////////////////////////////////////////////////////
 
 class InstanceDoesNotExist extends Error{
-    constructor(className, field, atribute){
-        super(`The ${className} with ${field} ${atribute} does not exist`)
+    constructor(className, field, value){
+        super(`The ${className} with ${field} ${value} does not exist`)
     }
 }
 
 module.exports = {
     InstanceDoesNotExist: InstanceDoesNotExist,
-    InstanceAlreadyExist: InstanceDoesNotExist
+    InstanceAlreadyExist: InstanceAlreadyExist
 }

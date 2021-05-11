@@ -4,7 +4,7 @@ const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
 const { InstanceDoesNotExist,
         InstanceAlreadyExist } = require('./src/errors');
 const { AssertionError } = require('assert');
-
+const commands = require('./src/commands');
 
 
 function createAndAddArtist(unqfy, artistName, country) {
@@ -35,6 +35,27 @@ function getListened(unqfy, user){
 function timesListened(unqfy, user, track){
   return unqfy.timesListened(user,track)
 }
+
+describe('test nustro - tests de commands', () => {
+    let unqfy = null;
+
+    beforeEach(() => {
+        unqfy = new libunqfy.UNQfy();
+    });
+    
+            
+    it('deberia devolver el track1', () => {
+                
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+
+
+        assert.isTrue(true);
+
+    });
+
+})
 
   describe('Add, remove and filter data', () => {
   let unqfy = null;
@@ -387,4 +408,5 @@ describe('Test nuestro - Belongs tests', () => {
         assert.isTrue(boolean);
     });
 
-  });
+});
+
