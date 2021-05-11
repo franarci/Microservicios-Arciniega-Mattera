@@ -43,13 +43,24 @@ describe('test nustro - tests de commands', () => {
         unqfy = new libunqfy.UNQfy();
     });
     
-            
-    it('deberia devolver el track1', () => {
+             
+    it('deberia crear una playlist', () => {
                 
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const artist = createAndAddArtist(unqfy, 'Guns Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+        const t1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+        createAndAddTrack(unqfy, album.id, 'Sweet Child  Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
 
+        const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+        const album2 = createAndAddAlbum(unqfy, artist2.id, 'Thriller', 1987);
+        const t2 = createAndAddTrack(unqfy, album2.id, 'Thriller', 200, ['pop', 'movie']);
+        const t3 = createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['pop']);
+        const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
+
+        const user = unqfy.createUser('pepe');
+        const command = commands.addPlaylist;
+
+        command.executeMethod(['playlistA', 'pepe', 123, 'rock', 'pop'], unqfy);
 
         assert.isTrue(true);
 
@@ -230,6 +241,8 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
 
         unqfy.deleteTrack(track);
+
+        
     });
 
 
@@ -347,7 +360,9 @@ describe('Playlist Creation and properties', () => {
     const t3 = createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['pop']);
     const t4 = createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
 
-    const playlist2 = unqfy.createPlaylist('my playlist', ['pop', 'rock'], 1400);
+    const user = unqfy.createUser('pepe');
+
+    const playlist2 = unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
 
     assert.equal(playlist2.name, 'my playlist');
     assert.isAtMost(playlist2.getDuration(), 1400);
