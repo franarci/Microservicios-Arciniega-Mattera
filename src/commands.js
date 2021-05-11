@@ -34,17 +34,25 @@ class GetInstanceByNameAndArtist extends Command{ //este se usara para track y a
     executeMethod(lsParams, unqfy){
         const name = lsParams[0];
         const artistName = lsParams[1];
-        
-        const ls = unqfy.getTracksMatchingName(name);
+        let lsInstances = [];
 
+        if(this.classOfInstance == 'album'){
+            lsInstances = unqfy.getAlbumsMatchingName(name);
+        }
+        if(this.classOfInstance == 'track'){
+            lsInstances = unqfy.getTracksMatchingName(name);
+        }
+        
         // busco en los matches de nombre el que machee con el artista pasado
-        console.log(ls.find(track => track.artist == artistName));
+        console.log(lsInstances.find(instance => instance.artist.name === artistName));
 
         //pero esto solo aplica para tracks, hay que hacer el metodo generico en unqfy para que pueda aplicar para ambos
     }
 }
 
-class GetInstanceByName extends Command{} //este se usara para playlist y artista porque solo pregunta nombre
+class GetInstanceByName extends Command{
+    
+} //este se usara para playlist y artista porque solo pregunta nombre
 
 class AddAlbum extends Command{
     
@@ -62,9 +70,12 @@ class AddTrack extends Command{
     executeMethod(lsParams, unqfy){
         var track = new Object();
         track.name = lsParams[0];
-        track.duration = lsParams[1];
-        track.genre = lsParams[2];
-        unqfy.addTrack(album);
+        track.albumId = lsParams[1]
+        track.duration = lsParams[2];
+        track.genre = JSON.parse(lsParams[3]);
+        
+        console.log(track.genre);
+        unqfy.addTrack(track.albumId, {name: track.name, duration: track.duration, genre: track.genre});
     }
 }
 
@@ -99,6 +110,18 @@ class TimesListened extends Command{
     }
 }
 
+class GetInstanceById extends Command{
+    constructor(classOfInstance){
+        super(),
+        this.classOfInstance = classOfInstance
+    }
+
+    executeMethod(lsParams, unqfy){
+        var id = lsParams[0];
+        console.log(unqfy.getInstanceByAttribute(id, 'album'));
+    }
+}
+
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
     getArtistById: new GetArtistById(),
@@ -108,11 +131,13 @@ const commands = { // aca se van a ir mapeando los comandos
     listenTrack: new ListenTrack(),
     getListened: new GetListened(),
     timesListened: new TimesListened(),
-    getAlbum: new GetInstanceByNameAndArtist('album', 'name'),
+    getAlbum: new GetInstanceByNameAndArtist('album'),
     getTrack: new GetInstanceByNameAndArtist('track'),
 
     getArtist: new GetInstanceByNameAndArtist('artist'),
-    getPlaylist: new GetInstanceByNameAndArtist('playlist')
+    getPlaylist: new GetInstanceByNameAndArtist('playlist'),
+
+    getAlbumById: new GetInstanceById('album')
 }
 
 
