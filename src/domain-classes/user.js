@@ -43,13 +43,13 @@ class User {
         }
     }
 
-   /* getTracks(artist){
-        Object.values(this.listened).filter(([track, n]) => this.isMatch(track.artists, artist))
+    getTracks(artist){//Devuelve la lista de tracks del artista "artist" en forma de [track, timesListened]
+      return Object.values(this.listened).filter(([track, n]) => track.artist.id === artist.id)
     }
 
-    isMatch(artists, artist)
-*/
 }
+
+
 
 module.exports = {
     User: User,

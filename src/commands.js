@@ -159,6 +159,15 @@ class AddPlaylist extends Command{
     }
 }
 
+class GetTracksMatchingArtist{
+
+    executeMethod(lsParams, unqfy){
+    let artistName = lsParams[0]
+    console.log(unqfy.getTracksMatchingArtist(artistName))
+    }
+}
+    
+
 
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
@@ -179,7 +188,10 @@ const commands = { // aca se van a ir mapeando los comandos
     getArtist: new GetArtistByName(),
     getPlaylist: new GetPlaylistByName(),
 
-    getMatchingParcial: new GetMatchingParcial('stringParcial')
+    getMatchingParcial: new GetMatchingParcial('stringParcial'),
+    getAlbumById: new GetInstanceById('album'),
+    getMatchingParcial: new GetMatchingParcial('stringParcial'),
+    getTracksMatchingArtist: new GetTracksMatchingArtist('artist')
 }
 
 

@@ -18,6 +18,7 @@ const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
 const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
 const { isRegExp } = require('util');
+
 /*
 por el error 
 node:internal/modules/cjs/loader:927
@@ -273,6 +274,48 @@ class UNQfy {
 		 return this.getUser(userToSearch).timesListened(track)
 	}
 
+
+	getTop3FromArtist(artist){
+		const allTracks = this.getListenedArtistTracks(artist)
+		const ret = allTracks.sort(function(a,b){
+			return b[1]-a[1]
+		}).slice(0,3).map(([track,n]) => track)
+		console.log("This is..", ret)
+		return ret
+	}
+
+
+	getListenedArtistTracks(artist){//[[Track, Int]]
+		//Devuelve la lista de cada track del artista "artist" con su respectiva cantidad de reproducciones
+		let tracks = []
+		this.users.forEach( user => 
+			this.pushUserTracks(tracks,user.getTracks(artist))
+		)
+		return tracks
+	}
+
+	pushUserTracks(tracks, tracksToAdd){
+		const mappedId = tracks.map(([track,n]) => track.id) 
+		tracksToAdd.forEach( trackToAdd =>{
+			
+			if(mappedId.includes(trackToAdd[0].id)){
+				this.increaseNTimesListened(tracks,trackToAdd)
+			} else {
+				tracks.push(trackToAdd)
+			}
+		} )
+	}
+
+	increaseNTimesListened(tracks, trackToAdd){
+		for (var i in tracks){
+			if(tracks[i][0].id === trackToAdd[0].id){
+				tracks[i][1] = tracks[i][1]+trackToAdd[1]
+				break 
+			}
+		}
+	}
+
+
     deleteTrack(track){
         const albumOfTrack = track.album;
         
@@ -405,7 +448,6 @@ tracks matching by artist
     }
 
 }
-
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
