@@ -59,27 +59,29 @@ function main() {
 	consoleMethod = process.argv[2] //el metodo que se ingresa en consola
 	consoleArgs = process.argv.slice(3) //los argumentos del metodo ArrLs
 	
-    console.log('   ********************');
-    console.log('       ENTRADA         ');
-    console.log('   ********************');
-	console.log('los parametros totales son: ', process.argv);
-	console.log('el metodo es: ', consoleMethod);
-	console.log('los argumentos a procesar son: ', consoleArgs);
+    //console.log('   ********************');
+    //console.log('       ENTRADA         ');
+    //console.log('   ********************');
+	//console.log('los parametros totales son: ', process.argv);
+	//console.log('el metodo es: ', consoleMethod);
+	//console.log('los argumentos a procesar son: ', consoleArgs);
 
 	//transformando argumentos
 	command = commands[consoleMethod];
 	
-	console.log('Comando creado: ', command);
-
-    console.log('   *****************************')
-    console.log('           SALIDA');
-    console.log('   *****************************')
+	//console.log('Comando creado: ', command);
+//
+    //console.log('   *****************************')
+    //console.log('           SALIDA');
+    //console.log('   *****************************')
     
 	//ejecuto el metodo
 	command.executeMethod(consoleArgs, unqfy);
 	
 	saveUNQfy(unqfy);
-	//console.log( getUNQfy());
+	console.log( getUNQfy());
+	console.log( '////////////////////////////////////////////////////////////////////////////////////');
+	console.log( '////////////////////////////////////////////////////////////////////////////////////');
 
 }
 
