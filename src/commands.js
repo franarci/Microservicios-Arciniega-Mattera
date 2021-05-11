@@ -122,6 +122,16 @@ class GetInstanceById extends Command{
     }
 }
 
+    class GetMatchingParcial{
+
+        executeMethod(lsParams, unqfy){
+            let stringParcial = lsParams[0]
+            console.log(unqfy.getMatchingParcial(stringParcial))
+        }
+        
+    }  
+
+
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
     getArtistById: new GetArtistById(),
@@ -137,7 +147,8 @@ const commands = { // aca se van a ir mapeando los comandos
     getArtist: new GetInstanceByNameAndArtist('artist'),
     getPlaylist: new GetInstanceByNameAndArtist('playlist'),
 
-    getAlbumById: new GetInstanceById('album')
+    getAlbumById: new GetInstanceById('album'),
+    getMatchingParcial: new GetMatchingParcial('stringParcial')
 }
 
 
