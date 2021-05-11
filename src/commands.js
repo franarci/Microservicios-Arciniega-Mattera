@@ -147,6 +147,13 @@ class GetInstanceById extends Command{
         }
     }
     
+    class GetThisIs extends Command {
+        executeMethod(lsParams, unqfy){
+            let artistName = lsParams[0]
+            const top3 = unqfy.getTop3FromArtist(unqfy.getInstanceByAttribute(artistName, 'artist', 'name'))
+            console.log("This is..", top3)
+        }
+    }
 
 
 const commands = { // aca se van a ir mapeando los comandos
@@ -166,7 +173,9 @@ const commands = { // aca se van a ir mapeando los comandos
 
     getAlbumById: new GetInstanceById('album'),
     getMatchingParcial: new GetMatchingParcial('stringParcial'),
-    getTracksMatchingArtist: new GetTracksMatchingArtist('artist')
+    getTracksMatchingArtist: new GetTracksMatchingArtist('artist'),
+
+    getThisIs: new GetThisIs()
 }
 
 
