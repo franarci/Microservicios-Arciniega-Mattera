@@ -114,14 +114,20 @@ class ListenTrack extends Command{
     executeMethod(lsParams, unqfy){
         let userName = lsParams[0]
         let trackName = lsParams[1]
-        unqfy.listenTrack(userName, trackName)
+        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
+        const track = unqfy.getInstanceByAttribute(trackName, 'track', 'name')
+        unqfy.listenTrack(user,track)
+        console.log("User ", userName, "listened ", trackName)
     }
+    
 }
 
 class GetListened extends Command{
     executeMethod(lsParams, unqfy){
         let userName = lsParams[0]
-        unqfy.getListened(userName)
+        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
+        unqfy.getListened(user)
+        console.log("Listened: ", unqfy.getListened(user))
     }
 }
 
@@ -129,7 +135,10 @@ class TimesListened extends Command{
     executeMethod(lsParams, unqfy){
         let userName = lsParams[0]
         let trackName = lsParams[1]
-        unqfy.getListened(userName, trackName)
+        let user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
+        let track = unqfy.getInstanceByAttribute(trackName, 'track', 'name')
+        unqfy.timesListened(user,track)
+        console.log(userName, " listened ", unqfy.timesListened(user,track)," times ", trackName  )
     }
 }
 
