@@ -329,13 +329,12 @@ class UNQfy {
 		return ret;
 	}
 //                         2            Track            
-    getInstanceByAttribute(atributeP, classOfInstance, atributeName='id') {
-        let atribute = atributeP;
-        if(atributeName='id'){atribute = parseInt(atribute);}
-        const listOfInstances = `${classOfInstance}s`;
-
-        if( this[listOfInstances].some(instance => instance[atributeName] == atribute) ){
-			return this[listOfInstances].find(instance => instance[atributeName] == atribute);
+    getInstanceByAttribute(atributeValue, classOfInstance, atributeName='id') {
+        let atribute = atributeValue;
+        
+        if(atributeName=='id'){atribute = parseInt(atribute);}
+        if( this[`${classOfInstance}s`].some(instance => instance[atributeName] == atribute) ){
+			return this[`${classOfInstance}s`].find(instance => instance[atributeName] == atribute);
 		} else{
 			throw new InstanceDoesNotExist(classOfInstance,atributeName, atribute);
 		}
