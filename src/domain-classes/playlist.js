@@ -6,11 +6,13 @@ class Playlist extends TrackList {
             name=null,
             tracks=null,
             genres=null, 
-            duration=null
+            duration=null,
+            user=null
         ){
     
         super(id, name, tracks, genres),
-        this.duration = duration;
+        this.duration = duration,
+        this.user = user
     }
 
     getDuration(){ return this.duration; }
