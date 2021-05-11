@@ -18,6 +18,7 @@ const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
 const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
 const { isRegExp } = require('util');
+
 /*
 por el error 
 node:internal/modules/cjs/loader:927
@@ -270,6 +271,47 @@ class UNQfy {
 		 return this.getUser(userToSearch).timesListened(track)
 	}
 
+
+	getTop3FromArtist(artist){
+		const allTracks = this.getListenedArtistTracks(artist)
+		const sorted = allTracks.sort(function(a,b){
+			return b[1]-a[1]
+		})
+		console.log("This is..", sorted.slice(0,3))
+	}
+
+
+	getListenedArtistTracks(artist){//[[Track, Int]]
+		//Devuelve la lista de cada track del artista "artist" con su respectiva cantidad de reproducciones
+		let tracks = []
+		this.users.forEach( user => 
+			this.pushUserTracks(tracks,user.getTracks(artist))
+		)
+		return tracks
+	}
+
+	pushUserTracks(tracks, tracksToAdd){
+		const mappedId = tracks.map(([track,n]) => track.id) 
+		tracksToAdd.forEach( trackToAdd =>{
+			
+			if(mappedId.includes(trackToAdd[0].id)){
+				this.increaseNTimesListened(tracks,trackToAdd)
+			} else {
+				tracks.push(trackToAdd)
+			}
+		} )
+	}
+
+	increaseNTimesListened(tracks, trackToAdd){
+		for (var i in tracks){
+			if(tracks[i][0].id === trackToAdd[0].id){
+				tracks[i][1] = tracks[i][1]+trackToAdd[1]
+				break 
+			}
+		}
+	}
+
+
     deleteTrack(track){
         const albumOfTrack = track.album;
         
@@ -366,7 +408,37 @@ class UNQfy {
     getAlbumsMatchingArtist(artistName){}
 
 }
+const artist1 = new Artist(0)
 
+const track1 = new Track(1,"uno",3,"uno",[], artist1)
+const track2 = new Track(2,"dos",3,"dos",[], artist1)
+const track3 = new Track(3,"tres", 3,"tres",[],artist1)
+const track4 = new Track(4,"cuatro",3,"cuatro",[], artist1)
+
+const user2 = new User(1,"usuario2")
+user2.listenTrack(track3)
+user2.listenTrack(track2)
+user2.listenTrack(track1)
+user2.listenTrack(track4)
+user2.listenTrack(track4)
+user2.listenTrack(track2)
+user2.listenTrack(track3)
+user2.listenTrack(track3)
+
+const user1 = new User(0,"usuario1")
+user1.listenTrack(track1)
+user1.listenTrack(track2)
+user1.listenTrack(track4)
+user1.listenTrack(track2)
+user2.listenTrack(track3)
+user2.listenTrack(track3)
+
+
+const unqfy = new UNQfy()
+unqfy.users.push(user1)
+unqfy.users.push(user2)
+
+const cancionesA1 = unqfy.getTop3FromArtist(artist1)
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
