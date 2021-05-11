@@ -276,10 +276,11 @@ class UNQfy {
 
 	getTop3FromArtist(artist){
 		const allTracks = this.getListenedArtistTracks(artist)
-		const sorted = allTracks.sort(function(a,b){
+		const ret = allTracks.sort(function(a,b){
 			return b[1]-a[1]
-		})
-		console.log("This is..", sorted.slice(0,3))
+		}).slice(0,3).map(([track,n]) => track)
+		console.log("This is..", ret)
+		return ret
 	}
 
 
@@ -434,37 +435,6 @@ tracks matching by artist
 
 
 }
-const artist1 = new Artist(0)
-
-const track1 = new Track(1,"uno",3,"uno",[], artist1)
-const track2 = new Track(2,"dos",3,"dos",[], artist1)
-const track3 = new Track(3,"tres", 3,"tres",[],artist1)
-const track4 = new Track(4,"cuatro",3,"cuatro",[], artist1)
-
-const user2 = new User(1,"usuario2")
-user2.listenTrack(track3)
-user2.listenTrack(track2)
-user2.listenTrack(track1)
-user2.listenTrack(track4)
-user2.listenTrack(track4)
-user2.listenTrack(track2)
-user2.listenTrack(track3)
-user2.listenTrack(track3)
-
-const user1 = new User(0,"usuario1")
-user1.listenTrack(track1)
-user1.listenTrack(track2)
-user1.listenTrack(track4)
-user1.listenTrack(track2)
-user2.listenTrack(track3)
-user2.listenTrack(track3)
-
-
-const unqfy = new UNQfy()
-unqfy.users.push(user1)
-unqfy.users.push(user2)
-
-const cancionesA1 = unqfy.getTop3FromArtist(artist1)
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente

@@ -4,7 +4,7 @@ const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
 const { InstanceDoesNotExist,
         InstanceAlreadyExist } = require('./src/errors');
 const { AssertionError } = require('assert');
-const commands = require('./src/commands');
+
 
 
 function createAndAddArtist(unqfy, artistName, country) {
@@ -36,26 +36,9 @@ function timesListened(unqfy, user, track){
   return unqfy.timesListened(user,track)
 }
 
-describe('test nustro - tests de commands', () => {
-    let unqfy = null;
-
-    beforeEach(() => {
-        unqfy = new libunqfy.UNQfy();
-    });
-    
-            
-    it('deberia devolver el track1', () => {
-                
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-
-
-        assert.isTrue(true);
-
-    });
-
-})
+function getTop3FromArtist(unqfy, artist){
+  return unqfy.getTop3FromArtist(artist)
+}
 
   describe('Add, remove and filter data', () => {
   let unqfy = null;
@@ -98,6 +81,7 @@ describe('test nustro - tests de commands', () => {
 
 
 /*
+it('test nuestro - when delete a track should delete a track from the playlists', () => {   });
 it('test nuestro - when delete an artist should delete all his tracks from the playlists', () => {  });
 it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
     crear el artista
@@ -109,7 +93,6 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
     chequear que cada item en unqfy.playlists cumple la condidicion de que no contiene alguno o todos los tracks del album
 });
 */
-
     it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
@@ -224,13 +207,6 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
         assert.isFalse(album.tracks.includes(track));
     });
 
-    it('test nuestro - when delete a track should delete it from the playlists', () => { 
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-
-        unqfy.deleteTrack(track);
-    });
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -314,16 +290,12 @@ it('test nuestro - when delete an album should delete all the tracks stored in p
     const t4 =createAndAddTrack(unqfy, album2.id, 'Give to me', 500, ['classic']);
     
 
-    const matchingParcial = unqfy.getMatchingParcial('e');
+    const matchingParcial = unqfy.getMatchingParcial('Gun');
     
     assert.isArray(matchingParcial);
-    assert.lengthOf(matchingParcial, 6);
+    assert.lengthOf(matchingParcial, 2);
     assert.isTrue(matchingParcial.includes(artist));
-    assert.isTrue(matchingParcial.includes(artist2));
-    assert.isTrue(matchingParcial.includes(t1));
-    assert.isTrue(matchingParcial.includes(t4));
-    assert.isTrue(matchingParcial.includes(album));
-    assert.isTrue(matchingParcial.includes(album2));
+    assert.isTrue(matchingParcial.includes(artist2))
   
   });
 });
@@ -412,5 +384,46 @@ describe('Test nuestro - Belongs tests', () => {
         assert.isTrue(boolean);
     });
 
-});
+  });
 
+describe('Test nuestro - This is..', () => {
+    let unqfy = null;
+
+    beforeEach(() => {
+        unqfy = new libunqfy.UNQfy();
+    });
+    
+            
+    it('it should tell the artist top listened songs', () => {
+      const user1 = createAndAddUser(unqfy, "user1")
+      const user2 = createAndAddUser(unqfy,"user2")
+      
+      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock'])
+      const track2 = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+      const track3 = createAndAddTrack(unqfy, album.id, 'Dont You Cry', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+      const track4 = createAndAddTrack(unqfy, album.id, 'Do Cry', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+      user2.listenTrack(track3)
+      user2.listenTrack(track2)
+      user2.listenTrack(track1)
+      user2.listenTrack(track3)   
+      user2.listenTrack(track3)
+      user2.listenTrack(track2)
+      
+      user1.listenTrack(track1)
+      user1.listenTrack(track2)
+      user1.listenTrack(track4)
+      user1.listenTrack(track2)
+      user2.listenTrack(track3)
+      user2.listenTrack(track3)
+                      
+      const top3 = getTop3FromArtist(unqfy, artist)
+
+      assert.equal(top3[0].name.localeCompare('Dont You Cry'), 0);
+      assert.equal(top3[1].name.localeCompare('Sweet Child o\' Mine'), 0);
+      assert.equal(top3[2].name.localeCompare('Welcome to the jungle'), 0);
+    });
+
+})
