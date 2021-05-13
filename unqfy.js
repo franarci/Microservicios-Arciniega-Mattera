@@ -378,11 +378,8 @@ class UNQfy {
 		this.playlists.forEach(playlist => {
 			
 			if(playlist.user.username=== user.username){
-
-				playlist.user = []
-				
-			}
-			
+				playlist.user = []				
+			}			
 		})
 	}
 

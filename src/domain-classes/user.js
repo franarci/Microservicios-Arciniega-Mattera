@@ -13,17 +13,17 @@ class User {
     listenTrack(track){
         //listened tracks es un map donde la clave es el nombre de un track y el valor es un par [Track, vecesEscuchada<Int>]
         if(!this.hasListened(track)){
-            this.listened[track.name] = [track, 1];
+            this.listened.set(track,1)
         } else {
-            let sameTrack = this.listened[track.name][0]
-            this.listened[track.name] = [sameTrack, this.timesListened(track)+parseInt(1)];
+            const tListened = this.timesListened(track)
+            this.listened.set(track, tListened+1)
         }
     }
     
     hasListened(track){
-        let tracks = Object.keys(this.listened)
+        let tracks = Array.from(this.listened.keys())
         return tracks.some(t => 
-                        this.sameTrackName(t, track.name)
+                        this.sameTrackName(t.name, track.name)
                         )
     }
 
@@ -32,24 +32,31 @@ class User {
     }
 
     getListened(){  
-        return Object.values(this.listened).map(([track,n]) => track)
+        return this.listened.keys()
     }
 
     timesListened(track){
         if(this.hasListened(track)){
-            return this.listened[track.name][1] 
+            return this.listened.get(track)
         } else {
             return 0
         }
     }
 
-    getTracks(artist){//Devuelve la lista de tracks del artista "artist" en forma de [track, timesListened]
-      return Object.values(this.listened).filter(([track, n]) => track.artist.id === artist.id)
+    getTracks(artist){//Devuelve la lista de tracks del artista "artist" con sus respectivas timesListened 
+    return Array.from(this.listened).filter(([track, n]) => track.artist.id === artist.id)
     }
 
 }
+const track1 = new Track(1, "uno", 2, "1",["rock"], "artist1") 
+const track2 = new Track(2, "dos", 2, "1", ["pop"], "artist2") 
+const user1 = new User(0,"user1")
 
+user1.listenTrack(track1)
+user1.listenTrack(track2)
+user1.listenTrack(track1)
 
+user1.getTracks("artist2")
 
 module.exports = {
     User: User,
