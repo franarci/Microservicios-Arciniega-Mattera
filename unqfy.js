@@ -187,26 +187,26 @@ class UNQfy {
 		* un metodo duration() que retorne la duración de la playlist.
 		* un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
 	*/
-		const playlistBelongs = new PlaylistBelongs(this.playlists)
+		const playlistBelongs = new PlaylistBelongs(this.playlists);
 		if(!playlistBelongs.execute(name)){
 
-			let matchedTracks = this.getTracksMatchingGenres(genresToInclude)
-			let durationLimit = maxDuration
-			let playlistTracks = []
-			let totalDuration = 0
+			let matchedTracks = this.getTracksMatchingGenres(genresToInclude);
+			let durationLimit = maxDuration;
+			let playlistTracks = [];
+			let totalDuration = 0;
 
 			while(durationLimit>0 && matchedTracks.length>0){
 				let randomN = Math.floor(Math.random() * matchedTracks.length);
-				let randomTrack= matchedTracks[randomN]
+				let randomTrack= matchedTracks[randomN];
 
 				matchedTracks =	matchedTracks.filter( track => 
 					track.name !== randomTrack.name
-				)
+				);
 				
 				if(durationLimit - randomTrack.duration>=0){
-					playlistTracks.push(randomTrack)
-					durationLimit = durationLimit - randomTrack.duration
-					totalDuration += parseInt(randomTrack.duration)
+					playlistTracks.push(randomTrack);
+					durationLimit = durationLimit - randomTrack.duration;
+					totalDuration += parseInt(randomTrack.duration);
 				}		
 			}
 		
@@ -217,9 +217,9 @@ class UNQfy {
 								genresToInclude,
 								totalDuration,
                                 user
-							)
-			this.playlists.push(playlist)
-			return playlist
+							);
+			this.playlists.push(playlist);
+			return playlist;
 		 } else {
 			throw new InstanceAlreadyExist('playlist', name);
 		}
@@ -242,74 +242,74 @@ class UNQfy {
     }
 
 	getUser(userToSearch){ // se puede reemplazar por getInstanceByAttribute
-		let userName = userToSearch.username
+		let userName = userToSearch.username;
 		if(this.users.some(user => user.username == userName)){
-			return this.users.find(u => u.username ==userName)
+			return this.users.find(u => u.username ==userName);
 		} else {
-			throw new InstanceDoesNotExist('user', 'name', userName)
+			throw new InstanceDoesNotExist('user', 'name', userName);
 		}
 	}
  
 	getTrack(trackToSearch){ // se puede reemplazar por getInstanceByAttribute
-		let trackName = trackToSearch.name 
+		let trackName = trackToSearch.name ;
 		if(this.tracks.some(track => track.name == trackName)){
-			 return this.tracks.find(t => t.name == trackName)
+			 return this.tracks.find(t => t.name == trackName);
 		} else {
-			 throw new InstanceDoesNotExist('track', 'name', trackName)
+			 throw new InstanceDoesNotExist('track', 'name', trackName);
 		}
 	}
  
 	listenTrack(userToSearch, track){
-		 let user = this.getUser(userToSearch)
-		 user.listenTrack(this.getTrack(track))
-		 return user
+		 let user = this.getUser(userToSearch);
+		 user.listenTrack(this.getTrack(track));
+		 return user;
 	}
  
 	getListened(user){
-		 return this.getUser(user).getListened()
+		 return this.getUser(user).getListened();
 	}
  
 	timesListened(userToSearch, trackToSearch){
-		 let track = this.getTrack(trackToSearch)
-		 return this.getUser(userToSearch).timesListened(track)
+		 let track = this.getTrack(trackToSearch);
+		 return this.getUser(userToSearch).timesListened(track);
 	}
 
 
 	getTop3FromArtist(artist){
-		const allTracks = this.getListenedArtistTracks(artist)
+		const allTracks = this.getListenedArtistTracks(artist);
 		const ret = allTracks.sort(function(a,b){
 			return b[1]-a[1]
-		}).slice(0,3).map(([track,n]) => track)
-		return ret
+		}).slice(0,3).map(([track,n]) => track);
+		return ret;
 	}
 
 
 	getListenedArtistTracks(artist){//[[Track, Int]]
 		//Devuelve la lista de cada track del artista "artist" con su respectiva cantidad de reproducciones
-		let tracks = []
+		let tracks = [];
 		this.users.forEach( user => {
 			this.pushUserTracks(tracks,user.getTracks(artist))
-		})
-		return tracks
+		});
+		return tracks;
 	}
 
 	pushUserTracks(tracks, tracksToAdd){
-		const mappedId = tracks.map(([track,n]) => track.id) 
+		const mappedId = tracks.map(([track,n]) => track.id) ;
 		tracksToAdd.forEach( trackToAdd =>{
 			
 			if(mappedId.includes(trackToAdd[0].id)){
-				this.increaseNTimesListened(tracks,trackToAdd)
+				this.increaseNTimesListened(tracks,trackToAdd);
 			} else {
-				tracks.push(trackToAdd)
+				tracks.push(trackToAdd);
 			}
-		} )
+		} );
 	}
 
 	increaseNTimesListened(tracks, trackToAdd){
 		for (var i in tracks){
 			if(tracks[i][0].id === trackToAdd[0].id){
-				tracks[i][1] = tracks[i][1]+trackToAdd[1]
-				break 
+				tracks[i][1] = tracks[i][1]+trackToAdd[1];
+				break;
 			}
 		}
 	}
@@ -328,13 +328,13 @@ class UNQfy {
 				for(i= 0; i < playlist.tracks.length; i++){
 
 					if(playlist.tracks[i] === track){
-						playlist.tracks.splice(i,1)
+						playlist.tracks.splice(i,1);
 						
-						break
+						break;
 					}
 				}
 				
-				playlist.duration = playlist.duration - track.duration
+				playlist.duration = playlist.duration - track.duration;
 				
 			}
 			
@@ -342,8 +342,8 @@ class UNQfy {
 
 		for(var i in this.tracks) {
 			if(this.tracks[i] === track){
-				this.tracks.splice(i,1)
-				break
+				this.tracks.splice(i,1);
+				break;
 			}
 		}
 
@@ -364,23 +364,23 @@ class UNQfy {
 		
         this.artists = this.artists.filter( deltaArtist => {deltaArtist !== artist} );
         artist.albums.forEach( deltaAlbum => {
-			this.deleteAlbum(deltaAlbum) 
+			this.deleteAlbum(deltaAlbum);
 		}
 		);
     }
 
     deletePlaylist(playlistName){
-		this.playlists = this.playlists.filter(playlist => {playlist.name !== playlistName})
+		this.playlists = this.playlists.filter(playlist => {playlist.name !== playlistName});
 	}
 
 	deleteUser(user){
-		this.users = this.users.filter(deltaUser => user.username !== deltaUser.username)
+		this.users = this.users.filter(deltaUser => user.username !== deltaUser.username);
 		this.playlists.forEach(playlist => {
 			
 			if(playlist.user.username=== user.username){
-				playlist.user = []				
+				playlist.user = [];				
 			}			
-		})
+		});
 	}
 
 	save(filename) {
