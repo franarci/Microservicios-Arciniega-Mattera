@@ -516,4 +516,198 @@ describe('Test nuestro - This is..', () => {
       assert.equal(top3[2].name.localeCompare('Welcome to the jungle'), 0);
     });
 
-})
+});
+
+describe('Test nuestro - getInstancesMatchingAttribute', () => {
+    let unqfy = null;
+
+    beforeEach(() => {
+        unqfy = new libunqfy.UNQfy();
+    });
+    
+            
+    it('deberia devolver al artista que busco por cualquiera de sus atributos directos', () => {
+        
+        const artistAdded = createAndAddArtist(unqfy, 'bob', 'jamaica');
+
+        const artistRequestedByName = 
+            unqfy.getInstancesMatchingAttribute(
+                'artist',
+                'name',
+                'bob'
+            );
+
+        const artistRequestedByCountry = 
+        unqfy.getInstancesMatchingAttribute(
+            'artist',
+            'country',
+            'jamaica'
+        );
+
+        assert.equal(artistAdded, artistRequestedByName);
+        assert.equal(artistAdded, artistRequestedByCountry);
+    });
+
+    it('deberia devolver al album que busco por alguno de sus atributos directos', () => {
+        
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const albumAdded = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+
+        const albumRequestedByName = 
+            unqfy.getInstancesMatchingAttribute(
+                'album',
+                'name',
+                'Appetite for Destruction'
+            );
+
+        const albumRequestedByYear = 
+            unqfy.getInstancesMatchingAttribute(
+                'album',
+                'year',
+                1987
+            );
+
+        assert.equal(albumAdded, albumRequestedByName);
+        assert.equal(albumAdded, albumRequestedByYear);
+    });
+
+    it('deberia devolver al track que busco por alguno de sus atributos directos', () => {
+        
+        const genres = ['rock', 'hard rock'];
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const trackAdded = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres);
+
+        const trackRequestedByName = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'name',
+                'Welcome to the jungle'
+            );
+
+        const trackRequestedByDuration = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'duration',
+                200
+            );
+        
+        const trackRequestedByGenres = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'genres',
+                genres
+            );
+
+        assert.equal(trackAdded, trackRequestedByName);
+        assert.equal(trackAdded, trackRequestedByDuration);
+        assert.equal(trackAdded, trackRequestedByGenres);
+    });
+
+    it('deberia devolver el album que busco por alguno de sus atributos in-directos', () => {
+        
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const appetite = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+
+        const albumRequestedByArtistName = 
+            unqfy.getInstancesMatchingAttribute(
+                'album',
+                'name',
+                'Guns n\' Roses',
+                true,
+                'artist'
+            );
+
+        const albumRequestedByCountryOfArtist = 
+            unqfy.getInstancesMatchingAttribute(
+                'album',
+                'country',
+                'USA',
+                true,
+                'artist'
+            );
+
+        assert.equal(albumRequestedByArtistName, appetite);
+        assert.equal(albumRequestedByCountryOfArtist, appetite);
+    });
+
+    it('deberia devolver los albumes que busco por alguno de sus atributos in-directos', () => {
+        
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const appetite = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const use = createAndAddAlbum(unqfy, artist.id, 'Use your illution', 1900);
+
+        const albumsRequestedByArtistName = 
+            unqfy.getInstancesMatchingAttribute(
+                'album',
+                'name',
+                'Guns n\' Roses',
+                true,
+                'artist'
+            );
+
+        const albumsRequestedByCountryOfArtist = 
+            unqfy.getInstancesMatchingAttribute(
+                'album',
+                'country',
+                'USA',
+                true,
+                'artist'
+            );
+
+        assert.isTrue(albumsRequestedByArtistName.some(album => album === appetite));
+        assert.isTrue(albumsRequestedByArtistName.some(album => album === use));
+        assert.isTrue(albumsRequestedByCountryOfArtist.some(album => album === appetite));
+        assert.isTrue(albumsRequestedByCountryOfArtist.some(album => album === use));
+    });
+
+    it('deberia devolver al track que busco por alguno de sus atributos in-directos', () => {
+        
+        const genres = ['rock', 'hard rock'];
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const trackAdded = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres);
+
+        const trackRequestedBy_artist_name = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'name',
+                'Guns n\' Roses',
+                true,
+                'artist'
+            );
+
+        const trackRequestedBy_artist_country = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'country',
+                'USA',
+                true,
+                'artist'
+            );
+
+        const trackRequestedBy_album_name = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'name',
+                'Appetite for Destruction',
+                true,
+                'album'
+            );
+
+        const trackRequestedBy_album_year = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'year',
+                1987,
+                true,
+                'album'
+            );
+
+        assert.equal( trackRequestedBy_artist_name   , trackAdded );
+        assert.equal( trackRequestedBy_artist_country, trackAdded );
+        assert.equal( trackRequestedBy_album_name    , trackAdded );
+        assert.equal( trackRequestedBy_album_year    , trackAdded );
+    });
+    
+});

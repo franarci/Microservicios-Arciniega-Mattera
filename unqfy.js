@@ -426,31 +426,30 @@ devuelve
     - por defecto lo que le pasemos lo va a buscar directamente en classOfReturnedInstances*/
     getInstancesMatchingAttribute(
         classOfReturnedInstances, 
-        searchInKnownClass=false, 
-        knownClass=null, 
         attributeName, //si busca en una clase que conoce este va a ser el atributo de la clase que conoce
-        attributeValue //lo mismo que el nombre de atributo
+        attributeValue, //lo mismo que el nombre de atributo
+        searchInKnownClass=false, 
+        knownClass=null 
     ){ 
         let ret = [];
         const unqfyList = this[`${classOfReturnedInstances}s`];
 
-        if( searchInKownClass ){
+        if( searchInKnownClass ){
             const attributeNameOfKnownClass = attributeName;
             const attributeValueOfKnownClass = attributeValue;
 
             if( unqfyList.some(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass) ){
-                ret = unqfyList.filter(instance => instance[knownClass][attributeNameOfKnownClass] !== attributeValueOfKnownClass);
+                ret = unqfyList.filter(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass);
             } else{
                 throw new InstanceDoesNotExist(classOfReturnedInstances, knownClass, attributeValueOfKnownClass);
             }
-            return ret;
-
         } else if( unqfyList.some(instance => instance[attributeName] == attributeValue )){
-            ret = unqfyList.filter( instance => instance[attributeName] !== attributeValue);
-            return ret;
+            ret = unqfyList.filter( instance => instance[attributeName] == attributeValue);
         } else{
             throw new InstanceDoesNotExist(classOfReturnedInstances, attributeName, attributeValue);
         }
+
+        return ret.length==1 ? ret = ret[0] : ret;
     } 
 
     getTracksMatchingName(trackName) {
