@@ -474,7 +474,7 @@ describe('Test nuestro - Belongs tests', () => {
         assert.isTrue(boolean);
     });
 
-  });
+});
 
 describe('Test nuestro - This is..', () => {
     let unqfy = null;
