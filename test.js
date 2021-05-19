@@ -36,21 +36,11 @@ function timesListened(unqfy, user, track){
   return unqfy.timesListened(user,track)
 }
 
-describe('test nustro - tests de commands', () => {
-    let unqfy = null;
-
-    beforeEach(() => {
-        unqfy = new libunqfy.UNQfy();
-    });
-    
-            
-
-})
 function getTop3FromArtist(unqfy, artist){
   return unqfy.getTop3FromArtist(artist)
 }
 
-  describe('Add, remove and filter data', () => {
+describe('Add, remove and filter data', () => {
   let unqfy = null;
 
   beforeEach(() => {
@@ -122,12 +112,7 @@ function getTop3FromArtist(unqfy, artist){
     
     assert.isFalse(track1Belongs)
     assert.isFalse(track2Belongs)
-
-
-      
   });
-
-
 
   it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
@@ -453,29 +438,6 @@ describe('Test nuestro - User Creation and properties', () => {
     });
 })
 
-describe('Test nuestro - Belongs tests', () => {
-    let unqfy = null;
-
-    beforeEach(() => {
-        unqfy = new libunqfy.UNQfy();
-    });
-    
-            
-    it('it should tell if the artist is in the UNQfy', () => {
-                
-        const artist = createAndAddArtist(unqfy, 'bob', 'jamaica');
-        const artistBelongs = new ArtistBelongs(unqfy.artists);
-
-        const boolean = artistBelongs.execute({
-                            name: artist.name,
-                            country: artist.country
-                        });
-
-        assert.isTrue(boolean);
-    });
-
-});
-
 describe('Test nuestro - This is..', () => {
     let unqfy = null;
 
@@ -764,5 +726,123 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         assert.isTrue( trackRequestedBy_album_name.some(track => track === nightrain) );
         assert.isTrue( trackRequestedBy_album_year.some(track => track === nightrain) );
     });
+
+    it('deberia arrojar el error esperado cuando se le pide un artisa con un atributo directo que no existe', () => {
+        
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+
+        try{
+            const artistRequestedBy_name = 
+                unqfy.getInstancesMatchingAttribute(
+                    'artist',
+                    'name',
+                    'pepe'
+                );
+            } catch(e){
+                if( e instanceof AssertionError ){ throw e; }
+                assert.equal(e.message, `The artist with name pepe does not exist`);
+        }
+
+        try{
+            const artistRequestedBy_country = 
+            unqfy.getInstancesMatchingAttribute(
+                'artist',
+                'country',
+                'argentina'
+            );
+            } catch(e){
+                if( e instanceof AssertionError ){ throw e; }
+                assert.equal(e.message, `The artist with country argentina does not exist`);
+        }
+
+    });
+
+    it('deberia arrojar el error esperado cuando se le pide un album con un atributo directo que no existe', () => {
+        
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+
+        try{
+            const albumRequestedByName = 
+                unqfy.getInstancesMatchingAttribute(
+                    'album',
+                    'name',
+                    'cumbia 420'
+            );
+        } catch(e){
+            if( e instanceof AssertionError ){ throw e; }
+            assert.equal(e.message, 'The album with name cumbia 420 does not exist');
+        }
+        
+        try{
+            const albumRequestedByYear = 
+                unqfy.getInstancesMatchingAttribute(
+                    'album',
+                    'year',
+                    2015
+            );
+            } catch(e){
+                if( e instanceof AssertionError ){ throw e; }
+                assert.equal(e.message, 'The album with year 2015 does not exist');
+        }
+    });
+
+    it('deberia arrojar el error esperado cuando se le pide un track con un atributo directo que no existe', () => {
+        
+        const genres = ['rock', 'hard rock'];
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const welcome = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres); 
+
+        try{
+            const trackRequestedByName = 
+                unqfy.getInstancesMatchingAttribute(
+                'track',
+                'name',
+                'bzr music session'
+            );
+            } catch(e){
+                if( e instanceof AssertionError ){ throw e; }
+                assert.equal(e.message, 'The track with name bzr music session does not exist');
+        }
+
+        try{
+            const trackRequestedByDuration = 
+                unqfy.getInstancesMatchingAttribute(
+                'track',
+                'duration',
+                900
+            );
+            } catch(e){
+                if( e instanceof AssertionError ){ throw e; }
+                assert.equal(e.message, 'The track with duration 900 does not exist');
+        }
+
+        try{
+            const trackRequestedByGenres = 
+                unqfy.getInstancesMatchingAttribute(
+                'track',
+                'genres',
+                genres
+            );
+            } catch(e){
+                if( e instanceof AssertionError ){ throw e; }
+                assert.equal(e.message, `The track with genres ${genres} does not exist`);
+        }   
+    });
+  
+  
+    // error de que no existe el artista -OK
+    // error de que no existe el album -OK
+    // error de que no existe el track -OK
+
+    // error de que no existe el album con un atributo indirecto
+    // error de que no existe el track con un atributo indirecto
+
+    // error de que se pasa mal classOfReturnedInstances
+    // error de que se pasa mal attributeName, 
+    // error de que se pasa mal attributeValue
+    // error de que se pasa mal searchInKnownClass
+    // error de que se pasa mal knownClass
 
 });
