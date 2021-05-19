@@ -729,27 +729,23 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
 
     it('deberia arrojar el error esperado cuando se le pide un artisa con un atributo directo que no existe', () => {
         
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-
         try{
-            const artistRequestedBy_name = 
-                unqfy.getInstancesMatchingAttribute(
-                    'artist',
-                    'name',
-                    'pepe'
-                );
+            unqfy.getInstancesMatchingAttribute(
+                'artist',
+                'name',
+                'pepe'
+            );
             } catch(e){
                 if( e instanceof AssertionError ){ throw e; }
                 assert.equal(e.message, `The artist with name pepe does not exist`);
         }
 
         try{
-            const artistRequestedBy_country = 
-            unqfy.getInstancesMatchingAttribute(
-                'artist',
-                'country',
-                'argentina'
-            );
+        unqfy.getInstancesMatchingAttribute(
+            'artist',
+            'country',
+            'argentina'
+        );
             } catch(e){
                 if( e instanceof AssertionError ){ throw e; }
                 assert.equal(e.message, `The artist with country argentina does not exist`);
@@ -759,9 +755,6 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
 
     it('deberia arrojar el error esperado cuando se le pide un album con un atributo directo que no existe', () => {
         
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-
         try{
             unqfy.getInstancesMatchingAttribute(
                 'album',
@@ -788,9 +781,6 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     it('deberia arrojar el error esperado cuando se le pide un track con un atributo directo que no existe', () => {
         
         const genres = ['rock', 'hard rock'];
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres); 
 
         try{
             unqfy.getInstancesMatchingAttribute(
@@ -827,9 +817,6 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     });
   
     it('deberia arrojar el error esperado cuando se le pide un album con un atributo in-directo que no existe', () => {
-        
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
         try{
             unqfy.getInstancesMatchingAttribute(
@@ -842,7 +829,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
 
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
-            assert.equal(e.message, 'The album with artist with name L-gante does not exist');
+            assert.equal(e.message, 'The album with artist name L-gante does not exist');
         }
         
         try{
@@ -855,17 +842,12 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
         } catch(e){
                 if( e instanceof AssertionError ){ throw e; }
-                assert.equal(e.message, 'The album with artist with country argentina does not exist');
+                assert.equal(e.message, 'The album with artist country argentina does not exist');
         }
     });
 
     it('deberia arrojar el error esperado cuando se le pide un track con un atributo in-directo que no existe', () => {
         
-        const genres = ['rock', 'hard rock'];
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres);
-
         try{
             unqfy.getInstancesMatchingAttribute(
                 'track',
@@ -876,7 +858,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
-            assert.equal(e.message, 'The track with artist with name pepe does not exist');
+            assert.equal(e.message, 'The track with artist name pepe does not exist');
         }
         
         try{
@@ -889,7 +871,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             ); 
         } catch(e){
                 if( e instanceof AssertionError ){ throw e; }
-                assert.equal(e.message, 'The track with artist with country peru does not exist');
+                assert.equal(e.message, 'The track with artist country peru does not exist');
         }
 
         try{
@@ -902,7 +884,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             ); 
         } catch(e){
             if( e instanceof AssertionError ){ throw e; }
-            assert.equal(e.message, 'The track with album with name procesalo todo does not exist');
+            assert.equal(e.message, 'The track with album name procesalo todo does not exist');
         }
         
         try{
@@ -915,12 +897,98 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             ); 
         } catch(e){
                 if( e instanceof AssertionError ){ throw e; }
-                assert.equal(e.message, 'The track with album with year 1800 does not exist');
+                assert.equal(e.message, 'The track with album year 1800 does not exist');
         }
 
     });
   
-    
+    it('deberia arrojar error de tipeo al ingresar mal la clase de la/s instancia/s a devolver', () => {
+        
+        try{
+            unqfy.getInstancesMatchingAttribute(
+                'artistt',
+                'name',
+                'bob'
+            );
+        } catch(e){
+            if( e instanceof AssertionError ){ throw e; }
+            assert.equal(e.message, 'the class artistt doesnt exists, did you write the word well?');
+        }
+    });
+
+    it('deberia arrojar error de tipeo al ingresar mal la clase conocida', () => {
+        
+        try{
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'name',
+                'bob',
+                true,
+                'artistt'
+            );
+        } catch(e){
+            if( e instanceof AssertionError ){ throw e; }
+            assert.equal(e.message, 'The track with artistt name bob does not exist');
+        }
+    });
+
+    it('deberia devolver al artista que busco por alguno de sus atributos in-directos', () => {
+        
+        const genres = ['rock', 'hard rock'];
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres);
+
+        const artistRequestedBy_album_title = 
+            unqfy.getInstancesMatchingAttribute(
+                'artist',
+                'name',
+                'Appetite for Destruction',
+                true,
+                'albums'
+            );
+
+        const artistRequestedBy_album_year = 
+            unqfy.getInstancesMatchingAttribute(
+                'artist',
+                'year',
+                1987,
+                true,
+                'albums'
+            );
+        
+        const artistRequestedBy_track_name = 
+            unqfy.getInstancesMatchingAttribute(
+                'artist',
+                'name',
+                'Welcome to the jungle',
+                true,
+                'tracks'
+            );
+
+        const artistRequestedBy_track_duration = 
+            unqfy.getInstancesMatchingAttribute(
+                'artist',
+                'duration',
+                200,
+                true,
+                'tracks'
+            );
+
+        /* const artistRequestedBy_track_genres = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'genres',
+                genres
+            );  */
+        
+        assert.equal(artist, artistRequestedBy_album_title);
+        assert.equal(artist, artistRequestedBy_album_year);
+        assert.equal(artist, artistRequestedBy_track_name);
+        assert.equal(artist, artistRequestedBy_track_duration); 
+    });
+
+
     // error de que no existe el artista -OK
     // error de que no existe el album -OK
     // error de que no existe el track -OK
@@ -928,10 +996,13 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     // error de que no existe el album con un atributo indirecto -OK
     // error de que no existe el track con un atributo indirecto -OK
 
-    // error de que se pasa mal classOfReturnedInstances
-    // error de que se pasa mal attributeName, 
-    // error de que se pasa mal attributeValue
-    // error de que se pasa mal searchInKnownClass
-    // error de que se pasa mal knownClass
+    // error de tipeo en atributo directo -OK handlea el DoesNotExists
+    // error de tipeo en clase que devuelve -OK
+    // error de tipeo en clase a la que tiene que ir a buscar -OK
+
+    // buscar artista por atributo indirecto
+    // buscar artistas por atributo indirecto
+
+    // playlists??
 
 });
