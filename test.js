@@ -831,6 +831,40 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }   
     });
   
+    it('deberia arrojar el error esperado cuando se le pide un album con un atributo in-directo que no existe', () => {
+        
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+
+        try{
+            const albumRequestedBy_ArtistName = 
+                unqfy.getInstancesMatchingAttribute(
+                    'album',
+                    'name',
+                    'L-gante',
+                    true,
+                    'artist'
+            );
+
+        } catch(e){
+            if( e instanceof AssertionError ){ throw e; }
+            assert.equal(e.message, 'The album with artist with name L-gante does not exist');
+        }
+        
+        try{
+            const albumRequestedBy_CountryOfArtist = 
+                unqfy.getInstancesMatchingAttribute(
+                    'album',
+                    'country',
+                    'argentina',
+                    true,
+                    'artist'
+            );
+        } catch(e){
+                if( e instanceof AssertionError ){ throw e; }
+                assert.equal(e.message, 'The album with artist with country argentina does not exist');
+        }
+    });
   
     // error de que no existe el artista -OK
     // error de que no existe el album -OK
