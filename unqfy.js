@@ -8,7 +8,8 @@ const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
 const { InstanceDoesNotExist,
-        InstanceAlreadyExist } = require('./src/errors');
+        InstanceAlreadyExist,
+        InstanceRequestedByIndirectAttributeDoesNotExist } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
 const albumBelongs = require('./src/belongs-classes/albumBelongs');
 const trackBelongs = require('./src/belongs-classes/trackBelongs');
@@ -441,7 +442,12 @@ devuelve
             if( unqfyList.some(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass) ){
                 ret = unqfyList.filter(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass);
             } else{
-                throw new InstanceDoesNotExist(classOfReturnedInstances, knownClass, attributeValueOfKnownClass);
+                throw new InstanceRequestedByIndirectAttributeDoesNotExist(
+                    classOfReturnedInstances, 
+                    knownClass, 
+                    attributeNameOfKnownClass, 
+                    attributeValueOfKnownClass
+                );
             }
         } else if( unqfyList.some(instance => instance[attributeName] == attributeValue )){
             ret = unqfyList.filter( instance => instance[attributeName] == attributeValue);
