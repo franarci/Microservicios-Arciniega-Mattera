@@ -21,7 +21,7 @@ class InstanceDoesNotExist extends Error{
 
 class InstanceRequestedByIndirectAttributeDoesNotExist extends Error{
     constructor(className, knownClass, attributeOfKnownClass, value){
-        super(`The ${className} with ${knownClass} with ${attributeOfKnownClass} ${value} does not exist`)
+        super(`The ${className} with ${knownClass} ${attributeOfKnownClass} ${value} does not exist`)
     }
 }
 
