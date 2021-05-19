@@ -710,4 +710,59 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         assert.equal( trackRequestedBy_album_year    , trackAdded );
     });
     
+    it('deberia devolver los tracks que busco por alguno de sus atributos in-directos', () => {
+        
+        const genres = ['rock', 'hard rock'];
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const welcome = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres);
+        const nightrain = createAndAddTrack(unqfy, album.id, 'Nightrain', 300, genres);
+
+        const trackRequestedBy_artist_name = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'name',
+                'Guns n\' Roses',
+                true,
+                'artist'
+            );
+
+        const trackRequestedBy_artist_country = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'country',
+                'USA',
+                true,
+                'artist'
+            );
+
+        const trackRequestedBy_album_name = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'name',
+                'Appetite for Destruction',
+                true,
+                'album'
+            );
+
+        const trackRequestedBy_album_year = 
+            unqfy.getInstancesMatchingAttribute(
+                'track',
+                'year',
+                1987,
+                true,
+                'album'
+            );
+
+        assert.isTrue( trackRequestedBy_artist_name.some(track => track === welcome ) );
+        assert.isTrue( trackRequestedBy_artist_country.some(track => track === welcome ) );
+        assert.isTrue( trackRequestedBy_album_name.some(track => track === welcome ) );
+        assert.isTrue( trackRequestedBy_album_year.some(track => track === welcome ) );
+
+        assert.isTrue( trackRequestedBy_artist_name.some(track => track === nightrain) );
+        assert.isTrue( trackRequestedBy_artist_country.some(track => track === nightrain) );
+        assert.isTrue( trackRequestedBy_album_name.some(track => track === nightrain) );
+        assert.isTrue( trackRequestedBy_album_year.some(track => track === nightrain) );
+    });
+
 });
