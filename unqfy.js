@@ -434,12 +434,13 @@ devuelve
     ){ 
         let ret = [];
         const unqfyList = this[`${classOfReturnedInstances}s`];
+        const unqfyNotIsUndefined = unqfyList !== undefined;
 
-        if( searchInKnownClass ){
+        if( unqfyNotIsUndefined && searchInKnownClass ){
             const attributeNameOfKnownClass = attributeName;
             const attributeValueOfKnownClass = attributeValue;
 
-            if( unqfyList.some(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass) ){
+            if(unqfyList.some(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass) ){
                 ret = unqfyList.filter(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass);
             } else{
                 throw new InstanceRequestedByIndirectAttributeDoesNotExist(
@@ -449,10 +450,14 @@ devuelve
                     attributeValueOfKnownClass
                 );
             }
-        } else if( unqfyList.some(instance => instance[attributeName] == attributeValue )){
+        } else if( unqfyNotIsUndefined && unqfyList.some(instance => instance[attributeName] == attributeValue )){ //podria usar getInstanceByAttribute?
             ret = unqfyList.filter( instance => instance[attributeName] == attributeValue);
         } else{
-            throw new InstanceDoesNotExist(classOfReturnedInstances, attributeName, attributeValue);
+            if( !unqfyNotIsUndefined ){
+                throw new Error(`the class ${classOfReturnedInstances} doesnt exists, did you write the word well?`);
+            } else{
+                throw new InstanceDoesNotExist(classOfReturnedInstances, attributeName, attributeValue);
+            }
         }
 
         return ret.length==1 ? ret = ret[0] : ret;
