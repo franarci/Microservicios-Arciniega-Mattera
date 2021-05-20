@@ -4,9 +4,9 @@ const track = require("./track");
 const { Track } = require("./track");
 
 class User {
-    constructor(id, username){
+    constructor(id, name){
         this.id = id,
-        this.username = username,
+        this.name = name,
         this.listened = new Map()
     }
 

@@ -242,7 +242,7 @@ class UNQfy {
     }
 
 	getUser(userToSearch){ // se puede reemplazar por getInstanceByAttribute
-		let userName = userToSearch.username;
+		let userName = userToSearch.name;
 		if(this.users.some(user => user.username == userName)){
 			return this.users.find(u => u.username ==userName);
 		} else {
@@ -274,7 +274,6 @@ class UNQfy {
 		 return this.getUser(userToSearch).timesListened(track);
 	}
 
-
 	getTop3FromArtist(artist){
 		const allTracks = this.getListenedArtistTracks(artist);
 		const ret = allTracks.sort(function(a,b){
@@ -282,7 +281,6 @@ class UNQfy {
 		}).slice(0,3).map(([track,n]) => track);
 		return ret;
 	}
-
 
 	getListenedArtistTracks(artist){//[[Track, Int]]
 		//Devuelve la lista de cada track del artista "artist" con su respectiva cantidad de reproducciones
@@ -361,9 +359,9 @@ class UNQfy {
 	}
 
 	deleteUser(user){
-		this.users = this.users.filter(deltaUser => user.username !== deltaUser.username);
+		this.users = this.users.filter(deltaUser => user.name !== deltaUser.name);
 		this.playlists.forEach(playlist => {
-			if(playlist.user.username=== user.username){
+			if(playlist.user.name=== user.name){
 				playlist.user = [];				
 			}			
 		});
