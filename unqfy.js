@@ -8,7 +8,8 @@ const { TrackList } = require('./src/domain-classes/tracklist');
 const { Artist } = require('./src/domain-classes/artist');
 const { User } = require('./src/domain-classes/user');
 const { InstanceDoesNotExist,
-        InstanceAlreadyExist } = require('./src/errors');
+        InstanceAlreadyExist,
+        InstanceRequestedByIndirectAttributeDoesNotExist } = require('./src/errors');
 const artist = require('./src/domain-classes/artist');
 const albumBelongs = require('./src/belongs-classes/albumBelongs');
 const trackBelongs = require('./src/belongs-classes/trackBelongs');
@@ -225,7 +226,6 @@ class UNQfy {
 		}
 	}
 
-
 	createUser(userName){
 		if(!new UserBelongs(this.users).execute(userName)){
 			let id = this.getAndIncrementId('user');
@@ -242,7 +242,7 @@ class UNQfy {
     }
 
 	getUser(userToSearch){ // se puede reemplazar por getInstanceByAttribute
-		let userName = userToSearch.username;
+		let userName = userToSearch.name;
 		if(this.users.some(user => user.username == userName)){
 			return this.users.find(u => u.username ==userName);
 		} else {
@@ -274,7 +274,6 @@ class UNQfy {
 		 return this.getUser(userToSearch).timesListened(track);
 	}
 
-
 	getTop3FromArtist(artist){
 		const allTracks = this.getListenedArtistTracks(artist);
 		const ret = allTracks.sort(function(a,b){
@@ -282,7 +281,6 @@ class UNQfy {
 		}).slice(0,3).map(([track,n]) => track);
 		return ret;
 	}
-
 
 	getListenedArtistTracks(artist){//[[Track, Int]]
 		//Devuelve la lista de cada track del artista "artist" con su respectiva cantidad de reproducciones
@@ -316,28 +314,19 @@ class UNQfy {
 
 
     deleteTrack(track){
-
         const albumOfTrack = track.album;
-        
         albumOfTrack.deleteTrack(track);
 
-		this.playlists.forEach(playlist => {
-			
+        this.playlists.forEach(playlist => {
 			if(playlist.tracks.some(t => t.id===track.id)){
-
 				for(i= 0; i < playlist.tracks.length; i++){
-
 					if(playlist.tracks[i] === track){
 						playlist.tracks.splice(i,1);
-						
 						break;
 					}
 				}
-				
 				playlist.duration = playlist.duration - track.duration;
-				
 			}
-			
 		}) 
 
 		for(var i in this.tracks) {
@@ -346,14 +335,12 @@ class UNQfy {
 				break;
 			}
 		}
-
-		
     }
 
     deleteAlbum(album){
         const artistOfAlbum = album.artist;
-        
 		artistOfAlbum.deleteAlbum(album);
+        
         album.tracks.forEach( deltaTrack =>
 			 this.deleteTrack(deltaTrack)
 		); // vacio el album y actualizo la lista de tracks de unqfy
@@ -361,12 +348,10 @@ class UNQfy {
     }
     
     deleteArtist(artist){
-		
         this.artists = this.artists.filter( deltaArtist => {deltaArtist !== artist} );
         artist.albums.forEach( deltaAlbum => {
 			this.deleteAlbum(deltaAlbum);
-		}
-		);
+		});
     }
 
     deletePlaylist(playlistName){
@@ -374,10 +359,9 @@ class UNQfy {
 	}
 
 	deleteUser(user){
-		this.users = this.users.filter(deltaUser => user.username !== deltaUser.username);
+		this.users = this.users.filter(deltaUser => user.name !== deltaUser.name);
 		this.playlists.forEach(playlist => {
-			
-			if(playlist.user.username=== user.username){
+			if(playlist.user.name=== user.name){
 				playlist.user = [];				
 			}			
 		});
@@ -428,29 +412,63 @@ class UNQfy {
 		}
     }
     /*    
-//                                  Track/Album                   artist        metallica   
-    getInstancesMatchingByAttribute(classOfReturnedInstances, attributeName, attributeValue){
+devuelve
+    - instancias del tipo classOfReturnedInstances y 
+    - si se va a buscar en una clase conocida entonces
+        - el nombre de esa clase sera knownClass, a la cual
+        - se le va a pedir el atributo attributeName
+        - con el valir attributeValue
+    - y si no se va a buscar en una clase conocida entonces
+        - se va a fijar en la clase classOfReturnedInstances
+        - los atributos que se llamen attributeName y 
+        - el valor sea attributeValue
+    - por defecto lo que le pasemos lo va a buscar directamente en classOfReturnedInstances*/
+    getInstancesMatchingAttributeWithOption(
+        classOfReturnedInstances, 
+        attributeName, //si busca en una clase que conoce este va a ser el atributo de la clase que conoce
+        attributeValue, //lo mismo que el nombre de atributo
+        searchInKnownClass=false, 
+        knownClass=null 
+    ){ 
         let ret = [];
-        
-        if(this[`${attributeName}s`].some(instance => instance.name.localeCompare(attributeValue)) == 0){
-            ret = this[`${classOfReturnedInstances}s`].filter(instance => instance[attributeName].localeCompare(attributeValue) == 0);
-            let allInstances = [];
-            instance[attributeName]()
+        const unqfyList = this[`${classOfReturnedInstances}s`];
+        const unqfyNotIsUndefined = unqfyList !== undefined;
+
+        if( unqfyNotIsUndefined && searchInKnownClass ){
+            ret = this.getInstancesMatchingAttribute(unqfyList,classOfReturnedInstances, knownClass, attributeName, attributeValue);
+        } 
+        else if( unqfyNotIsUndefined && unqfyList.some(instance => instance[attributeName] == attributeValue )){ 
+            ret = unqfyList.filter( instance => instance[attributeName] == attributeValue);
+        } 
+        else{
+            this.handleErrors(unqfyNotIsUndefined, classOfReturnedInstances, attributeName, attributeValue);
         }
-        return ret;
+
+        return ret.length==1 ? ret = ret[0] : ret;
     } 
-    
-tracks matching by artist
-    if(this.artists.some(artist => artist.name === artistName)){
-            const artist = this.artists.find(artist => artist.name === artistName);
-            let allTracks = [];
-            artist.albums.map(album => allTracks.push(...album.tracks))
-		    return allTracks;
+
+    getInstancesMatchingAttribute(unqfyList, classOfReturnedInstances, knownClass, attributeNameOfKnownClass, attributeValueOfKnownClass){
+
+        if(unqfyList.some(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass) ){
+            return unqfyList.filter(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass);
+        } else{
+            throw new InstanceRequestedByIndirectAttributeDoesNotExist(
+                classOfReturnedInstances, 
+                knownClass, 
+                attributeNameOfKnownClass, 
+                attributeValueOfKnownClass
+            );
         }
-		else{
-			throw new InstanceDoesNotExist('artist', artistName);
-		}
- */
+    }
+
+    handleErrors(unqfyNotIsUndefined, classOfReturnedInstances, attributeName, attributeValue){
+        if( !unqfyNotIsUndefined ){
+            throw new Error(`the class ${classOfReturnedInstances} doesnt exists, did you write the word well?`);
+        } else{
+            throw new InstanceDoesNotExist(classOfReturnedInstances, attributeName, attributeValue);
+        }
+    }
+
     getTracksMatchingName(trackName) {
         let ret = [];
         this.tracks.map(track => {
@@ -464,7 +482,6 @@ tracks matching by artist
         return ret;
     } 
     
-
     getAlbumsMatchingName(albumName){
         let ret = [];
         this.albums.map(album => {
