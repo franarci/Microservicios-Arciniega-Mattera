@@ -1055,4 +1055,17 @@ describe('Test nuestro - Comandos', () => {
         assert.isFalse(unqfy.albums.includes(artist));
     });
     
+    it('getArtistById', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        
+        const command = commands.getArtistById;
+
+        assert.equal(artist, command.executeMethod(0, unqfy));
+    });
+
+    /* 
+    getArtistById: new GetInstanceByAttribute('artist', 'id'), //new GetArtistById(),
+    getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'),
+    getArtist: new GetInstanceByAttribute('artist', 'name') ,// new GetArtistByName(),
+    getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'), */
 });
