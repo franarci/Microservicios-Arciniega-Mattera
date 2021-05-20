@@ -243,8 +243,8 @@ class UNQfy {
 
 	getUser(userToSearch){ // se puede reemplazar por getInstanceByAttribute
 		let userName = userToSearch.name;
-		if(this.users.some(user => user.username == userName)){
-			return this.users.find(u => u.username ==userName);
+		if(this.users.some(user => user.name == userName)){
+			return this.users.find(u => u.name ==userName);
 		} else {
 			throw new InstanceDoesNotExist('user', 'name', userName);
 		}

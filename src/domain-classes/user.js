@@ -58,7 +58,7 @@ class User {
 
     timesListened(track){
         if(this.hasListened(track)){
-            return this.listened.get(stringify(track));
+            return this.listened[stringify(track)];
         } else {
             return 0;
         }
