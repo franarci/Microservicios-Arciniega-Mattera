@@ -42,11 +42,28 @@ class AddTrack extends Command{
     }
 }
 
-class GetArtistById extends Command{
-    
+class AddPlaylist extends Command{
+
     executeMethod(lsParams, unqfy){
-        var id = lsParams[0];
-        console.log(unqfy.getInstanceByAttribute(id, 'artist'));
+        const name = lsParams[0];
+        const user = unqfy.getInstanceByAttribute(lsParams[1], 'user', 'name');
+        const maxDuration = lsParams[2];
+        const genresToInclude = lsParams.slice(3);
+
+        unqfy.createPlaylist(name, user, maxDuration, genresToInclude);
+    }
+}
+
+class GetInstanceByAttribute extends Command{
+    constructor(classOfInstance, attributeName){
+        super(),
+        this.classOfInstance = classOfInstance,
+        this.attributeName = attributeName
+    }
+
+    executeMethod(lsParams, unqfy){
+        var attributeValue = lsParams[0];
+        console.log(unqfy.getInstanceByAttribute(attributeValue, 'album', this.attributeName));
     }
 }
 
@@ -74,28 +91,6 @@ class GetInstanceByNameAndArtist extends Command{ //este se usara para track y a
         //pero esto solo aplica para tracks, hay que hacer el metodo generico en unqfy para que pueda aplicar para ambos
     }
 }
-
-class GetArtistByName extends Command{
-    
-    executeMethod(lsParams, unqfy){
-        const name = lsParams[0];
-        console.log(unqfy.getInstanceByAttribute(name, 'artist', 'name'));
-    }
-} 
-
-class GetPlaylistByName extends Command{
-
-    executeMethod(lsParams, unqfy){
-        const playlistName = lsParams[0];
-
-        const lsPlaylistsMatching = unqfy.getPlaylistsMatchingName(playlistName);
-        
-        // busco en los matches de nombre el que machee con el artista pasado
-        console.log(lsPlaylistsMatching[0]);
-    }
-}
-
-
 
 class CreateUser extends Command{
     
@@ -144,18 +139,6 @@ class TimesListened extends Command{
     }
 }
 
-class GetInstanceById extends Command{
-    constructor(classOfInstance){
-        super(),
-        this.classOfInstance = classOfInstance
-    }
-
-    executeMethod(lsParams, unqfy){
-        var id = lsParams[0];
-        console.log(unqfy.getInstanceByAttribute(id, 'album'));
-    }
-}
-
 class GetMatchingParcial extends Command{
 
     executeMethod(lsParams, unqfy){
@@ -164,18 +147,6 @@ class GetMatchingParcial extends Command{
     }
     
 }  
-
-class AddPlaylist extends Command{
-
-    executeMethod(lsParams, unqfy){
-        const name = lsParams[0];
-        const user = unqfy.getInstanceByAttribute(lsParams[1], 'user', 'name');
-        const maxDuration = lsParams[2];
-        const genresToInclude = lsParams.slice(3);
-
-        unqfy.createPlaylist(name, user, maxDuration, genresToInclude);
-    }
-}
 
 class GetTracksMatchingArtist{
 
@@ -237,18 +208,18 @@ const commands = { // aca se van a ir mapeando los comandos
     listenTrack: new ListenTrack(),
     timesListened: new TimesListened(),
     
-    getArtistById: new GetArtistById(),
-    getAlbumById: new GetInstanceById('album'),
+    getArtistById: new GetInstanceByAttribute('artist', 'id'), //new GetArtistById(),
+    getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'),
     getUser: new GetUser(),
     
     getListened: new GetListened(),
     getAlbum: new GetInstanceByNameAndArtist('album'),
     getTrack: new GetInstanceByNameAndArtist('track'),
-    getArtist: new GetArtistByName(),
+    getArtist: new GetInstanceByAttribute('artist', 'name') ,// new GetArtistByName(),
     getPlaylist: new GetPlaylistByName(),
 
     getMatchingParcial: new GetMatchingParcial('stringParcial'),
-    getAlbumById: new GetInstanceById('album'),
+    getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'),
     getMatchingParcial: new GetMatchingParcial('stringParcial'),
     getTracksMatchingArtist: new GetTracksMatchingArtist('artist'),
     getTracksMatchingGenres: new GetTracksMatchingGenres('genres'),
