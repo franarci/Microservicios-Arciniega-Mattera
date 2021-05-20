@@ -63,7 +63,21 @@ class GetInstanceByAttribute extends Command{
 
     executeMethod(lsParams, unqfy){
         var attributeValue = lsParams[0];
-        console.log(unqfy.getInstanceByAttribute(attributeValue, 'album', this.attributeName));
+        const ret = unqfy.getInstanceByAttribute(attributeValue, this.classOfInstance, this.attributeName)
+        console.log(ret);
+        return ret;
+    }
+}
+
+class GetPlaylistByName extends Command{
+
+    executeMethod(lsParams, unqfy){
+        const playlistName = lsParams[0];
+
+        const lsPlaylistsMatching = unqfy.getPlaylistsMatchingName(playlistName);
+        
+        // busco en los matches de nombre el que machee con el artista pasado
+        console.log(lsPlaylistsMatching[0]);
     }
 }
 
@@ -216,7 +230,7 @@ const commands = { // aca se van a ir mapeando los comandos
     getAlbum: new GetInstanceByNameAndArtist('album'),
     getTrack: new GetInstanceByNameAndArtist('track'),
     getArtist: new GetInstanceByAttribute('artist', 'name') ,// new GetArtistByName(),
-    getPlaylist: new GetPlaylistByName(),
+    getPlaylist: new GetInstanceByAttribute('playlist', 'name'), //new GetPlaylistByName(),
 
     getMatchingParcial: new GetMatchingParcial('stringParcial'),
     getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'),

@@ -1,4 +1,5 @@
 const assert = require('chai').assert;
+const expect = require('chai').expect;
 const libunqfy = require('./unqfy');
 const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
 const { InstanceDoesNotExist,
@@ -1054,8 +1055,31 @@ describe('Test nuestro - Comandos', () => {
 
         assert.isFalse(unqfy.albums.includes(artist));
     });
+
+    it('get playlist by name', () => {
+        //getPlaylist: new GetInstanceByAttribute('playlist', 'name'), //new GetPlaylistByName(),
+    
+        const artist = createAndAddArtist(unqfy, 'Guns Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
+        createAndAddTrack(unqfy, album.id, 'Sweet Child  Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+        const artist2 = createAndAddArtist(unqfy, 'Michael Jackson', 'USA');
+        const album2 = createAndAddAlbum(unqfy, artist2.id, 'Thriller', 1987);
+        createAndAddTrack(unqfy, album2.id, 'Thriller', 200, ['pop', 'movie']);
+        createAndAddTrack(unqfy, album2.id, 'Another song', 500, ['pop']);
+        createAndAddTrack(unqfy, album2.id, 'Another song II', 500, ['pop']);
+
+        const playlistSuper = unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
+
+        let command = commands.getPlaylist;
+
+        assert.equal(command.executeMethod(['my playlist'], unqfy), playlistSuper);
+    });
     
     it('getArtistById', () => {
+        //getArtistById: new GetInstanceByAttribute('artist', 'id'), //new GetArtistById(),
+
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         
         const command = commands.getArtistById;
@@ -1064,7 +1088,6 @@ describe('Test nuestro - Comandos', () => {
     });
 
     /* 
-    getArtistById: new GetInstanceByAttribute('artist', 'id'), //new GetArtistById(),
     getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'),
     getArtist: new GetInstanceByAttribute('artist', 'name') ,// new GetArtistByName(),
     getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'), */
