@@ -105,40 +105,43 @@ class CreateUser extends Command{
 
 class GetUser extends Command{
     executeMethod(lsParams,unqfy){
-        const username = lsParams[0]
-        console.log(unqfy.getInstanceByAttribute(username,'user','username'))
+        const username = lsParams[0];
+        const user = unqfy.getInstanceByAttribute(username,'user','username')
+        console.log("USER: ", user);
+        console.log("LISTENED: ", unqfy.getListened(user))
     }
 }
 
 class ListenTrack extends Command{
     executeMethod(lsParams, unqfy){
-        let userName = lsParams[0]
-        let trackName = lsParams[1]
-        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
-        const track = unqfy.getInstanceByAttribute(trackName, 'track', 'name')
-        unqfy.listenTrack(user,track)
-        console.log("User ", userName, "listened ", trackName)
+        let userName = lsParams[0];
+        let trackName = lsParams[1];
+        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username');
+        const track = unqfy.getInstanceByAttribute(trackName, 'track', 'name');
+        unqfy.listenTrack(user,track);
+        console.log("User ", userName, "listened ", trackName);
+        console.log("Total listened: ", unqfy.getListened(user))
     }
     
 }
 
 class GetListened extends Command{
     executeMethod(lsParams, unqfy){
-        let userName = lsParams[0]
-        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
-        unqfy.getListened(user)
-        console.log("Listened: ", unqfy.getListened(user))
+        let userName = lsParams[0];
+        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username');
+        unqfy.getListened(user);
+        console.log("Listened: ", unqfy.getListened(user));
     }
 }
 
 class TimesListened extends Command{
     executeMethod(lsParams, unqfy){
-        let userName = lsParams[0]
-        let trackName = lsParams[1]
-        let user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
-        let track = unqfy.getInstanceByAttribute(trackName, 'track', 'name')
-        unqfy.timesListened(user,track)
-        console.log(userName, " listened ", unqfy.timesListened(user,track)," times ", trackName  )
+        let userName = lsParams[0];
+        let trackName = lsParams[1];
+        let user = unqfy.getInstanceByAttribute(userName, 'user', 'username');
+        let track = unqfy.getInstanceByAttribute(trackName, 'track', 'name');
+        unqfy.timesListened(user,track);
+        console.log(userName, " listened ", unqfy.timesListened(user,track)," times ", trackName  );
     }
 }
 
@@ -193,42 +196,42 @@ class GetTracksMatchingGenres{
     
 class GetThisIs extends Command {
     executeMethod(lsParams, unqfy){
-            let artistName = lsParams[0]
-            const top3 = unqfy.getTop3FromArtist(unqfy.getInstanceByAttribute(artistName, 'artist', 'name'))
-            console.log("This is ", artistName, ": ", top3)
+            let artistName = lsParams[0];
+            const top3 = unqfy.getTop3FromArtist(unqfy.getInstanceByAttribute(artistName, 'artist', 'name'));
+            console.log("This is ", artistName, ": ", top3);
     }
 }
 
 class Delete extends Command {
     constructor(classOfInstance) {
-        super()
-        this.classOfInstance = classOfInstance
+        super();
+        this.classOfInstance = classOfInstance;
     }
     
     executeMethod(lsParams,unqfy){
-        let name = lsParams[0]
+        let name = lsParams[0];
         
         if(this.classOfInstance === 'artist'){
-            unqfy.deleteArtist(unqfy.getInstanceByAttribute(name, 'artist', 'name'))
+            unqfy.deleteArtist(unqfy.getInstanceByAttribute(name, 'artist', 'name'));
         }
         
         if(this.classOfInstance === 'album'){
-            unqfy.deleteAlbum(unqfy.getInstanceByAttribute(name, 'album', 'name'))
+            unqfy.deleteAlbum(unqfy.getInstanceByAttribute(name, 'album', 'name'));
         }
 
         if(this.classOfInstance === 'track'){
-            unqfy.deleteTrack(unqfy.getInstanceByAttribute(name, 'track', 'name'))
+            unqfy.deleteTrack(unqfy.getInstanceByAttribute(name, 'track', 'name'));
         }
 
         if(this.classOfInstance === 'playlist'){
-            unqfy.deletePlaylist(unqfy.getInstanceByAttribute(name, 'playlist', 'name'))
+            unqfy.deletePlaylist(unqfy.getInstanceByAttribute(name, 'playlist', 'name'));
         }
 
         if(this.classOfInstance === 'user'){
-            unqfy.deleteUser(unqfy.getInstanceByAttribute(name, 'user', 'username'))
+            unqfy.deleteUser(unqfy.getInstanceByAttribute(name, 'user', 'username'));
         }
 
-        console.log(`The ${this.classOfInstance} ${name} was deleted`)
+        console.log(`The ${this.classOfInstance} ${name} was deleted`);
     }
 }
 
