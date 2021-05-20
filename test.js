@@ -231,32 +231,6 @@ describe('Add, remove and filter data', () => {
         assert.isFalse(album.tracks.includes(track));
     });
 
-    it('test nuestro - when delete a track should delete it from the artist', () => {
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-
-        const album1 = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const track1 = createAndAddTrack(unqfy, album1.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-        const track2 = createAndAddTrack(unqfy, album1.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-
-        const album2 = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const track3 = createAndAddTrack(unqfy, album2.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-        const track4 = createAndAddTrack(unqfy, album2.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-
-        const albums = artist.getAlbums();
-
-        unqfy.deleteTrack(track1);
-        unqfy.deleteTrack(track2);
-
-        unqfy.deleteTrack(track3);
-        unqfy.deleteTrack(track4);
-
-        assert.isFalse(albums[0].tracks.includes(track1));
-        assert.isFalse(albums[0].tracks.includes(track2));
-
-        assert.isFalse(albums[1].tracks.includes(track3));
-        assert.isFalse(albums[1].tracks.includes(track4));
-    });
-
     it('test nuestro - when delete a track should delete a track from the playlists', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
