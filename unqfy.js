@@ -425,7 +425,7 @@ devuelve
         - los atributos que se llamen attributeName y 
         - el valor sea attributeValue
     - por defecto lo que le pasemos lo va a buscar directamente en classOfReturnedInstances*/
-    getInstancesMatchingAttribute(
+    getInstancesMatchingAttributeWithOption(
         classOfReturnedInstances, 
         attributeName, //si busca en una clase que conoce este va a ser el atributo de la clase que conoce
         attributeValue, //lo mismo que el nombre de atributo
@@ -437,31 +437,39 @@ devuelve
         const unqfyNotIsUndefined = unqfyList !== undefined;
 
         if( unqfyNotIsUndefined && searchInKnownClass ){
-            const attributeNameOfKnownClass = attributeName;
-            const attributeValueOfKnownClass = attributeValue;
-
-            if(unqfyList.some(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass) ){
-                ret = unqfyList.filter(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass);
-            } else{
-                throw new InstanceRequestedByIndirectAttributeDoesNotExist(
-                    classOfReturnedInstances, 
-                    knownClass, 
-                    attributeNameOfKnownClass, 
-                    attributeValueOfKnownClass
-                );
-            }
-        } else if( unqfyNotIsUndefined && unqfyList.some(instance => instance[attributeName] == attributeValue )){ //podria usar getInstanceByAttribute?
+            ret = this.getInstancesMatchingAttribute(unqfyList,classOfReturnedInstances, knownClass, attributeName, attributeValue);
+        } 
+        else if( unqfyNotIsUndefined && unqfyList.some(instance => instance[attributeName] == attributeValue )){ 
             ret = unqfyList.filter( instance => instance[attributeName] == attributeValue);
-        } else{
-            if( !unqfyNotIsUndefined ){
-                throw new Error(`the class ${classOfReturnedInstances} doesnt exists, did you write the word well?`);
-            } else{
-                throw new InstanceDoesNotExist(classOfReturnedInstances, attributeName, attributeValue);
-            }
+        } 
+        else{
+            this.handleErrors(unqfyNotIsUndefined, classOfReturnedInstances, attributeName, attributeValue);
         }
 
         return ret.length==1 ? ret = ret[0] : ret;
     } 
+
+    getInstancesMatchingAttribute(unqfyList, classOfReturnedInstances, knownClass, attributeNameOfKnownClass, attributeValueOfKnownClass){
+
+        if(unqfyList.some(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass) ){
+            return unqfyList.filter(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass);
+        } else{
+            throw new InstanceRequestedByIndirectAttributeDoesNotExist(
+                classOfReturnedInstances, 
+                knownClass, 
+                attributeNameOfKnownClass, 
+                attributeValueOfKnownClass
+            );
+        }
+    }
+
+    handleErrors(unqfyNotIsUndefined, classOfReturnedInstances, attributeName, attributeValue){
+        if( !unqfyNotIsUndefined ){
+            throw new Error(`the class ${classOfReturnedInstances} doesnt exists, did you write the word well?`);
+        } else{
+            throw new InstanceDoesNotExist(classOfReturnedInstances, attributeName, attributeValue);
+        }
+    }
 
     getTracksMatchingName(trackName) {
         let ret = [];

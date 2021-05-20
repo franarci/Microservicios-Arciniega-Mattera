@@ -79,7 +79,13 @@ describe('Add, remove and filter data', () => {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => { 
+    it('test nuestro - when delete an artist should delete it from the UNQfy', () => {  
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        unqfy.deleteArtist(artist);
+        assert.isFalse(unqfy.artists.includes(artist));
+    });
+
+    it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -95,26 +101,25 @@ describe('Add, remove and filter data', () => {
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The track with id ${idTrack1} does not exist`);
         }
-  });
+    });
     
-  it('test nuestro - when delete an artist should delete all his tracks from the playlists', () => { 
-      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-      const track2 = createAndAddTrack(unqfy, album.id, 'californication', 100, ['rock', 'funk']);
-          
-      unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
-      unqfy.deleteArtist(artist);
-  
+    it('test nuestro - when delete an artist should delete all his tracks from the playlists', () => { 
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+        const track2 = createAndAddTrack(unqfy, album.id, 'californication', 100, ['rock', 'funk']);
+            
+        unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
+        unqfy.deleteArtist(artist);
 
     const track1Belongs = unqfy.playlists[0].tracks.includes(track1)
     const track2Belongs = unqfy.playlists[0].tracks.includes(track2)
-    
+
     assert.isFalse(track1Belongs)
     assert.isFalse(track2Belongs)
-  });
+    });
 
-  it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => { 
+    it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const albumA = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const albumB = createAndAddAlbum(unqfy, artist.id, 'Californication', 200);
@@ -136,29 +141,20 @@ describe('Add, remove and filter data', () => {
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The album with id ${idAlbumB} does not exist`);
         }
+    });
 
-  });
 
-  it('test nuestro - when delete an artist should delete it from the UNQfy', () => {  
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
 
-        unqfy.deleteArtist(artist);
-
-        assert.isFalse(unqfy.artists.includes(artist));
-
-  });
-
-  it('test nuestro - when delete an album should delete it from the artist', () => {     
+    it('test nuestro - when delete an album should delete it from the artist', () => {     
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
         unqfy.deleteAlbum(album);
-      
-        assert.isFalse(artist.albums.includes(album));
-       
-  });
+        
+        assert.isFalse(artist.albums.includes(album)); 
+    });
     
-  it('test nuestro - when delete an album should delete it from UNQfy', () => {
+    it('test nuestro - when delete an album should delete it from UNQfy', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const idAlbum = album.id;
@@ -171,49 +167,47 @@ describe('Add, remove and filter data', () => {
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The album with id ${idAlbum} does not exist`);
         }
-  });
+    });
 
-  it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
-      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-      const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
-      
-      unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
+    it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+        const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
+        
+        unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
 
-      unqfy.deleteAlbum(album)
+        unqfy.deleteAlbum(album)
 
-      assert.isFalse(unqfy.playlists[0].tracks.includes(track1));
-      assert.isFalse(unqfy.playlists[0].tracks.includes(track2));
+        assert.isFalse(unqfy.playlists[0].tracks.includes(track1));
+        assert.isFalse(unqfy.playlists[0].tracks.includes(track2));
+    });
 
-  });
+    it('test nuestro - when delete an album should delete all the tracks stored in UNQfy that belongs to the album', () => { 
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+        const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
+        const idTrack1 = track1.id
+        const idTrack2 = track2.id
+        unqfy.deleteAlbum(album)
 
-  it('test nuestro - when delete an album should delete all the tracks stored in UNQfy that belongs to the album', () => { 
-      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-      const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
-      const idTrack1 = track1.id
-      const idTrack2 = track2.id
-      unqfy.deleteAlbum(album)
-
-      try{
+        try{
         unqfy.getInstanceByAttribute(idTrack1, 'track');
-      } catch(e) {
+        } catch(e) {
         if( e instanceof AssertionError ){throw e}
         assert.equal(e.message, `The track with id ${idTrack1} does not exist`);
-      }
+        }
 
-      try{
+        try{
         unqfy.getInstanceByAttribute(idTrack2, 'track');
-      } catch(e) {
+        } catch(e) {
         if( e instanceof AssertionError ){throw e}
         assert.equal(e.message, `The track with id ${idTrack2} does not exist`);
-      }
-  });
+        }
+    });
     
-
-  it('test nuestro - when delete a track should delete it from UNQfy', () => {
+    it('test nuestro - when delete a track should delete it from UNQfy', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -227,10 +221,9 @@ describe('Add, remove and filter data', () => {
             if( e instanceof AssertionError ){ throw e; }
             assert.equal(e.message, `The track with id ${idTrack} does not exist`);
         }
-  });
+    });
 
-
-  it('test nuestro - when delete a track should delete a track from an album', () => {
+    it('test nuestro - when delete a track should delete a track from an album', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -238,48 +231,48 @@ describe('Add, remove and filter data', () => {
         unqfy.deleteTrack(track);
 
         assert.isFalse(album.tracks.includes(track));
-  });
+    });
 
-  it('test nuestro - when delete a track should delete a track from the playlists', () => { 
-      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-      const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
-      
-      unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
-
-      unqfy.deleteTrack(track1)
- 
-      const track1Belongs = unqfy.playlists[0].tracks.includes(track1)
-      const track2Belongs = unqfy.playlists[0].tracks.includes(track2)
+    it('test nuestro - when delete a track should delete a track from the playlists', () => { 
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+        const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
         
-      assert.isFalse(track1Belongs);
-      assert.isTrue(track2Belongs);
-    
-  });
+        unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
 
-  it('test nuestro - when delete a user should delete it from UNQfy', () => { 
+        unqfy.deleteTrack(track1)
+
+        const track1Belongs = unqfy.playlists[0].tracks.includes(track1)
+        const track2Belongs = unqfy.playlists[0].tracks.includes(track2)
+        
+        assert.isFalse(track1Belongs);
+        assert.isTrue(track2Belongs);
+
+    });
+
+    it('test nuestro - when delete a user should delete it from UNQfy', () => { 
     const user1  = createAndAddUser(unqfy, 'user1')
     const idUser = user1.id
     unqfy.deleteUser(user1)
 
     try{
-      unqfy.getInstanceByAttribute(idUser, 'user');
+        unqfy.getInstanceByAttribute(idUser, 'user');
     } catch(e){
-      if( e instanceof AssertionError ){ throw e; }
-      assert.equal(e.message, `The user with id ${idUser} does not exist`);
+        if( e instanceof AssertionError ){ throw e; }
+        assert.equal(e.message, `The user with id ${idUser} does not exist`);
     }
-  
-  });
 
-  it('test nuestro - when delete a user should delete it from the playlists', () => { 
+    });
+
+    it('test nuestro - when delete a user should delete it from the playlists', () => { 
     const user1  = createAndAddUser(unqfy, 'user1')
     const playL = unqfy.createPlaylist('my playlist', user1, 1400, ['pop', 'rock']);
-    
+
     unqfy.deleteUser(user1)
     assert.isFalse(playL.user.includes(user1))  
-  
-  });
+
+    });
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,7 +473,7 @@ describe('Test nuestro - This is..', () => {
 
 });
 
-describe('Test nuestro - getInstancesMatchingAttribute', () => {
+describe('Test nuestro - getInstancesMatchingAttributeWithOption', () => {
     let unqfy = null;
 
     beforeEach(() => {
@@ -493,14 +486,14 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         const artistAdded = createAndAddArtist(unqfy, 'bob', 'jamaica');
 
         const artistRequestedByName = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'artist',
                 'name',
                 'bob'
             );
 
         const artistRequestedByCountry = 
-        unqfy.getInstancesMatchingAttribute(
+        unqfy.getInstancesMatchingAttributeWithOption(
             'artist',
             'country',
             'jamaica'
@@ -516,14 +509,14 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         const albumAdded = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
         const albumRequestedByName = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'name',
                 'Appetite for Destruction'
             );
 
         const albumRequestedByYear = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'year',
                 1987
@@ -541,21 +534,21 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         const trackAdded = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres);
 
         const trackRequestedByName = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'Welcome to the jungle'
             );
 
         const trackRequestedByDuration = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'duration',
                 200
             );
         
         const trackRequestedByGenres = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'genres',
                 genres
@@ -572,7 +565,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         const appetite = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
 
         const albumRequestedByArtistName = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'name',
                 'Guns n\' Roses',
@@ -581,7 +574,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const albumRequestedByCountryOfArtist = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'country',
                 'USA',
@@ -600,7 +593,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         const use = createAndAddAlbum(unqfy, artist.id, 'Use your illution', 1900);
 
         const albumsRequestedByArtistName = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'name',
                 'Guns n\' Roses',
@@ -609,7 +602,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const albumsRequestedByCountryOfArtist = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'country',
                 'USA',
@@ -631,7 +624,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         const trackAdded = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres);
 
         const trackRequestedBy_artist_name = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'Guns n\' Roses',
@@ -640,7 +633,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const trackRequestedBy_artist_country = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'country',
                 'USA',
@@ -649,7 +642,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const trackRequestedBy_album_name = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'Appetite for Destruction',
@@ -658,7 +651,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const trackRequestedBy_album_year = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'year',
                 1987,
@@ -681,7 +674,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         const nightrain = createAndAddTrack(unqfy, album.id, 'Nightrain', 300, genres);
 
         const trackRequestedBy_artist_name = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'Guns n\' Roses',
@@ -690,7 +683,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const trackRequestedBy_artist_country = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'country',
                 'USA',
@@ -699,7 +692,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const trackRequestedBy_album_name = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'Appetite for Destruction',
@@ -708,7 +701,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const trackRequestedBy_album_year = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'year',
                 1987,
@@ -730,7 +723,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     it('deberia arrojar el error esperado cuando se le pide un artisa con un atributo directo que no existe', () => {
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'artist',
                 'name',
                 'pepe'
@@ -741,7 +734,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }
 
         try{
-        unqfy.getInstancesMatchingAttribute(
+        unqfy.getInstancesMatchingAttributeWithOption(
             'artist',
             'country',
             'argentina'
@@ -756,7 +749,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     it('deberia arrojar el error esperado cuando se le pide un album con un atributo directo que no existe', () => {
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'name',
                 'cumbia 420'
@@ -767,7 +760,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'year',
                 2015
@@ -783,7 +776,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         const genres = ['rock', 'hard rock'];
 
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'bzr music session'
@@ -794,7 +787,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }
 
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'duration',
                 900
@@ -805,7 +798,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }
 
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'genres',
                 genres
@@ -819,7 +812,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     it('deberia arrojar el error esperado cuando se le pide un album con un atributo in-directo que no existe', () => {
 
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'name',
                 'L-gante',
@@ -833,7 +826,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'album',
                 'country',
                 'argentina',
@@ -849,7 +842,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     it('deberia arrojar el error esperado cuando se le pide un track con un atributo in-directo que no existe', () => {
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'pepe',
@@ -862,7 +855,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'country',
                 'peru',
@@ -875,7 +868,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }
 
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'procesalo todo',
@@ -888,7 +881,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         }
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'year',
                 1800,
@@ -905,7 +898,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     it('deberia arrojar error de tipeo al ingresar mal la clase de la/s instancia/s a devolver', () => {
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'artistt',
                 'name',
                 'bob'
@@ -919,7 +912,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
     it('deberia arrojar error de tipeo al ingresar mal la clase conocida', () => {
         
         try{
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'name',
                 'bob',
@@ -940,16 +933,16 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
         createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, genres);
 
         const artistRequestedBy_album_title = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'artist',
                 'name',
                 'Appetite for Destruction',
                 true,
-                'albums'
+                'albums' //REVISAR ACA
             );
 
         const artistRequestedBy_album_year = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'artist',
                 'year',
                 1987,
@@ -958,7 +951,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
         
         const artistRequestedBy_track_name = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'artist',
                 'name',
                 'Welcome to the jungle',
@@ -967,7 +960,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         const artistRequestedBy_track_duration = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'artist',
                 'duration',
                 200,
@@ -976,7 +969,7 @@ describe('Test nuestro - getInstancesMatchingAttribute', () => {
             );
 
         /* const artistRequestedBy_track_genres = 
-            unqfy.getInstancesMatchingAttribute(
+            unqfy.getInstancesMatchingAttributeWithOption(
                 'track',
                 'genres',
                 genres
