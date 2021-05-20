@@ -1057,8 +1057,6 @@ describe('Test nuestro - Comandos', () => {
     });
 
     it('get playlist by name', () => {
-        //getPlaylist: new GetInstanceByAttribute('playlist', 'name'), //new GetPlaylistByName(),
-    
         const artist = createAndAddArtist(unqfy, 'Guns Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock', 'movie']);
@@ -1074,21 +1072,43 @@ describe('Test nuestro - Comandos', () => {
 
         let command = commands.getPlaylist;
 
-        assert.equal(command.executeMethod(['my playlist'], unqfy), playlistSuper);
+        assert.equal( command.executeMethod(['my playlist'], unqfy), playlistSuper );
     });
     
     it('getArtistById', () => {
-        //getArtistById: new GetInstanceByAttribute('artist', 'id'), //new GetArtistById(),
-
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         
-        const command = commands.getArtistById;
+        let command = commands.getArtistById;
 
-        assert.equal(artist, command.executeMethod(0, unqfy));
+        assert.equal( command.executeMethod([0], unqfy), artist );
     });
 
-    /* 
-    getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'),
-    getArtist: new GetInstanceByAttribute('artist', 'name') ,// new GetArtistByName(),
-    getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'), */
+    it('getAlbumById', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album1 = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const album2 = createAndAddAlbum(unqfy, artist.id, 'pepe', 200);
+
+        let command = commands.getAlbumById;
+
+        assert.equal( command.executeMethod([0], unqfy), album1 );
+        assert.equal( command.executeMethod([1], unqfy), album2 );
+    });
+
+    it('get artist by name', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        
+        let command = commands.getArtist;
+
+        assert.equal( command.executeMethod(['Guns n\' Roses'], unqfy), artist );
+    });
+
+    it('get album by name', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album1 = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        
+        let command = commands.getAlbum;
+
+        assert.equal( command.executeMethod(['Appetite for Destruction'], unqfy), album1 );
+    });
+
 });

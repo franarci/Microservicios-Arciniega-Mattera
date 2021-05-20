@@ -222,18 +222,18 @@ const commands = { // aca se van a ir mapeando los comandos
     listenTrack: new ListenTrack(),
     timesListened: new TimesListened(),
     
-    getArtistById: new GetInstanceByAttribute('artist', 'id'), //new GetArtistById(),
-    getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'),
+    getArtistById: new GetInstanceByAttribute('artist', 'id'),
+    getAlbumById: new GetInstanceByAttribute('album', 'id'), 
     getUser: new GetUser(),
     
     getListened: new GetListened(),
     getAlbum: new GetInstanceByNameAndArtist('album'),
     getTrack: new GetInstanceByNameAndArtist('track'),
-    getArtist: new GetInstanceByAttribute('artist', 'name') ,// new GetArtistByName(),
-    getPlaylist: new GetInstanceByAttribute('playlist', 'name'), //new GetPlaylistByName(),
+    getArtist: new GetInstanceByAttribute('artist', 'name') ,
+    getPlaylist: new GetInstanceByAttribute('playlist', 'name'),
+    getAlbum: new GetInstanceByAttribute('album', 'name'),
 
     getMatchingParcial: new GetMatchingParcial('stringParcial'),
-    getAlbumById: new GetInstanceByAttribute('album', 'id'), //new GetInstanceById('album'),
     getMatchingParcial: new GetMatchingParcial('stringParcial'),
     getTracksMatchingArtist: new GetTracksMatchingArtist('artist'),
     getTracksMatchingGenres: new GetTracksMatchingGenres('genres'),
