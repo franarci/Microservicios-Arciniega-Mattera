@@ -85,6 +85,30 @@ describe('Add, remove and filter data', () => {
         assert.isFalse(unqfy.artists.includes(artist));
     });
 
+    it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => { 
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const albumA = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const albumB = createAndAddAlbum(unqfy, artist.id, 'Californication', 200);
+        const idAlbumA = albumA.id;
+        const idAlbumB = albumB.id;
+        
+        unqfy.deleteArtist(artist);
+
+        try{
+            unqfy.getInstanceByAttribute(idAlbumA, 'album');
+        } catch(e){
+            if( e instanceof AssertionError ){ throw e; }
+            assert.equal(e.message, `The album with id ${idAlbumA} does not exist`);
+        }
+
+        try{
+            unqfy.getInstanceByAttribute(idAlbumB, 'album');
+        } catch(e){
+            if( e instanceof AssertionError ){ throw e; }
+            assert.equal(e.message, `The album with id ${idAlbumB} does not exist`);
+        }
+    });
+
     it('test nuestro - when delete an artist should delete all his tracks from the UNQfy', () => { 
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
@@ -119,41 +143,6 @@ describe('Add, remove and filter data', () => {
     assert.isFalse(track2Belongs)
     });
 
-    it('test nuestro - when delete an artist should delete all his albums from the UNQfy', () => { 
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        const albumA = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const albumB = createAndAddAlbum(unqfy, artist.id, 'Californication', 200);
-        const idAlbumA = albumA.id;
-        const idAlbumB = albumB.id;
-        
-        unqfy.deleteArtist(artist);
-
-        try{
-            unqfy.getInstanceByAttribute(idAlbumA, 'album');
-        } catch(e){
-            if( e instanceof AssertionError ){ throw e; }
-            assert.equal(e.message, `The album with id ${idAlbumA} does not exist`);
-        }
-
-        try{
-            unqfy.getInstanceByAttribute(idAlbumB, 'album');
-        } catch(e){
-            if( e instanceof AssertionError ){ throw e; }
-            assert.equal(e.message, `The album with id ${idAlbumB} does not exist`);
-        }
-    });
-
-
-
-    it('test nuestro - when delete an album should delete it from the artist', () => {     
-        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-
-        unqfy.deleteAlbum(album);
-        
-        assert.isFalse(artist.albums.includes(album)); 
-    });
-    
     it('test nuestro - when delete an album should delete it from UNQfy', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
@@ -169,18 +158,13 @@ describe('Add, remove and filter data', () => {
         }
     });
 
-    it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
+    it('test nuestro - when delete an album should delete it from the artist', () => {     
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-        const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
-        const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
+
+        unqfy.deleteAlbum(album);
         
-        unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
-
-        unqfy.deleteAlbum(album)
-
-        assert.isFalse(unqfy.playlists[0].tracks.includes(track1));
-        assert.isFalse(unqfy.playlists[0].tracks.includes(track2));
+        assert.isFalse(artist.albums.includes(album)); 
     });
 
     it('test nuestro - when delete an album should delete all the tracks stored in UNQfy that belongs to the album', () => { 
@@ -206,6 +190,20 @@ describe('Add, remove and filter data', () => {
         assert.equal(e.message, `The track with id ${idTrack2} does not exist`);
         }
     });
+
+    it('test nuestro - when delete an album should delete all the tracks stored in playlists that belongs to the album', () => { 
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+        const track2 = createAndAddTrack(unqfy, album.id, 'It\'s so easy', 200, ['rock', 'hard rock']);
+        
+        unqfy.createPlaylist('my playlist', null, 1400, ['pop', 'rock']);
+
+        unqfy.deleteAlbum(album)
+
+        assert.isFalse(unqfy.playlists[0].tracks.includes(track1));
+        assert.isFalse(unqfy.playlists[0].tracks.includes(track2));
+    });
     
     it('test nuestro - when delete a track should delete it from UNQfy', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
@@ -223,7 +221,7 @@ describe('Add, remove and filter data', () => {
         }
     });
 
-    it('test nuestro - when delete a track should delete a track from an album', () => {
+    it('test nuestro - when delete a track should delete it from the album', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
@@ -231,6 +229,16 @@ describe('Add, remove and filter data', () => {
         unqfy.deleteTrack(track);
 
         assert.isFalse(album.tracks.includes(track));
+    });
+
+    it('test nuestro - when delete a track should delete it from the artist', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock']);
+
+        unqfy.deleteTrack(track);
+
+        assert.isFalse(artist.tracks.includes(track));
     });
 
     it('test nuestro - when delete a track should delete a track from the playlists', () => { 
