@@ -4,6 +4,7 @@ const { ArtistBelongs } = require('./src/belongs-classes/artistBelongs');
 const { InstanceDoesNotExist,
         InstanceAlreadyExist } = require('./src/errors');
 const { AssertionError } = require('assert');
+const commands = require('./src/commands');
 
 
 
@@ -994,4 +995,64 @@ describe('Test nuestro - getInstancesMatchingAttributeWithOption', () => {
 
     // playlists??
 
+});
+
+describe('Test nuestro - Comandos', () => {
+    let unqfy = null;
+
+    beforeEach(() => {
+        unqfy = new libunqfy.UNQfy();
+    });
+
+    it('deleteTrack', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track = createAndAddTrack(unqfy, album.id, 'Welcome_to_the_jungle', 200, ['rock', 'hard rock']);
+        const command = commands.deleteTrack;
+
+        command.executeMethod(['Welcome_to_the_jungle'], unqfy);
+
+        assert.isFalse(unqfy.tracks.includes(track));
+        assert.isFalse(album.tracks.includes(track));
+    });
+
+    it('deleteAlbum', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite_for_Destruction', 1987);
+        const track = createAndAddTrack(unqfy, album.id, 'Welcome_to_the_jungle', 200, ['rock', 'hard rock']);
+        const command = commands.deleteAlbum;
+
+        command.executeMethod(['Appetite_for_Destruction'], unqfy);
+
+        assert.isFalse(unqfy.tracks.includes(track));
+        assert.isFalse(unqfy.albums.includes(album));
+        assert.isFalse(artist.albums.includes(album));
+    });
+
+    it('deleteArtist', () => {
+        const artist = createAndAddArtist(unqfy, 'Guns_n_Roses', 'USA');
+
+        const album1 = createAndAddAlbum(unqfy, artist.id, 'Appetite_for_Destruction', 1987);
+        const track1 = createAndAddTrack(unqfy, album1.id, 'Welcome_to_the_jungle', 200, ['rock', 'hard rock']);
+        const track2 = createAndAddTrack(unqfy, album1.id, 'Nightrain', 200, ['rock', 'hard rock']);
+
+        const album2 = createAndAddAlbum(unqfy, artist.id, 'Appetite_for_Destruction', 1987);
+        const track3 = createAndAddTrack(unqfy, album2.id, 'Welcome_to_the_jungle', 200, ['rock', 'hard rock']);
+        const track4 = createAndAddTrack(unqfy, album2.id, 'Nightrain', 200, ['rock', 'hard rock']);
+        
+        const command = commands.deleteArtist;
+
+        command.executeMethod(['Guns_n_Roses'], unqfy);
+
+        assert.isFalse(unqfy.albums.includes(album1));
+        assert.isFalse(unqfy.tracks.includes(track1));
+        assert.isFalse(unqfy.tracks.includes(track2));
+
+        assert.isFalse(unqfy.albums.includes(album2));
+        assert.isFalse(unqfy.tracks.includes(track3));
+        assert.isFalse(unqfy.tracks.includes(track4));
+
+        assert.isFalse(unqfy.albums.includes(artist));
+    });
+    
 });

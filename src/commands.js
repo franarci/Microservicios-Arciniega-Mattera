@@ -17,6 +17,31 @@ class AddArtist extends Command{
     }
 }
 
+class AddAlbum extends Command{
+    
+    executeMethod(lsParams, unqfy){
+        var album = new Object();
+        var artistId = lsParams[0]
+        album.name = lsParams[1];
+        album.year = lsParams[2];
+        unqfy.addAlbum(artistId, album);
+    }
+}
+
+class AddTrack extends Command{
+    
+    executeMethod(lsParams, unqfy){
+        var track = new Object();
+        track.name = lsParams[0];
+        track.albumId = lsParams[1]
+        track.duration = lsParams[2];
+        track.genre = lsParams.splice(3);
+        
+        console.log(track.genre);
+        unqfy.addTrack(track.albumId, {name: track.name, duration: track.duration, genres: track.genre});
+    }
+}
+
 class GetArtistById extends Command{
     
     executeMethod(lsParams, unqfy){
@@ -70,30 +95,7 @@ class GetPlaylistByName extends Command{
     }
 }
 
-class AddAlbum extends Command{
-    
-    executeMethod(lsParams, unqfy){
-        var album = new Object();
-        var artistId = lsParams[0]
-        album.name = lsParams[1];
-        album.year = lsParams[2];
-        unqfy.addAlbum(artistId, album);
-    }
-}
 
-class AddTrack extends Command{
-    
-    executeMethod(lsParams, unqfy){
-        var track = new Object();
-        track.name = lsParams[0];
-        track.albumId = lsParams[1]
-        track.duration = lsParams[2];
-        track.genre = lsParams.splice(3);
-        
-        console.log(track.genre);
-        unqfy.addTrack(track.albumId, {name: track.name, duration: track.duration, genres: track.genre});
-    }
-}
 
 class CreateUser extends Command{
     
@@ -167,7 +169,7 @@ class AddPlaylist extends Command{
 
     executeMethod(lsParams, unqfy){
         const name = lsParams[0];
-        const user = unqfy.getInstanceByAttribute(lsParams[1], 'user', 'username');
+        const user = unqfy.getInstanceByAttribute(lsParams[1], 'user', 'name');
         const maxDuration = lsParams[2];
         const genresToInclude = lsParams.slice(3);
 
@@ -204,36 +206,20 @@ class Delete extends Command {
         super()
         this.classOfInstance = classOfInstance
     }
+
+    capitalizeFirstLetter(string) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }      
     
     executeMethod(lsParams,unqfy){
         let name = lsParams[0]
-        
-        if(this.classOfInstance === 'artist'){
-            unqfy.deleteArtist(unqfy.getInstanceByAttribute(name, 'artist', 'name'))
-        }
-        
-        if(this.classOfInstance === 'album'){
-            unqfy.deleteAlbum(unqfy.getInstanceByAttribute(name, 'album', 'name'))
-        }
+        const classOfInstanceCapitalized = this.capitalizeFirstLetter(this.classOfInstance);
 
-        if(this.classOfInstance === 'track'){
-            unqfy.deleteTrack(unqfy.getInstanceByAttribute(name, 'track', 'name'))
-        }
+        unqfy[`delete${classOfInstanceCapitalized}`](unqfy.getInstanceByAttribute(name, this.classOfInstance, 'name'));
 
-        if(this.classOfInstance === 'playlist'){
-            unqfy.deletePlaylist(unqfy.getInstanceByAttribute(name, 'playlist', 'name'))
-        }
-
-        if(this.classOfInstance === 'user'){
-            unqfy.deleteUser(unqfy.getInstanceByAttribute(name, 'user', 'username'))
-        }
-
-        console.log(`The ${this.classOfInstance} ${name} was deleted`)
+        console.log(`The ${this.classOfInstance} ${name} was deleted`);
     }
 }
-
-
-
 
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
