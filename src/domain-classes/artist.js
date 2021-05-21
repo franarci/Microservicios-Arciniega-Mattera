@@ -24,13 +24,12 @@ class Artist {
     }
 
     deleteAlbum(album){
-        this.albums = this.albums.filter( deltaAlbum => !deltaAlbum === album );
+        this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album );
     }
 
 
 }
-new Artist(id= 1)
-
+new Artist(id= 1);
 
 module.exports = {
     Artist: Artist,

@@ -12,7 +12,7 @@ class TrackList {
     }
 
     deleteTrack(track){
-        this.tracks = this.tracks.filter( deltaTrack => !deltaTrack === track );
+        this.tracks = this.tracks.filter( deltaTrack => deltaTrack !== track );
     }
 
     getId(){return this.id;}
