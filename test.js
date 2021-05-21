@@ -419,9 +419,9 @@ describe('Test nuestro - User Creation and properties', () => {
       const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock'])
       const track2 =createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
       const user = createAndAddUser(unqfy, 'Listener');
-      const listener = listenTrack(unqfy, user, track1)
+      const listener = listenTrack(unqfy, user, track1);
       
-     const firstListened = getListened(unqfy,listener)[0].name
+     const firstListened = getListened(unqfy,listener)[0].name;
      
       assert.equal(firstListened.localeCompare( 'Welcome to the jungle'), 0)
       assert.equal(timesListened(unqfy, user, track1), 1)
@@ -1109,6 +1109,14 @@ describe('Test nuestro - Comandos', () => {
         let command = commands.getAlbum;
 
         assert.equal( command.executeMethod(['Appetite for Destruction'], unqfy), album1 );
+    });
+
+    it('get user', () => {
+        const user = createAndAddUser(unqfy, 'MasterUser');
+
+        let command = commands.getUser;
+
+        assert.equal(command.executeMethod(['MasterUser'], unqfy), user);
     });
 
 });

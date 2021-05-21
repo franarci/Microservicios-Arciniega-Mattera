@@ -69,18 +69,6 @@ class GetInstanceByAttribute extends Command{
     }
 }
 
-class GetPlaylistByName extends Command{
-
-    executeMethod(lsParams, unqfy){
-        const playlistName = lsParams[0];
-
-        const lsPlaylistsMatching = unqfy.getPlaylistsMatchingName(playlistName);
-        
-        // busco en los matches de nombre el que machee con el artista pasado
-        console.log(lsPlaylistsMatching[0]);
-    }
-}
-
 class GetInstanceByNameAndArtist extends Command{ //este se usara para track y album porque pide nombre y artista
     constructor(classOfInstance){
         super()
@@ -114,13 +102,6 @@ class CreateUser extends Command{
     }
 }
 
-class GetUser extends Command{
-    executeMethod(lsParams,unqfy){
-        const username = lsParams[0]
-        console.log(unqfy.getInstanceByAttribute(username,'user','username'))
-    }
-}
-
 class ListenTrack extends Command{
     executeMethod(lsParams, unqfy){
         let userName = lsParams[0]
@@ -135,10 +116,10 @@ class ListenTrack extends Command{
 
 class GetListened extends Command{
     executeMethod(lsParams, unqfy){
-        let userName = lsParams[0]
-        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
-        unqfy.getListened(user)
-        console.log("Listened: ", unqfy.getListened(user))
+        let userName = lsParams[0];
+        const user = unqfy.getInstanceByAttribute(userName, 'user', 'name');
+        console.log("Listened: ", unqfy.getListened(user));
+        return unqfy.getListened(user);
     }
 }
 
@@ -182,7 +163,8 @@ class GetThisIs extends Command {
     executeMethod(lsParams, unqfy){
             let artistName = lsParams[0]
             const top3 = unqfy.getTop3FromArtist(unqfy.getInstanceByAttribute(artistName, 'artist', 'name'))
-            console.log("This is ", artistName, ": ", top3)
+            console.log("This is ", artistName, ": ", top3);
+            return top3;
     }
 }
 
@@ -224,7 +206,7 @@ const commands = { // aca se van a ir mapeando los comandos
     
     getArtistById: new GetInstanceByAttribute('artist', 'id'),
     getAlbumById: new GetInstanceByAttribute('album', 'id'), 
-    getUser: new GetUser(),
+    getUser: new GetInstanceByAttribute('user', 'name'), 
     
     getListened: new GetListened(),
     getAlbum: new GetInstanceByNameAndArtist('album'),
