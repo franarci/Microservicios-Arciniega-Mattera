@@ -17,7 +17,7 @@ class User {
         if(!this.hasListened(track)){
             this.listened[stringify(track)]=1; 
         } else {
-            this.listened[stringify(track)]=this.timesListened(track.name)+1 ;
+            this.listened[stringify(track)]=this.timesListened(track)+1 ;
         } 
     }
     
