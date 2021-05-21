@@ -1034,25 +1034,35 @@ describe('Test nuestro - Comandos', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome_to_the_jungle', 200, ['rock', 'hard rock']);
+        const track1 = createAndAddTrack(unqfy, album.id, 'Dont_cry', 200, ['rock', 'hard rock']);
         const command = commands.deleteTrack;
 
         command.executeMethod(['Welcome_to_the_jungle'], unqfy);
 
         assert.isFalse(unqfy.tracks.includes(track));
+        assert.isTrue(unqfy.tracks.includes(track1));
+
         assert.isFalse(album.tracks.includes(track));
+        assert.isTrue(album.tracks.includes(track1));
+
     });
 
     it('deleteAlbum', () => {
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
         const album = createAndAddAlbum(unqfy, artist.id, 'Appetite_for_Destruction', 1987);
+        const album1 = createAndAddAlbum(unqfy, artist.id, 'Dont_cry', 1987);
         const track = createAndAddTrack(unqfy, album.id, 'Welcome_to_the_jungle', 200, ['rock', 'hard rock']);
         const command = commands.deleteAlbum;
 
         command.executeMethod(['Appetite_for_Destruction'], unqfy);
 
         assert.isFalse(unqfy.tracks.includes(track));
+        
         assert.isFalse(unqfy.albums.includes(album));
         assert.isFalse(artist.albums.includes(album));
+
+        assert.isTrue(unqfy.albums.includes(album1));
+        assert.isTrue(artist.albums.includes(album1));
     });
 
     it('deleteArtist', () => {
@@ -1143,5 +1153,7 @@ describe('Test nuestro - Comandos', () => {
 
         assert.equal(command.executeMethod(['MasterUser'], unqfy), user);
     });
+
+
 
 });
