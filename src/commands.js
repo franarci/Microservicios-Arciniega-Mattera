@@ -104,12 +104,13 @@ class CreateUser extends Command{
 
 class ListenTrack extends Command{
     executeMethod(lsParams, unqfy){
-        let userName = lsParams[0]
-        let trackName = lsParams[1]
-        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
-        const track = unqfy.getInstanceByAttribute(trackName, 'track', 'name')
-        unqfy.listenTrack(user,track)
-        console.log("User ", userName, "listened ", trackName)
+        let userName = lsParams[0];
+        let trackName = lsParams[1];
+        const user = unqfy.getInstanceByAttribute(userName, 'user', 'username');
+        const track = unqfy.getInstanceByAttribute(trackName, 'track', 'name');
+        unqfy.listenTrack(user,track);
+        console.log("User ", userName, "listened ", trackName);
+        console.log("Total listened: ", unqfy.getListened(user))
     }
     
 }
@@ -125,12 +126,12 @@ class GetListened extends Command{
 
 class TimesListened extends Command{
     executeMethod(lsParams, unqfy){
-        let userName = lsParams[0]
-        let trackName = lsParams[1]
-        let user = unqfy.getInstanceByAttribute(userName, 'user', 'username')
-        let track = unqfy.getInstanceByAttribute(trackName, 'track', 'name')
-        unqfy.timesListened(user,track)
-        console.log(userName, " listened ", unqfy.timesListened(user,track)," times ", trackName  )
+        let userName = lsParams[0];
+        let trackName = lsParams[1];
+        let user = unqfy.getInstanceByAttribute(userName, 'user', 'username');
+        let track = unqfy.getInstanceByAttribute(trackName, 'track', 'name');
+        unqfy.timesListened(user,track);
+        console.log(userName, " listened ", unqfy.timesListened(user,track)," times ", trackName  );
     }
 }
 
@@ -170,8 +171,8 @@ class GetThisIs extends Command {
 
 class Delete extends Command {
     constructor(classOfInstance) {
-        super()
-        this.classOfInstance = classOfInstance
+        super();
+        this.classOfInstance = classOfInstance;
     }
 
     capitalizeFirstLetter(string) {

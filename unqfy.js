@@ -277,7 +277,7 @@ class UNQfy {
 	getTop3FromArtist(artist){
 		const allTracks = this.getListenedArtistTracks(artist);
 		const ret = allTracks.sort(function(a,b){
-			return b[1]-a[1]
+			return b[1]-a[1];
 		}).slice(0,3).map(([track,n]) => track);
 		return ret;
 	}
@@ -286,7 +286,7 @@ class UNQfy {
 		//Devuelve la lista de cada track del artista "artist" con su respectiva cantidad de reproducciones
 		let tracks = [];
 		this.users.forEach( user => {
-			this.pushUserTracks(tracks,user.getTracks(artist))
+			this.pushUserTracks(tracks, user.getTracks(artist))
 		});
 		return tracks;
 	}

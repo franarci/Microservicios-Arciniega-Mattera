@@ -438,35 +438,35 @@ describe('Test nuestro - This is..', () => {
     
             
     it('it should tell the artist top listened songs', () => {
-      const user1 = createAndAddUser(unqfy, "user1")
-      const user2 = createAndAddUser(unqfy,"user2")
-      
-      const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
-      const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
-      const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock'])
-      const track2 = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
-      const track3 = createAndAddTrack(unqfy, album.id, 'Dont You Cry', 1500, ['rock', 'hard rock', 'pop', 'movie']);
-      const track4 = createAndAddTrack(unqfy, album.id, 'Do Cry', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+        const user1 = createAndAddUser(unqfy, "user1")
+        const user2 = createAndAddUser(unqfy,"user2")
+        
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock'])
+        const track2 = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+        const track3 = createAndAddTrack(unqfy, album.id, 'Dont You Cry', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+        const track4 = createAndAddTrack(unqfy, album.id, 'Do Cry', 1500, ['rock', 'hard rock', 'pop', 'movie']);
 
-      user2.listenTrack(track3)
-      user2.listenTrack(track2)
-      user2.listenTrack(track1)
-      user2.listenTrack(track3)   
-      user2.listenTrack(track3)
-      user2.listenTrack(track2)
-      
-      user1.listenTrack(track1)
-      user1.listenTrack(track2)
-      user1.listenTrack(track4)
-      user1.listenTrack(track2)
-      user2.listenTrack(track3)
-      user2.listenTrack(track3)
-                      
-      const top3 = getTop3FromArtist(unqfy, artist)
+        user2.listenTrack(track3)
+        user2.listenTrack(track2)
+        user2.listenTrack(track1)
+        user2.listenTrack(track3)   
+        user2.listenTrack(track3)
+        user2.listenTrack(track2)
+        
+        user1.listenTrack(track1)
+        user1.listenTrack(track2)
+        user1.listenTrack(track4)
+        user1.listenTrack(track2)
+        user2.listenTrack(track3)
+        user2.listenTrack(track3)
+                        
+        const top3 = getTop3FromArtist(unqfy, artist);
 
-      assert.equal(top3[0].name.localeCompare('Dont You Cry'), 0);
-      assert.equal(top3[1].name.localeCompare('Sweet Child o\' Mine'), 0);
-      assert.equal(top3[2].name.localeCompare('Welcome to the jungle'), 0);
+        assert.equal(top3[0].name.localeCompare('Dont You Cry'), 0);
+        assert.equal(top3[1].name.localeCompare('Sweet Child o\' Mine'), 0);
+        assert.equal(top3[2].name.localeCompare('Welcome to the jungle'), 0);
     });
 
 });
@@ -923,7 +923,7 @@ describe('Test nuestro - getInstancesMatchingAttributeWithOption', () => {
         }
     });
 
-    it('deberia devolver al artista que busco por alguno de sus atributos in-directos', () => {
+    xit('deberia devolver al artista que busco por alguno de sus atributos in-directos', () => {
         
         const genres = ['rock', 'hard rock'];
         const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
