@@ -490,8 +490,8 @@ describe('Test nuestro - This is..', () => {
         const top3 = getTop3FromArtist(unqfy, artist);
 
         assert.isTrue(top3[0].name == 'Dont You Cry');
-        assert.equal(top3[1].name.localeCompare('Sweet Child o\' Mine'), 0);
-        assert.equal(top3[2].name.localeCompare('Welcome to the jungle'), 0);
+        assert.isTrue(top3[1].name == 'Sweet Child o\' Mine');
+        assert.isTrue(top3[2].name == 'Welcome to the jungle');
     });
 
 });
