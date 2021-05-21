@@ -427,6 +427,27 @@ describe('Test nuestro - User Creation and properties', () => {
       assert.equal(timesListened(unqfy, user, track1), 1)
       assert.equal(timesListened(unqfy, user, track2), 0)
     });
+
+    it('get tracks', () => {
+        const user1 = createAndAddUser(unqfy, "user1")
+        
+        const artist = createAndAddArtist(unqfy, 'Guns n\' Roses', 'USA');
+        const album = createAndAddAlbum(unqfy, artist.id, 'Appetite for Destruction', 1987);
+        const track1 = createAndAddTrack(unqfy, album.id, 'Welcome to the jungle', 200, ['rock', 'hard rock'])
+        const track2 = createAndAddTrack(unqfy, album.id, 'Sweet Child o\' Mine', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+        const track4 = createAndAddTrack(unqfy, album.id, 'Do Cry', 1500, ['rock', 'hard rock', 'pop', 'movie']);
+
+        user1.listenTrack(track1)
+        user1.listenTrack(track2)
+        user1.listenTrack(track4)
+        user1.listenTrack(track2)
+
+        const lsTracks = user1.getTracks(artist);
+
+        assert.equal(lsTracks[0][0].id, track1.id);
+        assert.equal(lsTracks[1][0].id, track2.id);
+        assert.equal(lsTracks[2][0].id, track4.id);
+    });
 })
 
 describe('Test nuestro - This is..', () => {
@@ -449,22 +470,26 @@ describe('Test nuestro - This is..', () => {
         const track4 = createAndAddTrack(unqfy, album.id, 'Do Cry', 1500, ['rock', 'hard rock', 'pop', 'movie']);
 
         user2.listenTrack(track3)
-        user2.listenTrack(track2)
-        user2.listenTrack(track1)
         user2.listenTrack(track3)   
         user2.listenTrack(track3)
+        user2.listenTrack(track3)
+        user2.listenTrack(track3)
+
+        user2.listenTrack(track2)
         user2.listenTrack(track2)
         
+        user2.listenTrack(track1)
+        
+        user1.listenTrack(track2)
+        user1.listenTrack(track2)
+        
         user1.listenTrack(track1)
-        user1.listenTrack(track2)
+        
         user1.listenTrack(track4)
-        user1.listenTrack(track2)
-        user2.listenTrack(track3)
-        user2.listenTrack(track3)
                         
         const top3 = getTop3FromArtist(unqfy, artist);
 
-        assert.equal(top3[0].name.localeCompare('Dont You Cry'), 0);
+        assert.isTrue(top3[0].name == 'Dont You Cry');
         assert.equal(top3[1].name.localeCompare('Sweet Child o\' Mine'), 0);
         assert.equal(top3[2].name.localeCompare('Welcome to the jungle'), 0);
     });

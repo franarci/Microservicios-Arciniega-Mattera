@@ -13,13 +13,12 @@ class User {
     }
 
     listenTrack(track){
-
         //listened tracks es un map donde la clave es el nombre de un track y el valor es un par [Track, vecesEscuchada<Int>]
         if(!this.hasListened(track)){
-            this.listened[stringify(track)]=1;
+            this.listened[stringify(track)]=1; 
         } else {
-            this.listened[stringify(track)]=this.timesListened(track)+1 ;
-        }
+            this.listened[stringify(track)]=this.timesListened(track.name)+1 ;
+        } 
     }
     
     hasListened(track){
@@ -41,19 +40,41 @@ class User {
     getListened(){ 
         let tracks = Object.keys(this.listened);
         if(tracks.length!==0){// EN ESTE PUNTO tracks es una lista vacia o una lista con un string conteniendo todos los tracks
-            tracks = tracks.map( t => JSON.parse(t))
+            tracks = tracks.map( t => JSON.parse(t));
             tracks = tracks.map( t =>
-                    new Track(
-                        t.id,
-                        t.name,
-                        t.duration,
-                        t.album,
-                        t.genres,
-                        t.artist
-                    )
-                )
+                new Track(
+                    t.id,
+                    t.name,
+                    t.duration,
+                    t.album,
+                    t.genres,
+                    t.artist
+                ),
+            )
         } 
         return tracks
+    }
+
+    getListenedWithTimesListened(){ 
+        
+        let tracks = Object.entries(this.listened);
+        if(tracks.length!==0){
+            //.map( t => JSON.parse(t));
+            tracks = tracks.map( ([t,n]) => [this.convertToTrack(t), n]);
+        } 
+        return tracks
+    }
+
+    convertToTrack(undefinedTrackP){
+        const undefinedTrack = JSON.parse(undefinedTrackP);
+        return new Track(
+            undefinedTrack.id,
+            undefinedTrack.name,
+            undefinedTrack.duration,
+            undefinedTrack.album,
+            undefinedTrack.genres,
+            undefinedTrack.artist
+        );
     }
 
     timesListened(track){
@@ -65,7 +86,10 @@ class User {
     }
 
     getTracks(artist){//Devuelve la lista de tracks del artista "artist" con sus respectivas timesListened 
-        return Array.from(this.listened).filter(([track, n]) => track.artist.id === artist.id);
+        let ret = this.getListenedWithTimesListened();
+        return ret.filter(([track,times]) => 
+            track.artist.id == artist.id
+        )
     }
 }
 
