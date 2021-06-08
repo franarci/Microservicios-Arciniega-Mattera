@@ -12,7 +12,7 @@ const options = {
         "refresh_token": 'AQAufJixGs8_duPN5UFdmmDK2YdutcPQ7uYZERGj-1pX0OnW09OKf_eqfGTO5udyklsM9RkgO39E2LczQpHNlv32Bj9H-1ssxinmkJdaL0VBs-_1nBXpRyGw835j6QewDJs',
         "client_id": 'd38a0113ad3e429c9dbfe4ed483a2874'
     },
-  };
+};
 
 function getSpotifyToken(){
     rp.get(options).then((response) => {
