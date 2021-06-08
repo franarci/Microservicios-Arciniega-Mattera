@@ -508,6 +508,21 @@ devuelve
         return ret;
     }
 
+	populateAlbumsForArtist(artistName){
+		if(new ArtistBelongs.execute(artistData)){
+			const BASE_URL = "https://api.spotify.com/v1/"
+			const options = {
+				url: BASE_URL + '/search',
+				headers: { Authorization: 'Bearer ' + access_token },
+				qs: {
+					q: artistName,
+					type: "artist"
+				},
+				json: true
+			  };
+		}
+	}
+
 }
 
 
