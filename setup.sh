@@ -3,6 +3,8 @@
 rm data.json
 
 #          GUSTAVO CERATI
+echo 'Cargando todo Gustavo Cerati..'
+
 node main.js addArtist Gustavo_Cerati Argentina       # ID-0
 
 #-Ahi vamos-------------------------------------------------
@@ -22,6 +24,8 @@ node main.js addTrack Sulky     1 200 country         # ID-5
 #/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #           RADIOHEAD
+echo 'Cargando todo Radiohead..'
+
 node main.js addArtist Radiohead Inglaterra           # ID-1
 
 #-In Rainbows------------------------------------------------
@@ -41,6 +45,8 @@ node main.js addTrack Just         3 212 electrorock  # ID-11
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #       VAN HALEN
+echo 'Cargando todo Van Halen..'
+
 node main.js addArtist Van_Halen Estados_Unidos       # ID-2
 
 #-Van Halen-----------------------------------------------
@@ -60,12 +66,16 @@ node main.js addTrack Inside 5 300 speed_rock         # ID-17
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #       USERS
+echo 'Cargando Usuarios..'
+
 node main.js createUser Iara                          # ID-0
 node main.js createUser Francisco                     # ID-1
 node main.js createUser Lucas                         # ID-2
 node main.js createUser Lautaro                       # ID-3
 node main.js createUser Arturo                        # ID-4
 
+
+echo 'Cargando Playlists..'
 #       PLAYLISTS LUCAS 
 node main.js addPlaylist Favs_Lucas     Lucas 10000 hard_rock                   # ID-0
 node main.js addPlaylist Playlist_Lucas Lucas 10000 rock                        # ID-1
@@ -85,3 +95,5 @@ node main.js addPlaylist Playlist_Arturo Arturo 10000 rock                      
 #       PLAYLISTS LAUTARO
 node main.js addPlaylist Favs_Lautaro     Lautaro 10000 indie rock              # ID-8
 node main.js addPlaylist Playlist_Lautaro Lautaro 10000 indie                   # ID-9
+
+echo 'Ejecucion finalizada'
