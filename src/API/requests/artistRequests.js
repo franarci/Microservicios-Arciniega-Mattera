@@ -1,6 +1,7 @@
 //const rp = require('request-promise');
 const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
+const newTknModule = require('../spotify/getSpotifyToken');
 
 const app = express();
 const unqfy = getUNQfy();
@@ -29,4 +30,7 @@ app.get('/api/artists', (req, res) => {
     })
 });
 
-app.listen(3000);
+const tkn = pepe.getSpotifyToken();
+
+//app.listen(3000);
+console.log(tkn);
