@@ -127,6 +127,7 @@ class UNQfy {
             
             album.addTrack(track);
             this.tracks.push(track);
+            artist.addGenres(trackData.genres);
             return track;
         } else {
             throw new InstanceAlreadyExist("track", trackData.name);

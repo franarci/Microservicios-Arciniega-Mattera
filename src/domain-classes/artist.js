@@ -23,6 +23,13 @@ class Artist {
         this.albums.push(album)
     }
 
+    addGenres(genres){
+        const concatGenres = this.genres.concat(genres);
+        let newSet = new Set();
+        concatGenres.forEach(deltaGenre => newSet.add(deltaGenre));
+        this.genres = Array.from(newSet); 
+    }
+
     deleteAlbum(album){
         this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album );
     }

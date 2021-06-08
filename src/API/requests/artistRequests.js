@@ -24,7 +24,6 @@ function standardJSONOutput(artist){
         name: artist.name,
         country: artist.country,
         albums: getNotRecursiveAlbums(artist.albums),
-        //genres: artist.genres no lo pide pero no esta tomando los generos del artista
     }
 }
 
