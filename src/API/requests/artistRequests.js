@@ -6,31 +6,45 @@ const newTknModule = require('../spotify/getSpotifyToken');
 const app = express();
 const unqfy = getUNQfy();
 
-// GET /api/artists?name=
-app.get('/api/artists', (req, res) => {
-    
-    const name = req.query.name;
-    const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
-    const albumsRecursive = artist.albums;
-    let albumsNotRecursive = [];
-    let albumNotRecursiveObj = {};
+const BASE_URL = '/api/artists';
 
-    albumsRecursive.forEach(albumRec => {
-        albumNotRecursiveObj['album_name'] = albumRec.name;
-        albumNotRecursiveObj['album_year'] = albumRec.year;},
-        albumsNotRecursive.push(albumNotRecursiveObj)    
+function getNotRecursiveAlbums(recursiveAlbumsList){
+    let ret = [];
+
+    recursiveAlbumsList.forEach(albumRec => 
+        ret.push({album_name:albumRec.name, album_year:albumRec.year})
     );
-   
-    res.send({
+
+    return ret;
+}
+
+function standardJSONOutput(artist){
+    return {
         id: artist.id,
         name: artist.name,
         country: artist.country,
-        albums: albumsNotRecursive,
-        genres: artist.genres,
-    })
+        albums: getNotRecursiveAlbums(artist.albums),
+        //genres: artist.genres no lo pide pero no esta tomando los generos del artista
+    }
+}
+
+// GET /api/artists?name=
+app.get(BASE_URL, (req, res) => {
+
+    const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
+   
+    res.send(standardJSONOutput(artist));
 });
 
-const tkn = pepe.getSpotifyToken();
+// GET /api/artists/<id>
+app.get(BASE_URL + '/:id', (req, res) => {
 
-//app.listen(3000);
-console.log(tkn);
+    const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
+
+    res.send(standardJSONOutput(artist));
+});
+
+//const tkn = newTknModule.getSpotifyToken();
+
+app.listen(3000);
+//console.log(tkn);
