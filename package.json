@@ -4,6 +4,7 @@
   "description": "",
   "main": "main.js",
   "dependencies": {
+    "axios": "^0.21.1",
     "chai": "^4.1.2",
     "express": "^4.17.1",
     "json-stringify-safe": "^5.0.1",
