@@ -16,9 +16,9 @@ const options = {
 
 function getSpotifyToken(){
     rp.get(options).then((response) => {
-        const data = response
-        return response
-    })
+        const data = response;
+        return response;
+    });
 }
 
-getSpotifyToken()
+getSpotifyToken();
