@@ -37,7 +37,6 @@ class AddTrack extends Command{
         track.duration = lsParams[2];
         track.genre = lsParams.splice(3);
         
-        console.log(track.genre);
         unqfy.addTrack(track.albumId, {name: track.name, duration: track.duration, genres: track.genre});
     }
 }
