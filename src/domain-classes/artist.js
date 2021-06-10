@@ -18,6 +18,10 @@ class Artist {
     getCountry(){return this.country;}
     getAlbums(){return this.albums;}
     getGenres(){return this.genres;}
+    setAttributes(attributesData){ 
+        this.name=attributesData.name;
+        this.country=attributesData.country; 
+    }
 
     addAlbum(album){
         this.albums.push(album)

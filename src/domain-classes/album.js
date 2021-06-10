@@ -16,6 +16,9 @@ class Album extends TrackList {
 
     getArtist(){ return this.artist; }
     getYear(){ return this.year; }
+    setAttributes(attributesData){ 
+        this.year=attributesData.year; 
+    }
 }
 
 module.exports = {
