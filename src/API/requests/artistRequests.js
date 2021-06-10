@@ -44,6 +44,7 @@ router.route('/')
         res.status(201);
         res.send(standardJSONOutput(artist));
     })
+    
 
 router.route('/:id')
     .get((req, res) => { // GET /api/artists/<id>
@@ -51,7 +52,11 @@ router.route('/:id')
 
         res.send(standardJSONOutput(artist));
     })
-
+    .patch((req, res) => { // PATCH /api/artists/:id
+        unqfy.modifyInstance(req.params.id, 'artist', req.body);
+        const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
+        res.send(standardJSONOutput(artist));
+    })
 
 //const tkn = newTknModule.getSpotifyToken();
 
