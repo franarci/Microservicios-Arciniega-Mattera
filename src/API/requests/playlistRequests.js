@@ -11,7 +11,7 @@ function getNotRecursiveTracks(recursiveTracksList){
     let ret = [];
 
     recursiveTracksList.forEach(trackRec => 
-        ret.push({album_name:trackRec.name, album_duration:trackRec.duration})
+        ret.push({track_name:trackRec.name, track_duration:trackRec.duration})
     );
 
     return ret;
@@ -25,3 +25,5 @@ function standardJSONOutput(playlist){
         tracks: getNotRecursiveTracks(playlist.tracks),
     }
 }
+
+app.listen(3000);
