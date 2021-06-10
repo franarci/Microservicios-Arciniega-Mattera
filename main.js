@@ -2,6 +2,8 @@ const commands = require('./src/commands');
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
+const express = require('express');
+const app = express();
 
 // Retorna una instancia de UNQfy. Si existe filename, recupera la instancia desde el archivo.
 function getUNQfy(filename = 'data.json') {
@@ -86,5 +88,6 @@ function main() {
 }
 
 //main();
+//app.listen(3000);
 
 module.exports = {getUNQfy, saveUNQfy};
