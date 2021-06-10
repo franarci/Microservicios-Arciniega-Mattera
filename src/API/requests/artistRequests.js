@@ -1,49 +1,60 @@
-//const rp = require('request-promise');
 const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
+const { Artist } = require('../../domain-classes/artist');
 const newTknModule = require('../spotify/getSpotifyToken');
 
-const app = express();
 const unqfy = getUNQfy();
-
-const BASE_URL = '/api/artists';
+const appArtist = express();
+const router = express.Router();
+router.use(express.json());
 
 function getNotRecursiveAlbums(recursiveAlbumsList){
     let ret = [];
-
+    
     recursiveAlbumsList.forEach(albumRec => 
         ret.push({album_name:albumRec.name, album_year:albumRec.year})
-    );
-
-    return ret;
-}
-
-function standardJSONOutput(artist){
-    return {
-        id: artist.id,
-        name: artist.name,
-        country: artist.country,
-        albums: getNotRecursiveAlbums(artist.albums),
+        );
+        
+        return ret;
     }
-}
+    
+    function standardJSONOutput(artist){
+        return {
+            id: artist.id,
+            name: artist.name,
+            country: artist.country,
+            albums: getNotRecursiveAlbums(artist.albums),
+        }
+    }
+    
+appArtist.use('/artists', router);
 
-// GET /api/artists?name=
-app.get(BASE_URL, (req, res) => {
+router.route('/')
+    .get((req, res) => { // GET /api/artists?name=
+        const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
 
-    const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
-   
-    res.send(standardJSONOutput(artist));
-});
+        res.send(standardJSONOutput(artist));
+    })
 
-// GET /api/artists/<id>
-app.get(BASE_URL + '/:id', (req, res) => {
+    .post((req, res) => { // POST /api/artists/
+        
+        unqfy.addArtist(req.body);
+        const artist = unqfy.getInstanceByAttribute(req.body.name, 'artist', 'name');
+        
+        res.status(201);
+        res.send(standardJSONOutput(artist));
+    })
 
-    const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
+router.route('/:id')
+    .get((req, res) => { // GET /api/artists/<id>
+        const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
 
-    res.send(standardJSONOutput(artist));
-});
+        res.send(standardJSONOutput(artist));
+    })
+
 
 //const tkn = newTknModule.getSpotifyToken();
 
-app.listen(3000);
 //console.log(tkn);
+
+module.exports={appArtist: appArtist}

@@ -2,10 +2,10 @@ const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
 const newTknModule = require('../spotify/getSpotifyToken');
 
-const app = express();
 const unqfy = getUNQfy();
-
-const BASE_URL = '/api/playlists';
+const appPlaylist = express();
+const router = express.Router();
+router.use(express.json());
 
 function getNotRecursiveTracks(recursiveTracksList){
     let ret = [];
@@ -26,4 +26,10 @@ function standardJSONOutput(playlist){
     }
 }
 
-app.listen(3000);
+appPlaylist.use('/playlists', router);
+
+router.use('/') // appendear las requests aca <<<-------
+
+//app.listen(3000);
+
+module.exports = {appPlaylist:appPlaylist}

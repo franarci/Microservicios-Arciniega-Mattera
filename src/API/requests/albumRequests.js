@@ -2,10 +2,10 @@ const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
 const newTknModule = require('../spotify/getSpotifyToken');
 
-const app = express();
 const unqfy = getUNQfy();
-
-const BASE_URL = '/api/albums';
+const appAlbum = express();
+const router = express.Router();
+router.use(express.json());
 
 function getNotRecursiveTracks(recursiveTracksList){
     let ret = [];
@@ -26,12 +26,24 @@ function standardJSONOutput(album){
     }
 }
 
-// GET /api/albums/<id>
-app.get(BASE_URL + '/:id', (req, res) => {
+appAlbum.use('/albums', router);
 
-    const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
+router.route('/')
+    .post((req, res) => { // POST /api/albums/
+        const album = unqfy.getInstanceByAttribute(req.body.name, 'album', 'name');
+        const dataAlbum = {name: req.body.name, year:req.body.year};
+        
+        res.status(201);
+        unqfy.addAlbum(req.body.artistId, dataAlbum);
+        
+        res.send(standardJSONOutput(album));
+    })
 
-    res.send(standardJSONOutput(album));
-});
+router.route('/:id')
+    .get((req, res) => { // GET /api/albums/<id>
+        const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
 
-app.listen(3000);
+        res.send(standardJSONOutput(album));
+    })
+
+module.exports={appAlbum: appAlbum}
