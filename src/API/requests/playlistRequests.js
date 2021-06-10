@@ -28,7 +28,7 @@ function standardJSONOutput(playlist){
 
 appPlaylist.use('/playlists', router);
 
-router.use('/') // appendear las requests aca <<<-------
+//router.use('/')  appendear las requests aca <<<-------
 
 //app.listen(3000);
 
