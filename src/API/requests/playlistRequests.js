@@ -22,6 +22,6 @@ function standardJSONOutput(playlist){
         id: playlist.id,
         name: playlist.name,
         duration: playlist.duration,
-        tracks: getNotRecursiveTracks(playlist.albums),
+        tracks: getNotRecursiveTracks(playlist.tracks),
     }
 }

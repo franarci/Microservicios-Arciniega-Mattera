@@ -22,7 +22,7 @@ function standardJSONOutput(album){
         id: album.id,
         name: album.name,
         year: album.year,
-        tracks: getNotRecursiveTracks(album.albums),
+        tracks: getNotRecursiveTracks(album.tracks),
     }
 }
 
