@@ -19,6 +19,7 @@ const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
 const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
 const { isRegExp } = require('util');
+const { type } = require('os');
 
 /*
 por el error 
@@ -507,6 +508,11 @@ devuelve
         if(ret.length == 0){throw new InstanceDoesNotExist('playlist', 'name', playlistName)};
         
         return ret;
+    }
+
+    modifyInstance(id, typeOfInstance, modifiedData){
+        let instance = this.getInstanceByAttribute(id, typeOfInstance);
+        instance.setAttributes(modifiedData);
     }
 
 }
