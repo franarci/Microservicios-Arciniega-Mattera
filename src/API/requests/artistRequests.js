@@ -45,7 +45,6 @@ router.route('/')
         res.send(standardJSONOutput(artist));
     })
     
-
 router.route('/:id')
     .get((req, res) => { // GET /api/artists/<id>
         const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
@@ -57,9 +56,15 @@ router.route('/:id')
         const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
         res.send(standardJSONOutput(artist));
     })
+    .delete((req,res) => {
+        const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
+        unqfy.deleteArtist(artist);
+        res.status(204);
+        res.send();
+    })
 
 //const tkn = newTknModule.getSpotifyToken();
 
 //console.log(tkn);
 
-module.exports={appArtist: appArtist}
+module.exports={appArtist: appArtist}  
