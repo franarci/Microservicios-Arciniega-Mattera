@@ -42,3 +42,15 @@ class JSON_MissingParameter_Error extends APIError {
         super('MissingParameterError', 400, 'BAD_REQUEST');
     }  
 }
+
+class UnexpectedFailure_Error extends APIError {
+    constructor() {
+        super('UnexpectedFailure', 500, 'INTERNAL_SERVER_ERROR');
+    }  
+}
+
+class UnexpectedFailure_Error extends APIError {
+    constructor() {
+        super('UnexpectedFailure', 404, 'RESOURCE_NOT_FOUND');
+    }  
+}
