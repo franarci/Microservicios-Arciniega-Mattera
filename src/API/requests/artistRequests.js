@@ -2,6 +2,7 @@ const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
 const { Artist } = require('../../domain-classes/artist');
 const newTknModule = require('../spotify/getSpotifyToken');
+const errors = require('../apiErrors');
 
 const unqfy = getUNQfy();
 const appArtist = express();
@@ -26,7 +27,7 @@ function standardJSONOutput(artist){
             albums: getNotRecursiveAlbums(artist.albums),
         }
     }
-    
+    asdasdASDSADqweqweQWE
 appArtist.use('/artists', router);
 
 router.route('/')
