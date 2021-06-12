@@ -43,12 +43,19 @@ router.route('/')
 
         res.send(standardJSONOutput(album));
     })
-
+    
 router.route('/:id')
     .get((req, res) => { // GET /api/albums/<id>
         const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
 
         res.send(standardJSONOutput(album));
     })
+    .delete((req, res) => {
+        const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
+        album.deleteArtist(album);
+        res.status(204);
+        res.send();
+    })
+
 
 module.exports={appAlbum: appAlbum}
