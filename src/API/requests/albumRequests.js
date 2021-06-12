@@ -38,6 +38,11 @@ router.route('/')
         
         res.send(standardJSONOutput(album));
     })
+    .get((req, res) => { // GET /api/albums?name=
+        const album = unqfy.getInstanceByAttribute(req.query.name, 'album', 'name');
+
+        res.send(standardJSONOutput(album));
+    })
 
 router.route('/:id')
     .get((req, res) => { // GET /api/albums/<id>
