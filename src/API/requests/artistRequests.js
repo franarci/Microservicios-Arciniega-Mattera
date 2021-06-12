@@ -18,7 +18,7 @@ function getNotRecursiveAlbums(recursiveAlbumsList){
         return ret;
     }
     
-    function standardJSONOutput(artist){
+function standardJSONOutput(artist){
         return {
             id: artist.id,
             name: artist.name,
