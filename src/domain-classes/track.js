@@ -25,13 +25,11 @@ class Track {
     getGenres(){return this.genres;}
     getArtists(){return this.artist;}
 
-    getLyrics(){
+    async getLyrics(){
       if(this.lyrics == ""){
         const rp = require('request-promise');
         const BASE_URL = "https://api.musixmatch.com/ws/1.1/"
         const apikey = 'e0283ca2b405c3f3342ac66ca27862e1'
-        
-
         const options= {
           uri: BASE_URL + "matcher.lyrics.get",
           qs: {
@@ -41,19 +39,25 @@ class Track {
           },
           json: true 
         }
-        rp.get(options).then((response) =>{
-          this.lyrics = response.message.body.lyrics.lyrics_body
+        this.lyrics = await rp.get(options).then((response) =>{
+          console.log(response.message.body.lyrics.lyrics_body)
+          return response.message.body.lyrics.lyrics_body
         })
         .catch(error => 
           console.log(error)) 
       }
-      return this.lyrics 
     }
 }
 const muse = new Artist(null,"Muse",null)
 const uno = new Track(null,"Uno", null,null,null,muse)
-uno.getLyrics()
 
+async function preguntar2veces(){
+ await uno.getLyrics()
+ await uno.getLyrics()
+}
+
+
+preguntar2veces()
 module.exports = {
     Track: Track,
   };

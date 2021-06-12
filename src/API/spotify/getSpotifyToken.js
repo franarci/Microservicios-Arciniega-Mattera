@@ -1,6 +1,6 @@
 var axios = require('axios');
 var qs = require('qs');
-
+var token = ''
 var data = qs.stringify({
     'grant_type': 'refresh_token',
     'refresh_token': 'AQAufJixGs8_duPN5UFdmmDK2YdutcPQ7uYZERGj-1pX0OnW09OKf_eqfGTO5udyklsM9RkgO39E2LczQpHNlv32Bj9H-1ssxinmkJdaL0VBs-_1nBXpRyGw835j6QewDJs',
@@ -17,8 +17,8 @@ var data = qs.stringify({
     data : data
     };
 
-function getSpotifyToken(){
-    axios(config)
+async function getSpotifyToken(){
+   token = await axios(config)
     .then(function (response) {
         return (JSON.stringify(response.data.access_token));
     })
@@ -26,5 +26,8 @@ function getSpotifyToken(){
         console.log(error);
     });
 }
+
+
+getSpotifyToken().then(data =>console.log(token) )
 
 module.exports = {getSpotifyToken}
