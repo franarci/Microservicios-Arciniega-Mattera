@@ -9,6 +9,10 @@ class TrackList {
 
     addTrack(track){
         this.tracks.push(track);
+        const concatGenres = this.genres.concat(track.genres);
+        let newSet = new Set();
+        concatGenres.forEach(deltaGenre => newSet.add(deltaGenre));
+        this.genres = Array.from(newSet); 
     }
 
     deleteTrack(track){

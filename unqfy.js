@@ -19,6 +19,7 @@ const { PlaylistBelongs } = require('./src/belongs-classes/playlistBelongs');
 const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
 const { isRegExp } = require('util');
+const { type } = require('os');
 
 /*
 por el error 
@@ -127,6 +128,7 @@ class UNQfy {
             
             album.addTrack(track);
             this.tracks.push(track);
+            artist.addGenres(trackData.genres);
             return track;
         } else {
             throw new InstanceAlreadyExist("track", trackData.name);
@@ -522,6 +524,10 @@ devuelve
 			  };
 		}
 	}
+    modifyInstance(id, typeOfInstance, modifiedData){
+        let instance = this.getInstanceByAttribute(id, typeOfInstance);
+        instance.setAttributes(modifiedData);
+    }
 
 }
 
