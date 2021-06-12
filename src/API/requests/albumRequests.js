@@ -52,7 +52,7 @@ router.route('/:id')
     })
     .delete((req, res) => {
         const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
-        album.deleteArtist(album);
+        unqfy.deleteAlbum(album);
         res.status(204);
         res.send();
     })
