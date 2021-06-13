@@ -196,6 +196,13 @@ class GetLyrics extends Command{
     }
 }
 
+class PopulateAlbumsForArtist extends Command {
+    executeMethod = async (lsParams, unqfy) =>{
+        const artistName = lsParams[0];
+        await unqfy.populateAlbumsForArtist(artistName);
+    }
+}
+
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
     addAlbum: new AddAlbum(),
@@ -229,7 +236,8 @@ const commands = { // aca se van a ir mapeando los comandos
     getTracksMatchingGenres: new GetTracksMatchingGenres('genres'),
 
     thisIs: new GetThisIs(),
-    getLyrics: new GetLyrics()
+    getLyrics: new GetLyrics(),
+    populateAlbumsForArtist: new PopulateAlbumsForArtist()
 }
 
 
