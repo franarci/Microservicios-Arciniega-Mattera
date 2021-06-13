@@ -542,6 +542,18 @@ devuelve
 		}
 		
 	}
+	
+	getAlbumsForArtist(artistName){
+		try{
+			const artist = this.getInstanceByAttribute(artistName,"artist","name");
+			artist.getAlbums().forEach(album => {
+				console.log(album.name)
+			})
+		}catch(e){
+			throw e;
+		}
+	}
+
     modifyInstance(id, typeOfInstance, modifiedData){
         let instance = this.getInstanceByAttribute(id, typeOfInstance);
         instance.setAttributes(modifiedData);
