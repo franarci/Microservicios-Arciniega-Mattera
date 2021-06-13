@@ -87,7 +87,7 @@ async function main() {
 
 }
 
-main();
+//main();
 //app.listen(3000);
 
 module.exports = {getUNQfy, saveUNQfy};

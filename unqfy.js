@@ -180,7 +180,34 @@ class UNQfy {
 		return(resMatching)
 	}
 	
-
+	createPlaylist(name,trackIds){
+		try {
+			const playlistBelongs = new PlaylistBelongs(this.playlists);
+			if(!playlistBelongs.execute(name)){
+				let tracks = [];
+				let duration = 0;
+				let genres = [];
+				trackIds.forEach(trackId => {
+					const track=this.getInstanceByAttribute(trackId, "track");
+					tracks.push(track);
+					duration += track.duration;
+					genres.concat(track.genres);
+				});
+				let playlist = new Playlist(
+					this.getAndIncrementId('playlist'),
+					name,
+					tracks,
+					genres,
+					duration,
+					null
+				);
+				this.playlists.push(playlist);
+				return playlist;
+			}
+		} catch(e){
+			throw e;
+		}
+	}
 	// name: nombre de la playlist
 	// genresToInclude: array de generos
 	// maxDuration: duración en segundos
@@ -371,9 +398,10 @@ class UNQfy {
 		});
 	}
 
-	save(filename) {
-        const serializedData = picklify.picklify(this);
-        fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
+	async save(filename) {
+		let serializedData;
+		serializedData = await picklify.picklify(this);
+		fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
 	}
 
 	static load(filename) {
@@ -526,21 +554,20 @@ devuelve
     }
 
 	async populateAlbumsForArtist(artistName){
-		try{
 			const artist = this.getInstanceByAttribute(artistName,"artist","name");
 			const albums = await getAllArtistAlbums(artistName);
-			albums.forEach(album => {
-				const albumData = {
-					name: album.name,
-					year: album.release_date
-				}
-				const new_album = this.addAlbum(artist.getId(), albumData)
-				console.log(album);
-			})
-		} catch(e){
-			throw e;
+			this.saveArtistAlbums(artist.getId(),albums);
+			this.save('data.json');
+	}
+
+	saveArtistAlbums(artistId, albums){
+		for(var i = 0; i < albums.length; i++){
+			const albumData = {
+				name: albums[i].name,
+				year: albums[i].release_date
+			}
+			this.addAlbum(artistId, albumData);
 		}
-		
 	}
 	
 	getAlbumsForArtist(artistName){
