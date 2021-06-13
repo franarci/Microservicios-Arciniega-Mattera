@@ -21,7 +21,7 @@ const { UserBelongs } = require('./src/belongs-classes/userBelongs');
 const { isRegExp } = require('util');
 const { type } = require('os');
 const { getUNQfy, saveUNQfy } = require('./main');
-const {mmGetLyrics} = require('./getMusixMatchLyrics')
+const {mmGetLyrics} = require('./src/API/musixmatch/musixMatchClient')
 /*
 por el error 
 node:internal/modules/cjs/loader:927
@@ -503,7 +503,6 @@ devuelve
 
 		if(track.getLyrics() == ""){
     		var data = await mmGetLyrics(track);
-    		console.log()
     		track.setLyrics(data);
     		this.save('data.json');
     		return data;	
