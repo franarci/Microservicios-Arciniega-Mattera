@@ -17,7 +17,10 @@ async function mmGetLyrics(track){
 	};
 
     let data = await rp.get(options).then((response) => {
-        var body = response.message.body;
+		if (response.message.header.status_code !== 200){
+			throw new Error('header status code: '+ response.message.header.status_code);
+		}
+        var body = response.artists;
         var lyrics = body.lyrics.lyrics_body; 
         return lyrics;
         }).catch((error) => {console.log(error);});
