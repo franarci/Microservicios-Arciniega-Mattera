@@ -21,7 +21,8 @@ const { UserBelongs } = require('./src/belongs-classes/userBelongs');
 const { isRegExp } = require('util');
 const { type } = require('os');
 const { getUNQfy, saveUNQfy } = require('./main');
-const {mmGetLyrics} = require('./src/API/musixmatch/musixMatchClient')
+const {mmGetLyrics} = require('./src/API/musixmatch/musixMatchClient');
+const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
 /*
 por el error 
 node:internal/modules/cjs/loader:927
@@ -524,19 +525,22 @@ devuelve
         return ret;
     }
 
-	populateAlbumsForArtist(artistName){
-		if(new ArtistBelongs.execute(artistData)){
-			const BASE_URL = "https://api.spotify.com/v1/"
-			const options = {
-				url: BASE_URL + '/search',
-				headers: { Authorization: 'Bearer ' + access_token },
-				qs: {
-					q: artistName,
-					type: "artist"
-				},
-				json: true
-			  };
+	async populateAlbumsForArtist(artistName){
+		try{
+			const artist = this.getInstanceByAttribute(artistName,"artist","name");
+			const albums = await getAllArtistAlbums(artistName);
+			albums.forEach(album => {
+				const albumData = {
+					name: album.name,
+					year: album.release_date
+				}
+				const new_album = this.addAlbum(artist.getId(), albumData)
+				console.log(album);
+			})
+		} catch(e){
+			throw e;
 		}
+		
 	}
     modifyInstance(id, typeOfInstance, modifiedData){
         let instance = this.getInstanceByAttribute(id, typeOfInstance);
