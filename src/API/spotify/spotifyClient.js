@@ -1,8 +1,6 @@
 const rp = require('request-promise');
 const BASE_URL = 'https://api.spotify.com/v1/';
 
-
-
 async function getSpotifyToken(){
     const options = {  
         uri : 'https://accounts.spotify.com/api/token',
@@ -61,3 +59,5 @@ async function getAllArtistAlbums(artistName){
                     })).catch(error => {throw error})
     
 }
+
+module.exports ={getAllArtistAlbums}
