@@ -3,6 +3,7 @@ const {getUNQfy, saveUNQfy} = require('../../../main');
 const { Artist } = require('../../domain-classes/artist');
 const newTknModule = require('../spotify/getSpotifyToken');
 const errors = require('../apiErrors');
+const { errorHandler } = require('../apiErrors');
 
 const unqfy = getUNQfy();
 const appArtist = express();
@@ -14,10 +15,10 @@ function getNotRecursiveAlbums(recursiveAlbumsList){
     
     recursiveAlbumsList.forEach(albumRec => 
         ret.push({album_name:albumRec.name, album_year:albumRec.year})
-        );
+    );
         
-        return ret;
-    }
+    return ret;
+}
     
 function standardJSONOutput(artist){
         return {
@@ -26,8 +27,9 @@ function standardJSONOutput(artist){
             country: artist.country,
             albums: getNotRecursiveAlbums(artist.albums),
         }
-    }
-    asdasdASDSADqweqweQWE
+}
+
+appArtist.use(errors.errorHandler);
 appArtist.use('/artists', router);
 
 router.route('/')
@@ -37,13 +39,16 @@ router.route('/')
         res.send(standardJSONOutput(artist));
     })
 
-    .post((req, res) => { // POST /api/artists/
-        
-        unqfy.addArtist(req.body);
-        const artist = unqfy.getInstanceByAttribute(req.body.name, 'artist', 'name');
-        
-        res.status(201);
-        res.send(standardJSONOutput(artist));
+    .post((req, res, err) => { // POST /api/artists/
+        try{
+            unqfy.addArtist(req.body);
+            const artist = unqfy.getInstanceByAttribute(req.body.name, 'artist', 'name');
+            
+            res.status(201);
+            res.send(standardJSONOutput(artist));
+        } catch{
+            errorHandler(err, req, res);
+        }
     })
     
 router.route('/:id')
