@@ -203,6 +203,13 @@ class PopulateAlbumsForArtist extends Command {
     }
 }
 
+class GetAlbumsForArtist extends Command {
+    executeMethod(lsParams,unqfy){
+        let artistName = lsParams[0]
+        unqfy.getAlbumsForArtist(artistName)
+    }
+}
+
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
     addAlbum: new AddAlbum(),
@@ -237,7 +244,8 @@ const commands = { // aca se van a ir mapeando los comandos
 
     thisIs: new GetThisIs(),
     getLyrics: new GetLyrics(),
-    populateAlbumsForArtist: new PopulateAlbumsForArtist()
+    populateAlbumsForArtist: new PopulateAlbumsForArtist(),
+    getAlbumsForArtist: new GetAlbumsForArtist()
 }
 
 
