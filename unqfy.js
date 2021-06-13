@@ -20,7 +20,8 @@ const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
 const { isRegExp } = require('util');
 const { type } = require('os');
-
+const { getUNQfy, saveUNQfy } = require('./main');
+const {mmGetLyrics} = require('./getMusixMatchLyrics')
 /*
 por el error 
 node:internal/modules/cjs/loader:927
@@ -497,6 +498,20 @@ devuelve
         return ret;
     }
 
+	async getLyrics(trackName){
+		let track = this.getInstanceByAttribute(trackName, "track", "name");
+
+		if(track.getLyrics() == ""){
+    		var data = await mmGetLyrics(track);
+    		console.log()
+    		track.setLyrics(data);
+    		this.save('data.json');
+    		return data;	
+		}
+		console.log(track.lyrics);
+		return track.getLyrics();	
+	}
+
     getPlaylistsMatchingName(playlistName){
         let ret = [];
         this.playlists.map(pl => {
@@ -530,6 +545,7 @@ devuelve
     }
 
 }
+
 
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
