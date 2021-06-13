@@ -188,6 +188,14 @@ class Delete extends Command {
     }
 }
 
+class GetLyrics extends Command{
+
+    executeMethod = async (lsParams, unqfy) =>{
+        const trackName = lsParams[0];
+        await console.log(unqfy.getLyrics(trackName));
+    }
+}
+
 const commands = { // aca se van a ir mapeando los comandos
     addArtist: new AddArtist(),
     addAlbum: new AddAlbum(),
@@ -220,7 +228,8 @@ const commands = { // aca se van a ir mapeando los comandos
     getTracksMatchingArtist: new GetTracksMatchingArtist('artist'),
     getTracksMatchingGenres: new GetTracksMatchingGenres('genres'),
 
-    thisIs: new GetThisIs()
+    thisIs: new GetThisIs(),
+    getLyrics: new GetLyrics()
 }
 
 
