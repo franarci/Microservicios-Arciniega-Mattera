@@ -51,7 +51,7 @@ function saveUNQfy(unqfy, filename = 'data.json') {
 
 */
 
-function main() {
+async function main() {
 
 	//manejar la excepcion de un comando que no va
 
@@ -78,7 +78,7 @@ function main() {
     //console.log('   *****************************')
     
 	//ejecuto el metodo
-	command.executeMethod(consoleArgs, unqfy);
+	await command.executeMethod(consoleArgs, unqfy);
 	
 	saveUNQfy(unqfy);
 	//console.log( getUNQfy());
@@ -87,7 +87,7 @@ function main() {
 
 }
 
-//main();
+main();
 //app.listen(3000);
 
 module.exports = {getUNQfy, saveUNQfy};
