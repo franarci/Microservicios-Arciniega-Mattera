@@ -74,6 +74,47 @@ class PLAYLIST_MissingParameter_ERROR extends APIError {
     }  
 }
 
+function errorHandler(err, req, res){
+    // Chequeamos que tipo de error es y actuamos en consecuencia
+    if (err instanceof AlreadyExists_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof URL_InvalidInexistent_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof LYRICS_DoesntMatch_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof AddAlbumToNonExistentArtist_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof ALBUMARTIST_DelGetPostInexistent_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof JSON_Invalid_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof JSON_MissingParameter_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof PLAYLIST_AddInexistentTrack_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof PLAYLIST_DelGetInexistent_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof PLAYLIST_MissingParameter_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (err instanceof UNEXPECTED_Failure_ERROR ){
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else {
+      // continua con el manejador de errores por defecto
+        next(err);
+    } 
+}
+
 module.exports = {
     AlreadyExists_ERROR: AlreadyExists_ERROR,
     URL_InvalidInexistent_ERROR: URL_InvalidInexistent_ERROR,
@@ -85,9 +126,11 @@ module.exports = {
     JSON_Invalid_ERROR: JSON_Invalid_ERROR,
     JSON_MissingParameter_ERROR: JSON_MissingParameter_ERROR,
     
-    PLAYLIST_AddInexistentTrack_ERROR,
-    PLAYLIST_DelGetInexistent_ERROR,
-    PLAYLIST_MissingParameter_ERROR,
+    PLAYLIST_AddInexistentTrack_ERROR: PLAYLIST_AddInexistentTrack_ERROR,
+    PLAYLIST_DelGetInexistent_ERROR: PLAYLIST_DelGetInexistent_ERROR,
+    PLAYLIST_MissingParameter_ERROR: PLAYLIST_MissingParameter_ERROR,
     
     UNEXPECTED_Failure_ERROR: UNEXPECTED_Failure_ERROR,
+
+    errorHandler,
 }
