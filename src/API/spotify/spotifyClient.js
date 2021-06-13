@@ -53,10 +53,11 @@ async function getAllArtistAlbums(artistName){
             type: "artist"
         }
     };
-    return await rp.get(options).then((response => { 
+    let tracks = await rp.get(options).then((response => { 
                         const data = JSON.parse(response)  
                         return data.items;
                     })).catch(error => {throw error})
+    return tracks;
     
 }
 
