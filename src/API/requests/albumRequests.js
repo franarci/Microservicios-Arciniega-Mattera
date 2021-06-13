@@ -1,5 +1,6 @@
 const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
+const errors = require('../apiErrors');
 const newTknModule = require('../spotify/getSpotifyToken');
 
 const unqfy = getUNQfy();
@@ -38,12 +39,29 @@ router.route('/')
         
         res.send(standardJSONOutput(album));
     })
+    .get((req, res) => { // GET /api/albums?name=
+        const album = unqfy.getInstanceByAttribute(req.query.name, 'album', 'name');
 
+        res.send(standardJSONOutput(album));
+    })
+    
 router.route('/:id')
-    .get((req, res) => { // GET /api/albums/<id>
+    .get((req, res) => { // GET /api/albums/:id
         const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
 
         res.send(standardJSONOutput(album));
     })
+    .delete((req, res) => { // DELETE /api/albums/:id
+        const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
+        unqfy.deleteAlbum(album);
+        res.status(204);
+        res.send();
+    })
+    .patch((req, res) => {
+        unqfy.modifyInstance(req.params.id, 'album', req.body);
+        const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
+        res.send(standardJSONOutput(album));
+    })
+
 
 module.exports={appAlbum: appAlbum}
