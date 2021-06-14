@@ -189,11 +189,10 @@ class Delete extends Command {
 }
 
 class GetLyrics extends Command{
-
     executeMethod = async (lsParams, unqfy) =>{
         const trackName = lsParams[0];
         await console.log(unqfy.getLyrics(trackName));
-    }
+    } 
 }
 
 class PopulateAlbumsForArtist extends Command {
