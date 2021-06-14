@@ -1,14 +1,9 @@
 const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
 const { 
-    PLAYLIST_AddInexistentTrack_ERROR,
-    PLAYLIST_DelGetInexistent_ERROR,
-    
-    JSON_Invalid_ERROR,
-    JSON_MissingParameter_ERROR,
-    
-    URL_InvalidInexistent_ERROR,
-    UNEXPECTED_Failure_ERROR } = require('../apiErrors');
+    errorHandler, 
+    JSONerrorHandler,
+    verifyURL } = require('../apiErrors');
 
 const unqfy = getUNQfy();
 const appPlaylist = express();
@@ -34,7 +29,9 @@ function standardJSONOutput(playlist){
     }
 }
 
-//appPlaylist.use(playlistRequestsErrorHandler);
+appPlaylist.use(errorHandler);
+appPlaylist.use(JSONerrorHandler);
+appPlaylist.use(verifyURL);
 appPlaylist.use('/playlists', router);
 
 // donde usar el UNEXPECTED_Failure_ERROR?
@@ -44,42 +41,48 @@ router.route('/')
     .post((req, res) => { // POST /api/playlist
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
-        if(req.body.keys.length==3){
-                unqfy.createPlaylist(req.body.name,null,req.body.maxDuration,req.body.name.genres);
-                const playlist = unqfy.getInstanceByAttribute(req.body.name, 'playlist', 'name');
+        try {
+            
+            if(req.body.keys.length==3){
+                unqfy.createPlaylist(req.body.name, null, req.body.maxDuration, req.body.name.genres);
+                const playlist = unqfy.getInstanceByAttribute(req.body.name, 'playlist', 'name'); 
                 saveUNQfy(unqfy);
-    
+                
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
-        } else {
-            try{
-                unqfy.createPlaylist(req.body.name,req.body.tracks);
-                const playlist = unqfy.getInstanceByAttribute(req.body.name, 'playlist', 'name');
+            } else {
+                let trackObjLs = [];
+                req.body.tracks.forEach(trackName => {
+                    const trackObj = unqfy.getInstanceByAttribute(trackName, 'track', 'name'); // track no existe
+                    trackObjLs.push(trackObj);
+                });                
+                unqfy.createPlaylist(req.body.name, trackObjLs);
+                const playlist = unqfy.getInstanceByAttribute(req.body.name, 'playlist', 'name'); 
                 saveUNQfy(unqfy);
-    
-    
+                
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
-            } catch{
-                throw new PLAYLIST_AddInexistentTrack_ERROR();
-            }
-        } 
+            } 
+        } catch{
+            JSONerrorHandler(req);
+            errorHandler(error, req, res);
+        }
     })
 
 try{
     router.route('/:id')
-        .get((req, res) => { // GET /api/playlists/<id>
-            const playlist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
-            res.send(standardJSONOutput(artist));
-        })
-        .delete((req,res) => {// DELETE /api/playlists/<id>
-                const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
-                unqfy.deletePlaylist(playlist);
-                res.status(204);
-                res.send();
-        })  
-} catch{
-    throw new PLAYLIST_DelGetInexistent_ERROR();
+    .get((req, res) => { // GET /api/playlists/<id>
+        const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
+        res.send(standardJSONOutput(playlist));
+    })
+    .delete((req,res) => {// DELETE /api/playlists/<id>
+        const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
+        unqfy.deletePlaylist(playlist);
+        res.status(204);
+        res.send();
+    })  
+} catch(e){
+    errorHandler(e, req, res);
 }
-
+    
 module.exports = {appPlaylist:appPlaylist}

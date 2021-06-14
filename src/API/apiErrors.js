@@ -74,21 +74,119 @@ class PLAYLIST_MissingParameter_ERROR extends APIError {
     }  
 }
 
+function errorHandler(req, res, error){
+    if(!req.req.query){
+        if (error.message == `The artist with name ${req.req.query.name} already exist`){ 
+            const err = new AlreadyExists_ERROR('Artist');
+            res.status(err.status);
+            res.json({status: err.status, errorCode: err.errorCode});
+        } else if (error.message == `The album with name ${req.req.query.name} already exist`){
+            const err = new AlreadyExists_ERROR('Album');
+            res.status(err.status);
+            res.json({status: err.status, errorCode: err.errorCode});
+        } else if (error.message == `The artist with name ${req.req.query.name} does not exist`){
+            const err = new ALBUMARTIST_DelGetPostInexistent_ERROR('Album');
+            res.status(err.status);
+            res.json({status: err.status, errorCode: err.errorCode});
+        }
+    }
+    else if(req.req.body!=undefined && req.req.body!={}){
+        if (error.message == `The artist with id ${req.req.body.artistId} does not exist`){
+            const err = new AddAlbumToNonExistentArtist_ERROR('Artist');
+            res.status(err.status);
+            res.json({status: err.status, errorCode: err.errorCode});
+        }
+    }
+    else if(!req.req.params){
+        if (error.message == `The artist with id ${req.req.params.id} does not exist`){
+            const err = new ALBUMARTIST_DelGetPostInexistent_ERROR('Album');
+            res.status(err.status);
+            res.json({status: err.status, errorCode: err.errorCode});
+        } else if (error.message == `The album with id ${req.req.params.id} does not exist`){
+            const err = new ALBUMARTIST_DelGetPostInexistent_ERROR('Album');
+            res.status(err.status);
+            res.json({status: err.status, errorCode: err.errorCode});
+        } else if (error.message == `The playilist with id ${req.req.params.id} does not exist`){
+            const err = new PLAYLIST_DelGetInexistent_ERROR();
+            res.status(err.status);
+            res.json({status: err.status, errorCode: err.errorCode});
+        }
+    }
+    else if(!req.req.query){
+        if (error.message == `The album with name ${req.req.query.name} does not exist`){
+            const err = new ALBUMARTIST_DelGetPostInexistent_ERROR('Album');
+            res.status(err.status);
+            res.json({status: err.status, errorCode: err.errorCode});
+        }    
+    }
 
-module.exports = {
-    AlreadyExists_ERROR: AlreadyExists_ERROR,
-    URL_InvalidInexistent_ERROR: URL_InvalidInexistent_ERROR,
-    LYRICS_DoesntMatch_ERROR: LYRICS_DoesntMatch_ERROR,
-    
-    AddAlbumToNonExistentArtist_ERROR: AddAlbumToNonExistentArtist_ERROR,
-    ALBUMARTIST_DelGetPostInexistent_ERROR: ALBUMARTIST_DelGetPostInexistent_ERROR,
-    
-    JSON_Invalid_ERROR: JSON_Invalid_ERROR,
-    JSON_MissingParameter_ERROR: JSON_MissingParameter_ERROR,
-    
-    PLAYLIST_AddInexistentTrack_ERROR: PLAYLIST_AddInexistentTrack_ERROR,
-    PLAYLIST_DelGetInexistent_ERROR: PLAYLIST_DelGetInexistent_ERROR,
-    PLAYLIST_MissingParameter_ERROR: PLAYLIST_MissingParameter_ERROR,
-    
-    UNEXPECTED_Failure_ERROR: UNEXPECTED_Failure_ERROR,
+    else if (error.message == ''){
+        const err = new LYRICS_DoesntMatch_ERROR();
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } 
+    /* else if (error.message == `The track with name ${} does not exist`){ //como traigo el nombre del track que no existe
+        const err = new PLAYLIST_AddInexistentTrack_ERROR();
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } */
+    else if (error.message == ''){
+        const err = new PLAYLIST_MissingParameter_ERROR();
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else if (error.message == ''){
+        const err = new UNEXPECTED_Failure_ERROR();
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else {
+      // continua con el manejador de errores por defecto
+        next(err);
+    } 
 }
+
+const keysOfBody_POST_PATCH_apiArtists = ['name', 'country'];
+
+const keysOfBody_POST_apiAlbums = ['artistId', 'name', 'year'];
+const keysOfBody_PATCH_apiAlbums = ['year'];
+
+const keysOfBody_POST_apiPlaylists_genres = ['name', 'maxDuration', 'genres'];
+const keysOfBody_POST_apiPlaylists_tracks = ['name', 'tracks'];
+
+function jsonShapeChecker(jsonKeys, referenceKeys){
+    if(jsonKeys != referenceKeys){
+        const err = new JSON_Invalid_ERROR();
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    } else{
+        const err = new JSON_MissingParameter_ERROR();
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+    }
+}
+
+function JSONerrorHandler(req){
+    const requestShape = `${req.req.method} ${req.req.originalUrl}`;
+    if(requestShape == 'POST /api/artists' || requestShape == `PATCH /api/artists/${req.req.params.id}`){
+        jsonShapeChecker(req.body.keys(), keysOfBody_POST_PATCH_apiArtists);
+    } else if (requestShape == 'POST /api/albums'){
+        jsonShapeChecker(req.body.keys(), keysOfBody_POST_apiAlbums);
+    } else if (requestShape == `PATCH /api/albums/${req.req.params.id}`){
+        jsonShapeChecker(req.body.keys(), keysOfBody_PATCH_apiAlbums);
+    } else if (req.req.body.keys() == keysOfBody_POST_apiPlaylists_genres){
+        jsonShapeChecker(req.body.keys(), keysOfBody_POST_apiPlaylists_genres);
+    } else if (req.body.keys() == keysOfBody_POST_apiPlaylists_tracks){
+        jsonShapeChecker(req.body.keys(), keysOfBody_POST_apiPlaylists_tracks);
+    }
+} 
+
+function verifyURL(recivedURL, desiredURL, res){
+    if(recivedURL != desiredURL){
+        const err = new URL_InvalidInexistent_ERROR();
+        res.status(err.status);
+        res.json({status: err.status, errorCode: err.errorCode});
+        throw err;
+    }
+}
+
+
+module.exports = {errorHandler, JSONerrorHandler, verifyURL, URL_InvalidInexistent_ERROR:URL_InvalidInexistent_ERROR}

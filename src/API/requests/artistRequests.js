@@ -1,13 +1,9 @@
 const express = require('express');
-const {getUNQfy} = require('../../../main');
+const {getUNQfy, saveUNQfy} = require('../../../main');
 const { 
-    ALBUMARTIST_DelGetPostInexistent_ERROR,
-
-    JSON_Invalid_ERROR,
-    JSON_MissingParameter_ERROR,
-
-    URL_InvalidInexistent_ERROR,
-    UNEXPECTED_Failure_ERROR } = require('../apiErrors');
+    errorHandler, 
+    JSONerrorHandler,
+    verifyURL } = require('../apiErrors');
 
 const unqfy = getUNQfy();
 const appArtist = express();
@@ -33,25 +29,24 @@ function standardJSONOutput(artist){
         }
 }
 
-//appArtist.use(errors.errorHandler);
+appArtist.use(errorHandler);
+appArtist.use(JSONerrorHandler);
+appArtist.use(verifyURL);
 appArtist.use('/artists', router);
 
 // donde usar el UNEXPECTED_Failure_ERROR?
 // donde usar el URL_InvalidInexistent_ERROR?
 
 router.route('/')
-    .get((req, res) => { // GET /api/artists
-        try{
-            const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
-            res.send(standardJSONOutput(artist));
-        } catch{
-            throw new ALBUMARTIST_DelGetPostInexistent_ERROR('Artist');
-        }
+    .get((req, res) => { // GET /api/artists?name=
+        const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
+        res.send(standardJSONOutput(artist));
     })
     .post((req, res) => { // POST /api/artists/
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
         unqfy.addArtist(req.body);
+        unqfy.saveUNQfy();
         const artist = unqfy.getInstanceByAttribute(req.body.name, 'artist', 'name');
         
         res.status(201);
@@ -59,38 +54,28 @@ router.route('/')
     })
     
 router.route('/:id')
-    .get((req, res) => { // GET /api/artists/<id>
-        try {
+.get((req, res, e) => { // GET /api/artists/<id>
+    try{
             const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
             res.send(standardJSONOutput(artist));
-        } catch {
-            throw new ALBUMARTIST_DelGetPostInexistent_ERROR('Artist');
+        } catch{
+            errorHandler(req, res, e);
         }
     })
-    .patch((req, res) => { // PATCH /api/artists/:id
+    .patch((req, res, e) => { // PATCH /api/artists/:id
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
-        try{
-            unqfy.modifyInstance(req.params.id, 'artist', req.body);
-            const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
-            res.send(standardJSONOutput(artist));
-        } catch {
-            throw new ALBUMARTIST_DelGetPostInexistent_ERROR('Artist');
-        }
+        unqfy.modifyInstance(req.params.id, 'artist', req.body);
+        unqfy.saveUNQfy();
+        const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
+        res.send(standardJSONOutput(artist));
     })
-    .delete((req,res) => {
-        try{
-            const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
-            unqfy.deleteArtist(artist);
-            res.status(204);
-            res.send();
-        } catch{
-            throw new ALBUMARTIST_DelGetPostInexistent_ERROR('Artist');
-        }
-    })
-
-//const tkn = newTknModule.getSpotifyToken();
-
-//console.log(tkn);
+    .delete((req,res, e) => {
+        const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
+        unqfy.deleteArtist(artist);
+        unqfy.saveUNQfy();
+        res.status(204);
+        res.send();
+    })    
 
 module.exports={appArtist: appArtist}  
