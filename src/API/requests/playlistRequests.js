@@ -1,6 +1,6 @@
 const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
-const newTknModule = require('../spotify/getSpotifyToken');
+//const newTknModule = require('../spotify/getSpotifyToken');
 const { errorHandler } = require('../apiErrors');
 
 const unqfy = getUNQfy();
@@ -26,10 +26,9 @@ function standardJSONOutput(playlist){
         tracks: getNotRecursiveTracks(playlist.tracks),
     }
 }
-appPlaylist.use(errors.errorHandler);
 appPlaylist.use('/playlists', router);
 
-router.use('/')
+router.route('/')
     .post((req, res, err) => { // POST /api/playlist
         try{
             if(req.body.keys.length==3){
