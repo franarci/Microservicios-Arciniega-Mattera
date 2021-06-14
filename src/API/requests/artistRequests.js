@@ -40,7 +40,7 @@ appArtist.use('/artists', router);
 // donde usar el URL_InvalidInexistent_ERROR?
 
 router.route('/')
-    .get((req, res) => { // GET /api/artists?name=
+    .get((req, res) => { // GET /api/artists
         try{
             const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
             res.send(standardJSONOutput(artist));
