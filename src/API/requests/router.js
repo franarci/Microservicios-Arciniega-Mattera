@@ -25,5 +25,3 @@ routeSarasa.route('/')
 rootAPI.use('/', root2, sarasa); */
 rootAPI.use('/api', appArtist, appAlbum, appPlaylist);
 rootAPI.listen(3000);
-
-module.exports={unqfy}

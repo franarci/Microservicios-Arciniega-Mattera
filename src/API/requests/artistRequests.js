@@ -54,8 +54,8 @@ router.route('/')
     })
     
 router.route('/:id')
-.get((req, res, e) => { // GET /api/artists/<id>
-    try{
+    .get((req, res, e) => { // GET /api/artists/<id>
+        try{
             const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
             res.send(standardJSONOutput(artist));
         } catch{
