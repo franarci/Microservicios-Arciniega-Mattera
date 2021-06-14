@@ -1,6 +1,6 @@
 const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
-//const newTknModule = require('../spotify/getSpotifyToken');
+const newTknModule = require('../spotify/spotifyClient');
 const { errorHandler } = require('../apiErrors');
 
 const unqfy = getUNQfy();
