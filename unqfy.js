@@ -398,9 +398,9 @@ class UNQfy {
 		});
 	}
 
-	async save(filename) {
+	save(filename) {
 		let serializedData;
-		serializedData = await picklify.picklify(this);
+		serializedData = picklify.picklify(this);
 		fs.writeFileSync(filename, JSON.stringify(serializedData, null, 2));
 	}
 
@@ -587,8 +587,6 @@ devuelve
     }
 
 }
-
-
 
 // COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
