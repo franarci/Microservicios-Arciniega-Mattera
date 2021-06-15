@@ -75,7 +75,7 @@ class PLAYLIST_MissingParameter_ERROR extends APIError {
 }
 
 function errorHandler(req, res, error){
-    if(!req.req.query){
+    if(!req.query){
         if (error.message == `The artist with name ${req.req.query.name} already exist`){ 
             const err = new AlreadyExists_ERROR('Artist');
             res.status(err.status);
@@ -90,14 +90,14 @@ function errorHandler(req, res, error){
             res.json({status: err.status, errorCode: err.errorCode});
         }
     }
-    else if(req.req.body!=undefined && req.req.body!={}){
+    else if(req.body!=undefined && req.body!={}){
         if (error.message == `The artist with id ${req.req.body.artistId} does not exist`){
             const err = new AddAlbumToNonExistentArtist_ERROR('Artist');
             res.status(err.status);
             res.json({status: err.status, errorCode: err.errorCode});
         }
     }
-    else if(!req.req.params){
+    else if(!req.params){
         if (error.message == `The artist with id ${req.req.params.id} does not exist`){
             const err = new ALBUMARTIST_DelGetPostInexistent_ERROR('Album');
             res.status(err.status);
@@ -112,7 +112,7 @@ function errorHandler(req, res, error){
             res.json({status: err.status, errorCode: err.errorCode});
         }
     }
-    else if(!req.req.query){
+    else if(!req.query){
         if (error.message == `The album with name ${req.req.query.name} does not exist`){
             const err = new ALBUMARTIST_DelGetPostInexistent_ERROR('Album');
             res.status(err.status);
@@ -140,7 +140,7 @@ function errorHandler(req, res, error){
         res.json({status: err.status, errorCode: err.errorCode});
     } else {
       // continua con el manejador de errores por defecto
-        next(err);
+        next(error);
     } 
 }
 

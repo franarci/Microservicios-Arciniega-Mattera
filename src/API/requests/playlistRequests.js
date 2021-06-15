@@ -38,7 +38,7 @@ appPlaylist.use('/playlists', router);
 // donde usar el URL_InvalidInexistent_ERROR?
 
 router.route('/')
-    .post((req, res) => { // POST /api/playlist
+    .post((req, res, error) => { // POST /api/playlist
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
         try {
@@ -65,15 +65,18 @@ router.route('/')
             } 
         } catch{
             JSONerrorHandler(req);
-            errorHandler(error, req, res);
+            errorHandler(req, res, error);
         }
     })
 
-try{
-    router.route('/:id')
-    .get((req, res) => { // GET /api/playlists/<id>
-        const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
-        res.send(standardJSONOutput(playlist));
+router.route('/:id')
+    .get((req, res, e) => { // GET /api/playlists/<id>
+        try{
+            const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
+            res.send(standardJSONOutput(playlist));
+        } catch(e){
+            errorHandler(req, res, e);
+        }
     })
     .delete((req,res) => {// DELETE /api/playlists/<id>
         const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
@@ -81,8 +84,5 @@ try{
         res.status(204);
         res.send();
     })  
-} catch(e){
-    errorHandler(e, req, res);
-}
     
 module.exports = {appPlaylist:appPlaylist}
