@@ -1,4 +1,5 @@
 const express = require('express');
+const { nextTick } = require('process');
 const {getUNQfy, saveUNQfy} = require('../../../main');
 const { 
     errorHandler, 
@@ -30,12 +31,10 @@ function standardJSONOutput(artist){
 }
 
 appArtist.use(errorHandler);
-appArtist.use(JSONerrorHandler);
-appArtist.use(verifyURL);
+//appArtist.use(JSONerrorHandler);
+//appArtist.use(verifyURL);
 appArtist.use('/artists', router);
 
-// donde usar el UNEXPECTED_Failure_ERROR?
-// donde usar el URL_InvalidInexistent_ERROR?
 
 router.route('/')
     .get((req, res) => { // GET /api/artists?name=
@@ -54,13 +53,15 @@ router.route('/')
     })
     
 router.route('/:id')
-    .get((req, res, e) => { // GET /api/artists/<id>
+    .get((req, res, e, next) => { // GET /api/artists/<id>
         try{
-            const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
+            const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist', 'id', res);
+            next(artist);
             res.send(standardJSONOutput(artist));
         } catch{
-            errorHandler(req, res, e);
-        }
+            errorHandler(e, req, res);
+            //throw e;
+        } 
     })
     .patch((req, res, e) => { // PATCH /api/artists/:id
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR

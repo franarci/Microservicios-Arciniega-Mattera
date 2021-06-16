@@ -435,12 +435,13 @@ class UNQfy {
 //                         2            Track            
     getInstanceByAttribute(atributeValue, classOfInstance, atributeName='id') {
         let atribute = atributeValue;
+        const error = new InstanceDoesNotExist(classOfInstance,atributeName, atribute);
         
         if(atributeName=='id'){atribute = parseInt(atribute);}
         if( this[`${classOfInstance}s`].some(instance => instance[atributeName] === atribute) ){
 			return this[`${classOfInstance}s`].find(instance => instance[atributeName] == atribute);
 		} else{
-			throw new InstanceDoesNotExist(classOfInstance,atributeName, atribute);
+			throw error;
 		}
     }
     /*    
