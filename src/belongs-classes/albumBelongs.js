@@ -6,7 +6,7 @@ class AlbumBelongs extends Belongs{
         const year = albumData.year;
 
         let check_name = this.instances_of_domain.some(album => album.name === n_ame) 
-        let check_year = this.instances_of_domain.some(album => album.country === year) 
+        let check_year = this.instances_of_domain.some(album => album.year === year) 
 
         return check_name && check_year
     }
