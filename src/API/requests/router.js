@@ -4,7 +4,6 @@ const {appArtist} = require('./artistRequests');
 const {appAlbum} = require('./albumRequests');
 const {appPlaylist} = require('./playlistRequests');
 const {appTrack} = require('./trackRequests');
-const { getUNQfy } = require('../../../main');
 
 const {URL_InvalidInexistent_ERROR} =require('../apiErrors')
 
