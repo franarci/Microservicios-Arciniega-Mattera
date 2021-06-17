@@ -74,7 +74,7 @@ class PLAYLIST_MissingParameter_ERROR extends APIError {
     }  
 }
 
-function errorHandler(error, request, res, next){
+function errorHandler(error, request, res, next){ // <------ ESTE NEXT ES MUCHO MUY IMPORTANTE
     const reqQueryName = request.query.name;
     const reqBody = request.body;
     const reqParamsId = request.params.id;
@@ -102,6 +102,7 @@ function errorHandler(error, request, res, next){
         }
     }
     else if(!!reqBody && !reqBody){
+        JSONerrorHandler(request);
         if (errMsg == artistID_Body_DoesNot_ExistsMessage){
             const err = new AddAlbumToNonExistentArtist_ERROR('Artist');
             res.status(err.status).json({status: err.status, errorCode: err.errorCode});
@@ -137,12 +138,9 @@ function errorHandler(error, request, res, next){
     else if (errMsg == ''){
         const err = new PLAYLIST_MissingParameter_ERROR();
         res.status(err.status).json({status: err.status, errorCode: err.errorCode});
-    } else if (errMsg == ''){
+    } else {
         const err = new UNEXPECTED_Failure_ERROR();
         res.status(err.status).json({status: err.status, errorCode: err.errorCode});
-    } else {
-      // continua con el manejador de errores por defecto
-        next(error);
     } 
 }
 

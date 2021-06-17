@@ -53,14 +53,13 @@ router.route('/')
     })
     
 router.route('/:id')
-    .get((req, res, e, next) => { // GET /api/artists/<id>
+    .get((req, res, e) => { // GET /api/artists/<id>
         try{
             const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist', 'id', res);
-            next(artist);
             res.send(standardJSONOutput(artist));
-        } catch{
+        } catch(e){
+            console.log(e);
             errorHandler(e, req, res);
-            //throw e;
         } 
     })
     .patch((req, res, e) => { // PATCH /api/artists/:id
