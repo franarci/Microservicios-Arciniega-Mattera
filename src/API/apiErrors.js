@@ -189,4 +189,4 @@ function verifyURL(recivedURL, desiredURL, res){
 }
 
 
-module.exports = {errorHandler, JSONerrorHandler, verifyURL, URL_InvalidInexistent_ERROR:URL_InvalidInexistent_ERROR}
+module.exports = {errorHandler}

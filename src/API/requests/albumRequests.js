@@ -1,9 +1,6 @@
 const express = require('express');
 const {getUNQfy, saveUNQfy} = require('../../../main');
-const { 
-    errorHandler, 
-    JSONerrorHandler,
-    verifyURL } = require('../apiErrors');
+const { errorHandler } = require('../apiErrors');
 
 
 const unqfy = getUNQfy();

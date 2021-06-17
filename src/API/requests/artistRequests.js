@@ -1,10 +1,7 @@
 const express = require('express');
 const { nextTick } = require('process');
 const {getUNQfy, saveUNQfy} = require('../../../main');
-const { 
-    errorHandler, 
-    JSONerrorHandler,
-    verifyURL } = require('../apiErrors');
+const { errorHandler } = require('../apiErrors');
 
 const unqfy = getUNQfy();
 const appArtist = express();
