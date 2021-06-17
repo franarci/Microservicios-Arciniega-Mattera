@@ -1,4 +1,4 @@
-const commands = require('./src/commands');
+//const commands = require('./src/commands');
 
 const fs = require('fs'); // necesitado para guardar/cargar unqfy
 const unqmod = require('./unqfy'); // importamos el modulo unqfy
