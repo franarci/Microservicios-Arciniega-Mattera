@@ -20,7 +20,6 @@ const { TrackBelongs } = require('./src/belongs-classes/trackBelongs');
 const { UserBelongs } = require('./src/belongs-classes/userBelongs');
 const { isRegExp } = require('util');
 const { type } = require('os');
-const { getUNQfy, saveUNQfy } = require('./main');
 const {mmGetLyrics} = require('./src/API/musixmatch/musixMatchClient');
 const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
 /*
