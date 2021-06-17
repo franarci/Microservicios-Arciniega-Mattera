@@ -1,9 +1,9 @@
 const express = require('express');
-const {getUNQfy, saveUNQfy} = require('../../../main');
+const {loadUnqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors');
 
 
-const unqfy = getUNQfy();
+const unqfy = loadUnqfy();
 const appAlbum = express();
 const router = express.Router();
 router.use(express.json());
@@ -29,7 +29,7 @@ function standardJSONOutput(album){
 
 appAlbum.use('/albums', router);
 appAlbum.use(errorHandler);
-appAlbum.use(verifyURL);
+//appAlbum.use(verifyURL);
 
 // donde usar el UNEXPECTED_Failure_ERROR?
 // donde usar el URL_InvalidInexistent_ERROR?
@@ -43,7 +43,7 @@ router.route('/')
         
         res.status(201);
         unqfy.addAlbum(req.body.artistId, dataAlbum);
-        unqfy.saveUNQfy();
+        saveUnqfy(unqfy);
         res.send(standardJSONOutput(album));
     })
     .get((req, res) => { // GET /api/albums?name=
@@ -59,7 +59,7 @@ router.route('/:id')
     .delete((req, res) => { // DELETE /api/albums/:id
         const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
         unqfy.deleteAlbum(album);
-        unqfy.saveUNQfy();
+        saveUnqfy(unqfy);
         res.status(204);
         res.send();
     })
@@ -67,7 +67,7 @@ router.route('/:id')
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
         unqfy.modifyInstance(req.params.id, 'album', req.body);
-        unqfy.saveUNQfy();
+        saveUnqfy(unqfy);
         const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
         res.send(standardJSONOutput(album));
     })

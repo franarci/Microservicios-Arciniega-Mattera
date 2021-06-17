@@ -1,8 +1,8 @@
 const express = require('express');
-const {getUNQfy, saveUNQfy} = require('../../../main');
+const {loadUnqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors');
 
-const unqfy = getUNQfy();
+const unqfy = loadUnqfy();
 const appPlaylist = express();
 const router = express.Router();
 router.use(express.json());
@@ -27,8 +27,8 @@ function standardJSONOutput(playlist){
 }
 
 appPlaylist.use(errorHandler);
-appPlaylist.use(JSONerrorHandler);
-appPlaylist.use(verifyURL);
+//appPlaylist.use(JSONerrorHandler);
+//appPlaylist.use(verifyURL);
 appPlaylist.use('/playlists', router);
 
 // donde usar el UNEXPECTED_Failure_ERROR?

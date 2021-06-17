@@ -1,9 +1,9 @@
 const express = require('express');
 const { nextTick } = require('process');
-const {getUNQfy, saveUNQfy} = require('../../../main');
+const {loadUnqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors');
 
-const unqfy = getUNQfy();
+const unqfy = loadUnqfy();
 const appArtist = express();
 const router = express.Router();
 router.use(express.json());
@@ -42,7 +42,7 @@ router.route('/')
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
         unqfy.addArtist(req.body);
-        unqfy.saveUNQfy();
+        saveUnqfy(unqfy);
         const artist = unqfy.getInstanceByAttribute(req.body.name, 'artist', 'name');
         
         res.status(201);
@@ -63,14 +63,14 @@ router.route('/:id')
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
         unqfy.modifyInstance(req.params.id, 'artist', req.body);
-        unqfy.saveUNQfy();
+        saveUnqfy(unqfy);
         const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
         res.send(standardJSONOutput(artist));
     })
     .delete((req,res, e) => {
         const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
         unqfy.deleteArtist(artist);
-        unqfy.saveUNQfy();
+        saveUnqfy(unqfy);
         res.status(204);
         res.send();
     })    
