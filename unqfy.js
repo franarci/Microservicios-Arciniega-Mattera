@@ -528,19 +528,7 @@ devuelve
         return ret;
     }
 
-	async getLyrics(trackName){
-		let track = this.getInstanceByAttribute(trackName, "track", "name");
-
-		if(track.getLyrics() == ""){
-    		var data = await mmGetLyrics(track);
-    		track.setLyrics(data);
-    		this.save('data.json');
-    		return data;	
-		}
-		console.log(track.lyrics);
-		return track.getLyrics();	
-	}
-
+	
     getPlaylistsMatchingName(playlistName){
         let ret = [];
         this.playlists.map(pl => {
@@ -554,6 +542,20 @@ devuelve
         return ret;
     }
 
+	async getLyrics(trackName){
+		let track = this.getInstanceByAttribute(trackName, "track", "name");
+
+		if(track.getLyrics() == ""){
+    		var data = await mmGetLyrics(track);
+    		track.setLyrics(data);
+    		this.save('data.json');
+    		return data;	
+		}
+		console.log(track.lyrics);
+		return track.getLyrics();	
+	}
+
+
 	async populateAlbumsForArtist(artistName){
 			const artist = this.getInstanceByAttribute(artistName,"artist","name");
 			const albums = await getAllArtistAlbums(artistName);
@@ -565,9 +567,11 @@ devuelve
 		for(var i = 0; i < albums.length; i++){
 			const albumData = {
 				name: albums[i].name,
-				year: albums[i].release_date
+				year: albums[i].release_date.substring(0,4)
 			}
+			try{
 			this.addAlbum(artistId, albumData);
+			} catch {}
 		}
 	}
 	
