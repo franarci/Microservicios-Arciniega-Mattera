@@ -1,11 +1,10 @@
 const express = require('express');
-const {loadUnqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
+const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
 const { 
     errorHandler, 
     JSONerrorHandler,
     verifyURL } = require('../apiErrors');
 
-const unqfy = loadUnqfy();
 const appTrack = express();
 const router = express.Router();
 router.use(express.json());

@@ -1,8 +1,7 @@
 const express = require('express');
-const {loadUnqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
+const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors');
 
-const unqfy = loadUnqfy();
 const appPlaylist = express();
 const router = express.Router();
 router.use(express.json());

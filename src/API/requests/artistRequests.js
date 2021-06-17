@@ -1,9 +1,8 @@
 const express = require('express');
 const { nextTick } = require('process');
-const {loadUnqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
+const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors');
 
-const unqfy = loadUnqfy();
 const appArtist = express();
 const router = express.Router();
 router.use(express.json());
