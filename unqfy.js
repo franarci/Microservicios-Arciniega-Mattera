@@ -388,6 +388,10 @@ class UNQfy {
 		this.playlists = this.playlists.filter(playlist => {playlist.name !== playlistName});
 	}
 
+	deletePlaylistById(id){
+		this.playlists = this.playlists.filter(playlist => playlist.id !== id);
+	}
+
 	deleteUser(user){
 		this.users = this.users.filter(deltaUser => user.name !== deltaUser.name);
 		this.playlists.forEach(playlist => {
