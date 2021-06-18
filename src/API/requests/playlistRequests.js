@@ -39,28 +39,26 @@ router.route('/')
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
         try {
             
-            if(req.body.keys.length==3){
-                unqfy.createPlaylist(req.body.name, null, req.body.maxDuration, req.body.name.genres);
-                const playlist = unqfy.getInstanceByAttribute(req.body.name, 'playlist', 'name'); 
-                saveUNQfy(unqfy);
+            if(Object.keys(req.body).length==3){
+               const playlist = unqfy.createPlaylist(req.body.name, null, req.body.maxDuration, req.body.genres);
+                saveUnqfy(unqfy);
                 
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
             } else {
-                let trackObjLs = [];
-                req.body.tracks.forEach(trackName => {
-                    const trackObj = unqfy.getInstanceByAttribute(trackName, 'track', 'name'); // track no existe
-                    trackObjLs.push(trackObj);
+                let trackIds = [];
+                req.body.tracks.forEach(trackId => {
+                    const track = unqfy.getInstanceByAttribute(trackId, 'track'); // track no existe
+                    trackIds.push(track.id);
                 });                
-                unqfy.createPlaylist(req.body.name, trackObjLs);
-                const playlist = unqfy.getInstanceByAttribute(req.body.name, 'playlist', 'name'); 
-                saveUNQfy(unqfy);
+                const playlist = unqfy.createPlaylistFromTracks(req.body.name, trackIds);
+                saveUnqfy(unqfy);
                 
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
             } 
         } catch{
-            JSONerrorHandler(req);
+          //  JSONerrorHandler(req);
             errorHandler(req, res, error);
         }
     })
@@ -76,7 +74,8 @@ router.route('/:id')
     })
     .delete((req,res) => {// DELETE /api/playlists/<id>
         const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
-        unqfy.deletePlaylist(playlist);
+        unqfy.deletePlaylistById(playlist.id);
+        saveUnqfy(unqfy)
         res.status(204);
         res.send();
     })  
