@@ -1,7 +1,6 @@
 const express = require('express');
-const { nextTick } = require('process');
 const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
-const { errorHandler } = require('../apiErrors');
+const { errorHandler } = require('../apiErrors2');
 
 const appArtist = express();
 const router = express.Router();
@@ -26,9 +25,7 @@ function standardJSONOutput(artist){
         }
 }
 
-appArtist.use(errorHandler);
-//appArtist.use(JSONerrorHandler);
-//appArtist.use(verifyURL);
+
 appArtist.use('/artists', router);
 
 
@@ -37,34 +34,31 @@ router.route('/')
         const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
         res.send(standardJSONOutput(artist));
     })
-    .post((req, res) => { // POST /api/artists/
-        // ver si el json tiene la forma esperada JSON_Invalid_ERROR
-        // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
-        unqfy.addArtist(req.body);
-        saveUnqfy(unqfy);
-        const artist = unqfy.getInstanceByAttribute(req.body.name, 'artist', 'name');
-        
-        res.status(201);
-        res.send(standardJSONOutput(artist));
+    .post((req, res, next) => { // POST /api/artists/ 
+        const keys = Object.keys(req.body);
+        if(keys.length > 1){
+                const artist = unqfy.addArtist(req.body);
+                saveUnqfy(unqfy);        
+                res.status(201).send(standardJSONOutput(artist));            
+        } else {
+            next(new Error("MissingParameter"));
+        }
     })
     
 router.route('/:id')
-    .get((req, res, e) => { // GET /api/artists/<id>
-        try{
+    .get((req, res) => { // GET /api/artists/<id>
             const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist', 'id', res);
             res.send(standardJSONOutput(artist));
-        } catch(e){
-            console.log(e);
-            errorHandler(e, req, res);
-        } 
     })
-    .patch((req, res, e) => { // PATCH /api/artists/:id
-        // ver si el json tiene la forma esperada JSON_Invalid_ERROR
-        // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
-        unqfy.modifyInstance(req.params.id, 'artist', req.body);
-        saveUnqfy(unqfy);
-        const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
-        res.send(standardJSONOutput(artist));
+    .patch((req, res, next) => { // PATCH /api/artists/:id
+        const keys = Object.keys(req.body); 
+        if(keys.length > 1){
+            const artist = unqfy.modifyInstance(req.params.id, 'artist', req.body);
+            saveUnqfy(unqfy);
+            res.send(standardJSONOutput(artist));
+        } else {
+            next(new Error("MissingParameter"));
+        }
     })
     .delete((req,res, e) => {
         const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
@@ -73,5 +67,7 @@ router.route('/:id')
         res.status(204);
         res.send();
     })    
+
+appArtist.use(errorHandler);
 
 module.exports={appArtist: appArtist}  
