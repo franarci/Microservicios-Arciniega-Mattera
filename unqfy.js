@@ -55,22 +55,24 @@ class UNQfy {
 	- una propiedad name (string)
 	- una propiedad country (string)
 	*/  
-        const artistBelongs = new ArtistBelongs(this.artists)
-
-        if(!artistBelongs.execute(artistData)){
-			const artist = 
-				new Artist(
-					this.getAndIncrementId('artist'), 
-					artistData.name, 
-					artistData.country
-				)
-			this.artists.push(artist);
-			return artist;
+		if(artistData.name != undefined && artistData.country != undefined){
+    	    const artistBelongs = new ArtistBelongs(this.artists)
+			if(!artistBelongs.execute(artistData)){
+				const artist = 
+					new Artist(
+						this.getAndIncrementId('artist'), 
+						artistData.name, 
+						artistData.country
+					)
+				this.artists.push(artist);
+				return artist;
+			} else {
+				throw new InstanceAlreadyExist('artist', artistData.name);
+			}
 		} else {
-			throw new InstanceAlreadyExist('artist', artistData.name);
+			throw new Error("InvalidInputKey");
 		}
 	}
-	
 	// albumData: objeto JS con los datos necesarios para crear un album
 	//   albumData.name (string)
 	//   albumData.year (number)
@@ -180,31 +182,34 @@ class UNQfy {
 	}
 	
 	createPlaylistFromTracks(name,trackIds){
-		try {
-			const playlistBelongs = new PlaylistBelongs(this.playlists);
-			if(!playlistBelongs.execute(name)){
-				let tracks = [];
-				let duration = 0;
-				let genres = [];
-				trackIds.forEach(trackId => {
-					const track=this.getInstanceByAttribute(trackId, "track");
-					tracks.push(track);
-					duration += parseInt(track.duration);
-					genres.concat(track.genres);
-				});
-				let playlist = new Playlist(
-					this.getAndIncrementId('playlist'),
-					name,
-					tracks,
-					genres,
-					duration,
-					null
-				);
-				this.playlists.push(playlist);
-				return playlist;
+		if(name != undefined && trackIds != undefined){
+			try {
+				if(!playlistBelongs.execute(name)){
+					let tracks = [];
+					let duration = 0;
+					let genres = [];
+					trackIds.forEach(trackId => {
+						const track=this.getInstanceByAttribute(trackId, "track");
+						tracks.push(track);
+						duration += parseInt(track.duration);
+						genres.concat(track.genres);
+					});
+					let playlist = new Playlist(
+						this.getAndIncrementId('playlist'),
+						name,
+						tracks,
+						genres,
+						duration,
+						null
+					);
+					this.playlists.push(playlist);
+					return playlist;
+				}
+			} catch(instanceDoesNotExists){
+				throw instanceDoesNotExists;
 			}
-		} catch(e){
-			throw e;
+		} else {
+			throw new Error("InvalidInputKey");
 		}
 	}
 	// name: nombre de la playlist
@@ -218,8 +223,7 @@ class UNQfy {
 		* un metodo duration() que retorne la duración de la playlist.
 		* un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
 	*/
-		const playlistBelongs = new PlaylistBelongs(this.playlists);
-		if(!playlistBelongs.execute(name)){
+		if(name != undefined && maxDuration != undefined && genresToInclude != undefined){
 
 			let matchedTracks = this.getTracksMatchingGenres(genresToInclude);
 			let durationLimit = maxDuration;
@@ -252,7 +256,7 @@ class UNQfy {
 			this.playlists.push(playlist);
 			return playlist;
 		 } else {
-			throw new InstanceAlreadyExist('playlist', name);
+			throw new Error("InvalidInputKey");
 		}
 	}
 
@@ -592,6 +596,7 @@ devuelve
     modifyInstance(id, typeOfInstance, modifiedData){
         let instance = this.getInstanceByAttribute(id, typeOfInstance);
         instance.setAttributes(modifiedData);
+		return instance;
     }
 
 }
