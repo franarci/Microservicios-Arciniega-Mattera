@@ -1,6 +1,8 @@
 const express = require('express');
 const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
-const { errorHandler } = require('../apiErrors');
+const { errorHandler, JSON_MissingParameter_ERROR } = require('../apiErrors2');
+const {InstanceDoesNotExist} = require('../../errors')
+const bodyParser = require('body-parser');
 
 const appPlaylist = express();
 const router = express.Router();
@@ -25,7 +27,7 @@ function standardJSONOutput(playlist){
     }
 }
 
-appPlaylist.use(errorHandler);
+
 //appPlaylist.use(JSONerrorHandler);
 //appPlaylist.use(verifyURL);
 appPlaylist.use('/playlists', router);
@@ -34,18 +36,17 @@ appPlaylist.use('/playlists', router);
 // donde usar el URL_InvalidInexistent_ERROR?
 
 router.route('/')
-    .post((req, res, error) => { // POST /api/playlist
+    .post((req, res, next) => { // POST /api/playlist
         // ver si el json tiene la forma esperada JSON_Invalid_ERROR
         // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
-        try {
-            
-            if(Object.keys(req.body).length==3){
-               const playlist = unqfy.createPlaylist(req.body.name, null, req.body.maxDuration, req.body.genres);
+        try{
+            const keys = Object.keys(req.body);
+            if(keys.length>2){
+                const playlist = unqfy.createPlaylist(req.body.name, null, req.body.maxDuration, req.body.genres);
                 saveUnqfy(unqfy);
-                
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
-            } else {
+            } else if(keys.length==2){
                 let trackIds = [];
                 req.body.tracks.forEach(trackId => {
                     const track = unqfy.getInstanceByAttribute(trackId, 'track'); // track no existe
@@ -56,21 +57,23 @@ router.route('/')
                 
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
-            } 
-        } catch{
-          //  JSONerrorHandler(req);
-            errorHandler(req, res, error);
+            }  else {
+                next(new JSON_MissingParameter_ERROR);
+            }
+        } catch(error) {
+            if(error instanceof InstanceDoesNotExist){
+                next(new Error("RelatedResourceNotFound"));
+            }
         }
     })
+    
 
 router.route('/:id')
-    .get((req, res, e) => { // GET /api/playlists/<id>
-        try{
+    .get((req, res, next) => { // GET /api/playlists/<id>
+ 
             const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
             res.send(standardJSONOutput(playlist));
-        } catch(e){
-            errorHandler(req, res, e);
-        }
+        
     })
     .delete((req,res) => {// DELETE /api/playlists/<id>
         const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
@@ -78,6 +81,13 @@ router.route('/:id')
         saveUnqfy(unqfy)
         res.status(204);
         res.send();
-    })  
+    });
     
+appPlaylist.use(errorHandler);
+appPlaylist.use(bodyParser.urlencoded({
+    extended: true
+}));
+appPlaylist.use(bodyParser.json())
+
+
 module.exports = {appPlaylist:appPlaylist}
