@@ -1,8 +1,7 @@
 const express = require('express');
 const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
-const { errorHandler, JSON_MissingParameter_ERROR } = require('../apiErrors2');
+const { errorHandler } = require('../apiErrors2');
 const {InstanceDoesNotExist} = require('../../errors')
-const bodyParser = require('body-parser');
 
 const appPlaylist = express();
 const router = express.Router();
@@ -58,7 +57,7 @@ router.route('/')
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
             }  else {
-                next(new JSON_MissingParameter_ERROR);
+                next(new Error("MissingParameter"));
             }
         } catch(error) {
             if(error instanceof InstanceDoesNotExist){
@@ -84,10 +83,6 @@ router.route('/:id')
     });
     
 appPlaylist.use(errorHandler);
-appPlaylist.use(bodyParser.urlencoded({
-    extended: true
-}));
-appPlaylist.use(bodyParser.json())
 
 
 module.exports = {appPlaylist:appPlaylist}
