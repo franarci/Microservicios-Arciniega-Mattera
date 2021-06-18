@@ -179,7 +179,7 @@ class UNQfy {
 		return(resMatching)
 	}
 	
-	createPlaylist(name,trackIds){
+	createPlaylistFromTracks(name,trackIds){
 		try {
 			const playlistBelongs = new PlaylistBelongs(this.playlists);
 			if(!playlistBelongs.execute(name)){
@@ -189,7 +189,7 @@ class UNQfy {
 				trackIds.forEach(trackId => {
 					const track=this.getInstanceByAttribute(trackId, "track");
 					tracks.push(track);
-					duration += track.duration;
+					duration += parseInt(track.duration);
 					genres.concat(track.genres);
 				});
 				let playlist = new Playlist(
