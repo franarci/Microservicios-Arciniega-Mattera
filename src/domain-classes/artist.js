@@ -19,8 +19,12 @@ class Artist {
     getAlbums(){return this.albums;}
     getGenres(){return this.genres;}
     setAttributes(attributesData){ 
-        this.name=attributesData.name;
-        this.country=attributesData.country; 
+        if(attributesData.name != undefined && attributesData.country != undefined) {
+            this.name=attributesData.name;
+            this.country=attributesData.country; 
+        } else {
+            throw new Error("InvalidInputKey");
+        }
     }
 
     addAlbum(album){
