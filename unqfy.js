@@ -556,24 +556,33 @@ devuelve
     }
 
 	async getLyrics(trackName){
-		let track = this.getInstanceByAttribute(trackName, "track", "name");
-
-		if(track.getLyrics() == ""){
-    		var data = await mmGetLyrics(track);
-    		track.setLyrics(data);
-    		this.save('data.json');
-    		return data;	
-		}
-		console.log(track.lyrics);
-		return track.getLyrics();	
+		try{
+			let track = this.getInstanceByAttribute(trackName, "track", "name");
+			if(track.getLyrics() == ""){
+    			var data = await mmGetLyrics(track);
+    			track.setLyrics(data);
+    			this.save('data.json');
+    			return data;	
+			}
+			console.log(track.lyrics);
+			return track.getLyrics();	
+		} catch(error){
+			if(error.message.startsWith("header")){
+				throw new Error("Lyrics not found");
+			} else throw error;
+		}	
 	}
 
 
 	async populateAlbumsForArtist(artistName){
+		try{
 			const artist = this.getInstanceByAttribute(artistName,"artist","name");
 			const albums = await getAllArtistAlbums(artistName);
 			this.saveArtistAlbums(artist.getId(),albums);
 			this.save('data.json');
+		} catch(error){
+			throw error;
+		}
 	}
 
 	saveArtistAlbums(artistId, albums){
@@ -591,9 +600,9 @@ devuelve
 	getAlbumsForArtist(artistName){
 		try{
 			const artist = this.getInstanceByAttribute(artistName,"artist","name");
-			artist.getAlbums().forEach(album => {
-				console.log(album.name)
-			})
+			return artist.getAlbums().map(album => {
+				album.name
+			});
 		}catch(e){
 			throw e;
 		}

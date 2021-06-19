@@ -23,7 +23,7 @@ async function mmGetLyrics(track){
         var body = response.artists;
         var lyrics = body.lyrics.lyrics_body; 
         return lyrics;
-        }).catch((error) => {console.log(error);});
+        }).catch((error) => {throw error;});
     return data;
 }
 

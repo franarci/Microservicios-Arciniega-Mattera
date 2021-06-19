@@ -191,21 +191,44 @@ class Delete extends Command {
 class GetLyrics extends Command{
     executeMethod = async (lsParams, unqfy) =>{
         const trackName = lsParams[0];
-        await console.log(unqfy.getLyrics(trackName));
+        try{
+            const lyrics = await unqfy.getLyrics(trackName)
+            console.log((lyrics==undefined) ? `No lyrics found for ${trackName}` : lyrics);
+        } catch(error){
+            if(error.message.startsWith("The track")){
+                console.log(error.message);
+            } else {
+                console.log(`No lyrics found for ${trackName}`)
+            }
+        }
     } 
 }
 
 class PopulateAlbumsForArtist extends Command {
     executeMethod = async (lsParams, unqfy) =>{
-        const artistName = lsParams[0];
-        await unqfy.populateAlbumsForArtist(artistName);
+        try{
+            const artistName = lsParams[0];
+            await unqfy.populateAlbumsForArtist(artistName);
+        }
+        catch(error) {
+            if(error.message){
+                console.log(error.message);
+            } else {
+                console.log(error)
+            }
+        }
     }
 }
 
 class GetAlbumsForArtist extends Command {
     executeMethod(lsParams,unqfy){
         let artistName = lsParams[0]
-        unqfy.getAlbumsForArtist(artistName)
+        const albums = unqfy.getAlbumsForArtist(artistName);
+        if(albums.length > 0){
+            albums.forEach(album => console.log(album))
+        } else {
+            console.log(`No albums found for ${artistName}`)
+        }    
     }
 }
 
