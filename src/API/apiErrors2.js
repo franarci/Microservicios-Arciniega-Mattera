@@ -45,26 +45,29 @@ class UNEXPECTED_Failure_ERROR extends APIError {
     }  
 }
 
-
 function errorHandler(error, request, res, next){
     console.error(error);
     const errMsg = error.message;
+    var err;
 
 
     if(error.type === 'entity.parse.failed' || errMsg === 'InvalidInputKey' || errMsg === "MissingParameter"){
-        const err = new Invalid_ERROR();
+        err = new Invalid_ERROR();
         res.status(err.status).json({status: err.status, errorCode: err.errorCode});
     }
     else if(error instanceof InstanceDoesNotExist) {
-        const err = new NonExistent_ERROR();
+        err = new NonExistent_ERROR();
         res.status(err.status).json({status: err.status, errorCode: err.errorCode});
     }
     else if (errMsg === 'RelatedResourceNotFound'){
-        const err = new NonExistentRelated_ERROR;
+        err = new NonExistentRelated_ERROR;
         res.status(err.status).json({status: err.status, errorCode: err.errorCode});
     }
     else if (error instanceof InstanceAlreadyExist) {
-        const err = new AlreadyExists_ERROR;
+        err = new AlreadyExists_ERROR;
+        res.status(err.status).json({status: err.status, errorCode: err.errorCode})
+    } else{
+        err = new UNEXPECTED_Failure_ERROR;
         res.status(err.status).json({status: err.status, errorCode: err.errorCode})
     }
 }

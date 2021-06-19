@@ -1,5 +1,5 @@
 const express = require('express');
-const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
+const {unqfy, saveUNQfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors2');
 const {InstanceDoesNotExist} = require('../../errors');
 
@@ -9,11 +9,9 @@ router.use(express.json());
 
 function getNotRecursiveTracks(recursiveTracksList){
     let ret = [];
-
     recursiveTracksList.forEach(trackRec => 
         ret.push({track_name:trackRec.name, track_duration:trackRec.duration})
     );
-
     return ret;
 }
 
@@ -31,37 +29,33 @@ function standardJSONListOutput(playlists){
     return ret;
 }
 
-
-//appPlaylist.use(JSONerrorHandler);
-//appPlaylist.use(verifyURL);
 appPlaylist.use('/playlists', router);
-
-// donde usar el UNEXPECTED_Failure_ERROR?
-// donde usar el URL_InvalidInexistent_ERROR?
 
 router.route('/')
     .post((req, res, next) => { // POST /api/playlist
-        // ver si el json tiene la forma esperada JSON_Invalid_ERROR
-        // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
         try{
             const keys = Object.keys(req.body);
-            if(keys.length>2){
+            const emptyFiledsCond = Object.values(req.body).every(value => value != "");
+
+            if(keys.length>2 && emptyFiledsCond && req.body.genres.some(genre => genre != "")){
                 const playlist = unqfy.createPlaylist(req.body.name, null, req.body.maxDuration, req.body.genres);
-                saveUnqfy(unqfy);
+                saveUNQfy(unqfy);
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
-            } else if(keys.length==2){
+            } 
+            else if(keys.length==2 && emptyFiledsCond ){
                 let trackIds = [];
                 req.body.tracks.forEach(trackId => {
                     const track = unqfy.getInstanceByAttribute(trackId, 'track'); // track no existe
                     trackIds.push(track.id);
                 });                
                 const playlist = unqfy.createPlaylistFromTracks(req.body.name, trackIds);
-                saveUnqfy(unqfy);
+                saveUNQfy(unqfy);
                 
                 res.status(201);
                 res.send(standardJSONOutput(playlist));
-            }  else {
+            }  
+            else {
                 next(new Error("MissingParameter"));
             }
         } catch(error) {
@@ -99,12 +93,11 @@ router.route('/:id')
     .delete((req,res) => {// DELETE /api/playlists/<id>
         const playlist = unqfy.getInstanceByAttribute(req.params.id, 'playlist');
         unqfy.deletePlaylistById(playlist.id);
-        saveUnqfy(unqfy)
+        saveUNQfy(unqfy)
         res.status(204);
         res.send();
     });
     
 appPlaylist.use(errorHandler);
-
 
 module.exports = {appPlaylist:appPlaylist}

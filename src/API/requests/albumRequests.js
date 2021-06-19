@@ -1,7 +1,7 @@
 const express = require('express');
-const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
+const {unqfy, saveUNQfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors2');
-const {InstanceDoesNotExist} = require('../../errors')
+const {InstanceDoesNotExist} = require('../../errors');
 
 const appAlbum = express();
 const router = express.Router();
@@ -28,19 +28,17 @@ function standardJSONOutput(album){
 
 appAlbum.use('/albums', router);
 appAlbum.use(errorHandler);
-//appAlbum.use(verifyURL);
-
-// donde usar el UNEXPECTED_Failure_ERROR?
-// donde usar el URL_InvalidInexistent_ERROR?
 
 router.route('/')
     .post((req, res, next) => { // POST /api/albums/
         const keys = Object.keys(req.body);
-        if(keys.length > 2) {
+        const emptyFiledsCond = Object.values(req.body).every(value => value != "");
+
+        if(keys.length > 2 && emptyFiledsCond) {
             try {
                 const dataAlbum = {name: req.body.name, year:req.body.year};
                 unqfy.addAlbum(req.body.artistId, dataAlbum);
-                saveUnqfy(unqfy);
+                saveUNQfy(unqfy);
                 res.status(201);
                 res.send(standardJSONOutput(dataAlbum));
             } catch (error) {
@@ -65,15 +63,16 @@ router.route('/:id')
     .delete((req, res) => { // DELETE /api/albums/:id
         const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
         unqfy.deleteAlbum(album);
-        saveUnqfy(unqfy);
+        saveUNQfy(unqfy);
         res.status(204);
         res.send();
     })
     .patch((req, res, next) => { // PATCH /api/albums/:id
         const keys = Object.keys(req.body); 
+
         if(keys.length > 0){
             unqfy.modifyInstance(req.params.id, 'album', req.body);
-            saveUnqfy(unqfy);
+            saveUNQfy(unqfy);
             const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
             res.send(standardJSONOutput(album));
         } else {

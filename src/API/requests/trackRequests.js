@@ -1,9 +1,6 @@
 const express = require('express');
-const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
-const { 
-    errorHandler, 
-    JSONerrorHandler,
-    verifyURL } = require('../apiErrors');
+const {unqfy} = require('./saveAndLoadUNQfy');
+const { errorHandler } = require('../apiErrors');
 
 const appTrack = express();
 const router = express.Router();
@@ -29,31 +26,18 @@ function standardJSONOutput(playlist){
 }
 
 appTrack.use(errorHandler);
-//appTrack.use(JSONerrorHandler);
-//appTrack.use(verifyURL);
 appTrack.use('/tracks', router);
 
-// donde usar el UNEXPECTED_Failure_ERROR?
-// donde usar el URL_InvalidInexistent_ERROR?
-
 router.route('/:trackId/lyrics')
-    .post(async (req, res) => { // POST /api/playlist
-        // ver si el json tiene la forma esperada JSON_Invalid_ERROR
-        // ver si el json tiene valores en todas sus claves JSON_MissingParameter_ERROR
-        try {
-                const track = unqfy.getInstanceByAttribute(req.params.id, 'track');
-                const lyrics = await unqfy.getLyrics(track.name) 
-                const res = {
-                    Name :  track.name,
-                    lyrics: lyrics
-                };
-                res.status(201);
-                res.send(res);
-            } 
-        catch {
-            JSONerrorHandler(req);
-            errorHandler(error, req, res);
-        }
+    .get(async (req, res) => { // GET api/tracks/:id/lyrics
+        const track = unqfy.getInstanceByAttribute(req.params.id, 'track');
+        const lyrics = await unqfy.getLyrics(track.name) 
+        const res = {
+            Name :  track.name,
+            lyrics: lyrics
+        };
+        res.status(201);
+        res.send(res);
     })
 
-    module.exports = {appTrack:appTrack}
+module.exports = {appTrack:appTrack}
