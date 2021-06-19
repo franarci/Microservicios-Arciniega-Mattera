@@ -619,7 +619,7 @@ devuelve
     }
 
 	getMatchingPlaylists(name, greaterThan, lessThan){
-		if(name != undefined || greaterThan != undefined && lessThan != undefined){
+		if(name != undefined || greaterThan != undefined || lessThan != undefined){
 			let playlists = this.playlists;
 			if(name != undefined){
 				playlists = playlists.filter(playlist => 
