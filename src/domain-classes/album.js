@@ -17,7 +17,11 @@ class Album extends TrackList {
     getArtist(){ return this.artist; }
     getYear(){ return this.year; }
     setAttributes(attributesData){ 
-        this.year=attributesData.year; 
+        if(attributesData.year != undefined) {
+            this.year=attributesData.year; 
+        } else {
+            throw new Error("InvalidInputKey");
+        }
     }
 }
 
