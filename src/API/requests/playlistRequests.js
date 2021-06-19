@@ -1,7 +1,7 @@
 const express = require('express');
 const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors2');
-const {InstanceDoesNotExist} = require('../../errors')
+const {InstanceDoesNotExist} = require('../../errors');
 
 const appPlaylist = express();
 const router = express.Router();
@@ -24,6 +24,11 @@ function standardJSONOutput(playlist){
         duration: playlist.duration,
         tracks: getNotRecursiveTracks(playlist.tracks),
     }
+}
+
+function standardJSONListOutput(playlists){
+    const ret = playlists.map(playlist => standardJSONOutput(playlist));
+    return ret;
 }
 
 
@@ -62,10 +67,27 @@ router.route('/')
         } catch(error) {
             if(error instanceof InstanceDoesNotExist){
                 next(new Error("RelatedResourceNotFound"));
-            }
+            } else throw error;
         }
     })
-    
+    .get((req, res, next) => { 
+        try{
+            if(Object.keys(req.query).length>0){
+                const name = req.query.name;
+                const gt = req.query.durationGT;
+                const lt = req.query.durationLT;
+                const playlists = unqfy.getMatchingPlaylists(name, gt, lt);
+                res.status(201);
+                res.send(standardJSONListOutput(playlists));
+            } else {
+                next(new Error("MissingParameter"));
+            }
+        } catch(error) {
+            if(error instanceof InstanceDoesNotExist){
+                next(new Error("RelatedResourceNotFound"));
+            } else throw error;
+        }
+    })
 
 router.route('/:id')
     .get((req, res, next) => { // GET /api/playlists/<id>
