@@ -22,6 +22,7 @@ const { isRegExp } = require('util');
 const { type } = require('os');
 const {mmGetLyrics} = require('./src/API/musixmatch/musixMatchClient');
 const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
+const album = require('./src/domain-classes/album');
 /*
 por el error 
 node:internal/modules/cjs/loader:927
@@ -82,24 +83,29 @@ class UNQfy {
 	El objeto album creado debe tener (al menos):
 		- una propiedad name (string)
 		- una propiedad year (number)*/
-        const albumBelongs = new AlbumBelongs(this.albums);
+        if(artistId != undefined && albumData.name != undefined && albumData.year != undefined){
+		
+			const albumBelongs = new AlbumBelongs(this.albums);
 
-        if(!albumBelongs.execute(albumData)){
-            const album = 
-                new Album(
-                    this.getAndIncrementId('album'),
-                    albumData.name,
-                    this.getInstanceByAttribute(artistId, 'artist'),
-                    albumData.year
-                );
-    
-            const artist = this.getInstanceByAttribute(artistId, 'artist');
-            artist.addAlbum(album);
-            this.albums.push(album);
-            return album;
-        } else{
-            throw new InstanceAlreadyExist('album', albumData.name);
-        }
+        	if(!albumBelongs.execute(albumData)){
+        	    const album = 
+        	        new Album(
+        	            this.getAndIncrementId('album'),
+        	            albumData.name,
+        	            this.getInstanceByAttribute(artistId, 'artist'),
+        	            albumData.year
+        	        );
+					
+        	    const artist = this.getInstanceByAttribute(artistId, 'artist');
+        	    artist.addAlbum(album);
+        	    this.albums.push(album);
+        	    return album;
+        	} else{
+        	    throw new InstanceAlreadyExist('album', albumData.name);
+        	}
+		} else {
+			throw new Error("InvalidInputKey");
+		}
 	}
 
 	// trackData: objeto JS con los datos necesarios para crear un track
@@ -594,10 +600,38 @@ devuelve
 	}
 
     modifyInstance(id, typeOfInstance, modifiedData){
-        let instance = this.getInstanceByAttribute(id, typeOfInstance);
-        instance.setAttributes(modifiedData);
-		return instance;
+		if(id != undefined){
+        	let instance = this.getInstanceByAttribute(id, typeOfInstance);
+        	instance.setAttributes(modifiedData);
+			return instance;
+		} else {
+			throw new Error("InvalidInputKey");
+		}
     }
+
+	getMatchingPlaylists(name, greaterThan, lessThan){
+		if(name != undefined || greaterThan != undefined && lessThan != undefined){
+			let playlists = this.playlists;
+			if(name != undefined){
+				playlists = playlists.filter(playlist => 
+					playlist.name == name
+				);
+			}
+			if(greaterThan != undefined){
+				playlists = playlists.filter(playlist => 
+					playlist.duration > greaterThan
+				);
+			}
+			if(lessThan != undefined){
+				playlists = playlists.filter(playlist => 
+					playlist.duration < lessThan
+				);
+			}
+			return playlists;
+		} else {
+			throw new Error("InvalidInputKey");
+		}
+	}
 
 }
 
