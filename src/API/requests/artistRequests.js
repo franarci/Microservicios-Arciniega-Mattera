@@ -1,7 +1,6 @@
 const express = require('express');
-const {unqfy, saveUnqfy} = require('./saveAndLoadUNQfy');
+const {unqfy, saveUNQfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors2');
-
 const appArtist = express();
 const router = express.Router();
 router.use(express.json());
@@ -25,9 +24,8 @@ function standardJSONOutput(artist){
         }
 }
 
-
 appArtist.use('/artists', router);
-
+appArtist.use(errorHandler);
 
 router.route('/')
     .get((req, res) => { // GET /api/artists?name=
@@ -36,9 +34,11 @@ router.route('/')
     })
     .post((req, res, next) => { // POST /api/artists/ 
         const keys = Object.keys(req.body);
-        if(keys.length > 1){
+        const emptyFiledsCond = Object.values(req.body).every(value => value != "");
+        
+        if(keys.length > 1 && emptyFiledsCond){
                 const artist = unqfy.addArtist(req.body);
-                saveUnqfy(unqfy);        
+                saveUNQfy(unqfy);        
                 res.status(201).send(standardJSONOutput(artist));            
         } else {
             next(new Error("MissingParameter"));
@@ -52,9 +52,11 @@ router.route('/:id')
     })
     .patch((req, res, next) => { // PATCH /api/artists/:id
         const keys = Object.keys(req.body); 
-        if(keys.length > 1){
+        const emptyFiledsCond = Object.values(req.body).every(value => value != "");
+        
+        if(keys.length > 1 && emptyFiledsCond){
             const artist = unqfy.modifyInstance(req.params.id, 'artist', req.body);
-            saveUnqfy(unqfy);
+            saveUNQfy(unqfy);
             res.send(standardJSONOutput(artist));
         } else {
             next(new Error("MissingParameter"));
@@ -63,11 +65,9 @@ router.route('/:id')
     .delete((req,res, e) => {
         const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
         unqfy.deleteArtist(artist);
-        saveUnqfy(unqfy);
+        saveUNQfy(unqfy);
         res.status(204);
         res.send();
     })    
-
-appArtist.use(errorHandler);
 
 module.exports={appArtist: appArtist}  
