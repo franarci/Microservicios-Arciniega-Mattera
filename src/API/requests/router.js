@@ -5,23 +5,13 @@ const {appAlbum} = require('./albumRequests');
 const {appPlaylist} = require('./playlistRequests');
 const {appTrack} = require('./trackRequests');
 
-const {URL_InvalidInexistent_ERROR} =require('../apiErrors')
+const {errorHandler} =require('../apiErrors2')
 
-/* const root2 = express();
-root2.use('/api,',appArtist, appAlbum, appPlaylist);
 
-const sarasa = express();
-const routeSarasa = express.Router();
-sarasa.use('*', routeSarasa);
-
-routeSarasa.route('/')
-    .get((req,res) => {
-        const err = new URL_InvalidInexistent_ERROR();
-        res.status(err.status);
-        res.json({status: err.status, errorCode: err.errorCode});
-        throw err;
-    })
-
-rootAPI.use('/', root2, sarasa); */
 rootAPI.use('/api', appArtist, appAlbum, appPlaylist, appTrack);
+
+rootAPI.use((req,res,next)=>{
+    next(new Error("Invalid route"));
+})
+rootAPI.use(errorHandler);
 rootAPI.listen(3000);
