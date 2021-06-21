@@ -50,6 +50,13 @@ class UNQfy {
 	//   artistData.name (string)
 	//   artistData.country (string)
 	// retorna: el nuevo artista creado
+	getArtists(){
+		return this.artists;
+	}
+
+	getAlbums(){
+		return this.albums;
+	}
 	addArtist(artistData) {
 	/* Crea un artista y lo agrega a unqfy.
 	El objeto artista creado debe soportar (al menos):
@@ -388,7 +395,7 @@ class UNQfy {
     }
     
     deleteArtist(artist){
-        this.artists = this.artists.filter( deltaArtist => {deltaArtist !== artist} );
+        this.artists = this.artists.filter( deltaArtist => deltaArtist !== artist );
         artist.albums.forEach( deltaAlbum => {
 			this.deleteAlbum(deltaAlbum);
 		});
@@ -640,6 +647,12 @@ devuelve
 		} else {
 			throw new Error("InvalidInputKey");
 		}
+	}
+
+	filterByName(name, classname){
+		let ret = this[classname].filter(instance =>
+			instance.name.toLowerCase().includes(name.toLowerCase()));
+		return (ret)
 	}
 
 }
