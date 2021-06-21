@@ -1,6 +1,7 @@
 const express = require('express');
 const {unqfy, saveUNQfy} = require('./saveAndLoadUNQfy');
-const { errorHandler } = require('../apiErrors2');
+const { errorHandler } = require('../apiErrors');
+const {getNotRecursiveTracks} = require('./albumRequests');
 const appArtist = express();
 const router = express.Router();
 router.use(express.json());
@@ -9,7 +10,7 @@ function getNotRecursiveAlbums(recursiveAlbumsList){
     let ret = [];
     
     recursiveAlbumsList.forEach(albumRec => 
-        ret.push({album_name:albumRec.name, album_year:albumRec.year})
+        ret.push({id:albumRec.id, name:albumRec.name, year:albumRec.year, tracks:getNotRecursiveTracks(albumRec.tracks)})
     );
         
     return ret;
@@ -29,8 +30,15 @@ appArtist.use(errorHandler);
 
 router.route('/')
     .get((req, res) => { // GET /api/artists?name=
-        const artist = unqfy.getInstanceByAttribute(req.query.name, 'artist', 'name');
-        res.send(standardJSONOutput(artist));
+        let artists;
+        if(req.query.name != undefined){
+            artists = unqfy.filterByName(req.query.name, 'artists');
+            
+        } else {
+            artists = unqfy.getArtists();
+        }
+        const jsonArtists = artists.map(artist => standardJSONOutput(artist));
+        res.send(jsonArtists);
     })
     .post((req, res, next) => { // POST /api/artists/ 
         const keys = Object.keys(req.body);
