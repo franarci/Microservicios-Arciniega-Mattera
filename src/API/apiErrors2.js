@@ -27,11 +27,6 @@ class NonExistent_ERROR extends APIError {
     }
 }
 
-class URL_InvalidInexistent_ERROR extends APIError {
-    constructor() {
-        super(404, 'RESOURCE_NOT_FOUND');
-    }  
-}
 
 class Invalid_ERROR extends APIError {
     constructor() {
@@ -55,7 +50,7 @@ function errorHandler(error, request, res, next){
         err = new Invalid_ERROR();
         res.status(err.status).json({status: err.status, errorCode: err.errorCode});
     }
-    else if(error instanceof InstanceDoesNotExist) {
+    else if(error instanceof InstanceDoesNotExist || errMsg === 'Invalid route') {
         err = new NonExistent_ERROR();
         res.status(err.status).json({status: err.status, errorCode: err.errorCode});
     }
@@ -66,7 +61,7 @@ function errorHandler(error, request, res, next){
     else if (error instanceof InstanceAlreadyExist) {
         err = new AlreadyExists_ERROR;
         res.status(err.status).json({status: err.status, errorCode: err.errorCode})
-    } else{
+    } else {
         err = new UNEXPECTED_Failure_ERROR;
         res.status(err.status).json({status: err.status, errorCode: err.errorCode})
     }
