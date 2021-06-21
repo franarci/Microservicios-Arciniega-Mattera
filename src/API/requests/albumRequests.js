@@ -1,6 +1,6 @@
 const express = require('express');
 const {unqfy, saveUNQfy} = require('./saveAndLoadUNQfy');
-const { errorHandler } = require('../apiErrors2');
+const { errorHandler } = require('../apiErrors');
 const {InstanceDoesNotExist} = require('../../errors');
 
 const appAlbum = express();
@@ -32,15 +32,15 @@ appAlbum.use(errorHandler);
 router.route('/')
     .post((req, res, next) => { // POST /api/albums/
         const keys = Object.keys(req.body);
-        const emptyFiledsCond = Object.values(req.body).every(value => value != "");
+        const emptyFiledsCond = Object.values(req.body).every(value => value !== "");
 
         if(keys.length > 2 && emptyFiledsCond) {
             try {
                 const dataAlbum = {name: req.body.name, year:req.body.year};
-                unqfy.addAlbum(req.body.artistId, dataAlbum);
+                const album = unqfy.addAlbum(req.body.artistId, dataAlbum);
                 saveUNQfy(unqfy);
                 res.status(201);
-                res.send(standardJSONOutput(dataAlbum));
+                res.send(standardJSONOutput(album));
             } catch (error) {
                 if(error instanceof InstanceDoesNotExist){
                     next(new Error("RelatedResourceNotFound"));
@@ -50,9 +50,15 @@ router.route('/')
             next(new Error("MissingParameter")); 
         }
     })
-    .get((req, res) => { // GET /api/albums?name=
-        const album = unqfy.getInstanceByAttribute(req.query.name, 'album', 'name');
-        res.send(standardJSONOutput(album));
+    .get((req, res) => { // GET /api/albums
+        let albums;
+        if(req.query.name != undefined){
+            albums = unqfy.filterByName(req.query.name, 'albums');   
+        } else {
+            albums = unqfy.getAlbums();
+        }
+        const jsonAlbums = albums.map(album => standardJSONOutput(album));
+        res.send(jsonAlbums);
     })
 
 router.route('/:id')
@@ -81,4 +87,4 @@ router.route('/:id')
     })
 
 
-module.exports={appAlbum: appAlbum}
+module.exports={appAlbum: appAlbum, getNotRecursiveTracks}

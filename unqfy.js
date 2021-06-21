@@ -50,6 +50,13 @@ class UNQfy {
 	//   artistData.name (string)
 	//   artistData.country (string)
 	// retorna: el nuevo artista creado
+	getArtists(){
+		return this.artists;
+	}
+
+	getAlbums(){
+		return this.albums;
+	}
 	addArtist(artistData) {
 	/* Crea un artista y lo agrega a unqfy.
 	El objeto artista creado debe soportar (al menos):
@@ -388,7 +395,7 @@ class UNQfy {
     }
     
     deleteArtist(artist){
-        this.artists = this.artists.filter( deltaArtist => {deltaArtist !== artist} );
+        this.artists = this.artists.filter( deltaArtist => deltaArtist !== artist );
         artist.albums.forEach( deltaAlbum => {
 			this.deleteAlbum(deltaAlbum);
 		});
@@ -556,24 +563,33 @@ devuelve
     }
 
 	async getLyrics(trackName){
-		let track = this.getInstanceByAttribute(trackName, "track", "name");
-
-		if(track.getLyrics() == ""){
-    		var data = await mmGetLyrics(track);
-    		track.setLyrics(data);
-    		this.save('data.json');
-    		return data;	
-		}
-		console.log(track.lyrics);
-		return track.getLyrics();	
+		try{
+			let track = this.getInstanceByAttribute(trackName, "track", "name");
+			if(track.getLyrics() == ""){
+    			var data = await mmGetLyrics(track);
+    			track.setLyrics(data);
+    			this.save('data.json');
+    			return data;	
+			}
+			console.log(track.lyrics);
+			return track.getLyrics();	
+		} catch(error){
+			if(error.message.startsWith("header")){
+				throw new Error("Lyrics not found");
+			} else throw error;
+		}	
 	}
 
 
 	async populateAlbumsForArtist(artistName){
+		try{
 			const artist = this.getInstanceByAttribute(artistName,"artist","name");
 			const albums = await getAllArtistAlbums(artistName);
 			this.saveArtistAlbums(artist.getId(),albums);
 			this.save('data.json');
+		} catch(error){
+			throw error;
+		}
 	}
 
 	saveArtistAlbums(artistId, albums){
@@ -591,9 +607,9 @@ devuelve
 	getAlbumsForArtist(artistName){
 		try{
 			const artist = this.getInstanceByAttribute(artistName,"artist","name");
-			artist.getAlbums().forEach(album => {
-				console.log(album.name)
-			})
+			return artist.getAlbums().map(album => {
+				album.name
+			});
 		}catch(e){
 			throw e;
 		}
@@ -610,7 +626,7 @@ devuelve
     }
 
 	getMatchingPlaylists(name, greaterThan, lessThan){
-		if(name != undefined || greaterThan != undefined && lessThan != undefined){
+		if(name != undefined || greaterThan != undefined || lessThan != undefined){
 			let playlists = this.playlists;
 			if(name != undefined){
 				playlists = playlists.filter(playlist => 
@@ -631,6 +647,12 @@ devuelve
 		} else {
 			throw new Error("InvalidInputKey");
 		}
+	}
+
+	filterByName(name, classname){
+		let ret = this[classname].filter(instance =>
+			instance.name.toLowerCase().includes(name.toLowerCase()));
+		return (ret)
 	}
 
 }

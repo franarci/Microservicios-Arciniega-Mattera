@@ -1,6 +1,6 @@
 const express = require('express');
 const {unqfy, saveUNQfy} = require('./saveAndLoadUNQfy');
-const { errorHandler } = require('../apiErrors2');
+const { errorHandler } = require('../apiErrors');
 const {InstanceDoesNotExist} = require('../../errors');
 
 const appPlaylist = express();
@@ -35,9 +35,9 @@ router.route('/')
     .post((req, res, next) => { // POST /api/playlist
         try{
             const keys = Object.keys(req.body);
-            const emptyFiledsCond = Object.values(req.body).every(value => value != "");
+            const emptyFiledsCond = Object.values(req.body).every(value => value !== "");
 
-            if(keys.length>2 && emptyFiledsCond && req.body.genres.some(genre => genre != "")){
+            if(keys.length>2 && emptyFiledsCond && req.body.genres.some(genre => genre !== "")){
                 const playlist = unqfy.createPlaylist(req.body.name, null, req.body.maxDuration, req.body.genres);
                 saveUNQfy(unqfy);
                 res.status(201);
