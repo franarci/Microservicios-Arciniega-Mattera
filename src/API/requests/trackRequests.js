@@ -32,12 +32,12 @@ router.route('/:trackId/lyrics')
     .get(async (req, res) => { // GET api/tracks/:id/lyrics
         const track = unqfy.getInstanceByAttribute(req.params.id, 'track');
         const lyrics = await unqfy.getLyrics(track.name) 
-        const res = {
+        const resp = {
             Name :  track.name,
             lyrics: lyrics
         };
         res.status(201);
-        res.send(res);
+        res.send(resp);
     })
 
 module.exports = {appTrack:appTrack}
