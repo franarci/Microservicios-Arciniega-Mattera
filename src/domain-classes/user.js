@@ -91,6 +91,10 @@ class User {
             track.artist.id == artist.id
         )
     }
+
+    setAttributes(data){
+        this.name = data.name;
+    }
 }
 
 
