@@ -10,7 +10,12 @@ function getNotRecursiveAlbums(recursiveAlbumsList){
     let ret = [];
     
     recursiveAlbumsList.forEach(albumRec => 
-        ret.push({id:albumRec.id, name:albumRec.name, year:albumRec.year, tracks:getNotRecursiveTracks(albumRec.tracks)})
+        ret.push({
+            id:albumRec.id, 
+            name:albumRec.name, 
+            year:albumRec.year, 
+            tracks:getNotRecursiveTracks(albumRec.tracks)
+        })
     );
         
     return ret;

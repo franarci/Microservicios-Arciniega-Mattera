@@ -41,7 +41,7 @@ router.route('/')
         } else {
             users = unqfy.getUsers();
         }
-        const jsonusers = users.map(user => standardJSONOutput(user));
+        const jsonusers = users.map(user => standardJSONOutput(user)); 
         res.send(jsonusers);
     })
     .post((req, res, next) => { // POST api/users

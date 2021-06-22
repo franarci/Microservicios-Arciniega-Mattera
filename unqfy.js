@@ -296,6 +296,10 @@ class UNQfy {
 			throw new InstanceDoesNotExist('user', 'name', userName);
 		}
 	}
+
+    getUsers(){
+        return this.users;
+    }
  
 	getTrack(trackToSearch){ // se puede reemplazar por getInstanceByAttribute
 		let trackName = trackToSearch.name ;
