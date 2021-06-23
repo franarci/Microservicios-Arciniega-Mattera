@@ -16,15 +16,10 @@ async function mmGetLyrics(track){
 	  json: true 
 	};
 
-    let data = await rp.get(options).then((response) => {
-		if (response.message.header.status_code !== 200){
-			throw new Error('header status code: '+ response.message.header.status_code);
-		}
-        var body = response.artists;
-        var lyrics = body.lyrics.lyrics_body; 
-        return lyrics;
-        }).catch((error) => {throw error;});
-    return data;
+    let response = await rp.get(options);
+    var body = response.message.body;
+    var lyrics = body.lyrics.lyrics_body; 
+    return lyrics;
 }
 
 module.exports = {mmGetLyrics}
