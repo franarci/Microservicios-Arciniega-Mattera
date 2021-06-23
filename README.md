@@ -1,5 +1,15 @@
 # Console commands
 
+### Run API Rest tests
+#### To run the user tests
+- sh apiUsersSetup.sh
+- load the base_url environment in Postman
+- load and excecute in Postman the UNQfy_users_tests collection with base_url environment
+#### To run the the other API tests
+- sh apiSetup.sh
+- load the UNQfy environment in Postman
+- load and excecute in Postman the UNQfy collection with UNQfy environment
+
 ### Agregation commands
 - addArtist(artistName, country)
 - addAlbum(artistId, name, year)
