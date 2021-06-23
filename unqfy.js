@@ -36,10 +36,12 @@ class UNQfy {
 		this.albumIdGenerator = 0
 		this.userIdGenerator = 0
 	}
+
 	getArtists(){ return this.artists; }
 	getAlbums(){ return this.albums; }
-
-	addArtist(artistData) {
+	getUsers(){ return this.users; }
+  
+  addArtist(artistData) {
 		if(artistData.name != undefined && artistData.country != undefined){
     	    const artistBelongs = new ArtistBelongs(this.artists)
 			if(!artistBelongs.execute(artistData)){
@@ -567,9 +569,9 @@ devuelve
 	getAlbumsForArtist(artistName){
 		try{
 			const artist = this.getInstanceByAttribute(artistName,"artist","name");
-			return artist.getAlbums().map(album => {
+			return artist.getAlbums().map(album => 
 				album.name
-			});
+			);
 		}catch(e){
 			throw e;
 		}

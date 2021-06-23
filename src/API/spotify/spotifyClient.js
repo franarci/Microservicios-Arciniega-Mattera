@@ -10,11 +10,9 @@ async function getSpotifyToken(){
         },
         body: `grant_type=refresh_token&refresh_token=AQAufJixGs8_duPN5UFdmmDK2YdutcPQ7uYZERGj-1pX0OnW09OKf_eqfGTO5udyklsM9RkgO39E2LczQpHNlv32Bj9H-1ssxinmkJdaL0VBs-_1nBXpRyGw835j6QewDJs&client_id=d38a0113ad3e429c9dbfe4ed483a2874`
     };
-    return await rp
-    .post(options).then((response) => {
-        const data = JSON.parse(response)
-        return data.access_token;
-    }).catch(error => {throw error}) 
+    const response = await rp.post(options)
+    const data = JSON.parse(response)
+    return data.access_token;  
 }
 async function getSpotifyArtistId(artistName){
     const token = await getSpotifyToken()
@@ -28,15 +26,15 @@ async function getSpotifyArtistId(artistName){
             type: "artist"
         }
     };
-    return await rp.get(options).then((response => {
-                        const data = JSON.parse(response)
-                        var artist = data.artists.items[0];
-		                if (artist == null){
-			                throw Error("Artist not found in spotify")
-		                }
-                        return {id : artist.id,
-                                token : token};
-                    })).catch(error => {throw "ERROR: " +error})
+    const response = await rp.get(options);
+    const data = JSON.parse(response);
+    var artist = data.artists.items[0];
+	if (artist == null){
+	    throw Error("Artist not found in spotify")
+	}
+    return {id : artist.id,
+            token : token};
+                    
 }
 
 async function getAllArtistAlbums(artistName){
@@ -53,10 +51,9 @@ async function getAllArtistAlbums(artistName){
             type: "artist"
         }
     };
-    let tracks = await rp.get(options).then((response => { 
-                        const data = JSON.parse(response)  
-                        return data.items;
-                    })).catch(error => {throw error})
+    const response = await rp.get(options)
+    const data = JSON.parse(response)  
+    const tracks= data.items;
     return tracks;
     
 }
