@@ -53,7 +53,9 @@ class UNQfy {
 	getArtists(){
 		return this.artists;
 	}
-
+	getUsers(){
+		return this.users;
+	}
 	getAlbums(){
 		return this.albums;
 	}
@@ -607,9 +609,9 @@ devuelve
 	getAlbumsForArtist(artistName){
 		try{
 			const artist = this.getInstanceByAttribute(artistName,"artist","name");
-			return artist.getAlbums().map(album => {
+			return artist.getAlbums().map(album => 
 				album.name
-			});
+			);
 		}catch(e){
 			throw e;
 		}
