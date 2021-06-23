@@ -97,3 +97,6 @@ node main.js addPlaylist Favs_Lautaro     Lautaro 10000 indie rock              
 node main.js addPlaylist Playlist_Lautaro Lautaro 10000 indie                   # ID-9
 
 echo 'Ejecucion finalizada'
+
+echo 'Desplegando API..'
+node src/API/requests/router.js

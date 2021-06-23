@@ -1,6 +1,5 @@
-
-const picklify = require('picklify'); // para cargar/guarfar unqfy
-const fs = require('fs'); // para cargar/guarfar unqfy
+const picklify = require('picklify');
+const fs = require('fs');
 const { Playlist } = require('./src/domain-classes/playlist');
 const { Album } = require('./src/domain-classes/album');
 const { Track } = require('./src/domain-classes/track');
@@ -23,15 +22,6 @@ const { type } = require('os');
 const {mmGetLyrics} = require('./src/API/musixmatch/musixMatchClient');
 const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
 const album = require('./src/domain-classes/album');
-/*
-por el error 
-node:internal/modules/cjs/loader:927
-  throw err;
-  ^
-descomentar la siguiente linea
-const { createSecureServer } = require('./node_modules/http2');
-*/
-
 
 class UNQfy {
 	constructor(){
@@ -46,25 +36,12 @@ class UNQfy {
 		this.albumIdGenerator = 0
 		this.userIdGenerator = 0
 	}
-	// artistData: objeto JS con los datos necesarios para crear un artista
-	//   artistData.name (string)
-	//   artistData.country (string)
-	// retorna: el nuevo artista creado
-	getArtists(){
-		return this.artists;
-	}
-	getUsers(){
-		return this.users;
-	}
-	getAlbums(){
-		return this.albums;
-	}
-	addArtist(artistData) {
-	/* Crea un artista y lo agrega a unqfy.
-	El objeto artista creado debe soportar (al menos):
-	- una propiedad name (string)
-	- una propiedad country (string)
-	*/  
+
+	getArtists(){ return this.artists; }
+	getAlbums(){ return this.albums; }
+	getUsers(){ return this.users; }
+  
+  addArtist(artistData) {
 		if(artistData.name != undefined && artistData.country != undefined){
     	    const artistBelongs = new ArtistBelongs(this.artists)
 			if(!artistBelongs.execute(artistData)){
@@ -83,15 +60,8 @@ class UNQfy {
 			throw new Error("InvalidInputKey");
 		}
 	}
-	// albumData: objeto JS con los datos necesarios para crear un album
-	//   albumData.name (string)
-	//   albumData.year (number)
-	// retorna: el nuevo album creado
-	addAlbum(artistId, albumData) {
-	/* Crea un album y lo agrega al artista con id artistId.
-	El objeto album creado debe tener (al menos):
-		- una propiedad name (string)
-		- una propiedad year (number)*/
+	
+    addAlbum(artistId, albumData) {
         if(artistId != undefined && albumData.name != undefined && albumData.year != undefined){
 		
 			const albumBelongs = new AlbumBelongs(this.albums);
@@ -117,18 +87,7 @@ class UNQfy {
 		}
 	}
 
-	// trackData: objeto JS con los datos necesarios para crear un track
-	//   trackData.name (string)
-	//   trackData.duration (number)
-	//   trackData.genres (lista de strings)
-	// retorna: el nuevo track creado
 	addTrack(albumId, trackData) {
-	/* Crea un track y lo agrega al album con id albumId.
-	El objeto track creado debe tener (al menos):
-		- una propiedad name (string),
-		- una propiedad duration (number),
-		- una propiedad genres (lista de strings) */
-
         const trackBelongs = new TrackBelongs(this.tracks);
         const album = this.getInstanceByAttribute(albumId, 'album');
         const artist = album.getArtist();
@@ -153,8 +112,6 @@ class UNQfy {
         }
     }
 
-	// genres: array de generos(strings)
-	// retorna: los tracks que contenga alguno de los generos en el parametro genres
 	getTracksMatchingGenres(genres) {
 		let res = [];
         this.tracks.map(track => {
@@ -169,8 +126,6 @@ class UNQfy {
 		return result;
 	}
 
-	// artistName: nombre de artista(string)
-	// retorna: los tracks interpredatos por el artista con nombre artistName
 	getTracksMatchingArtist(artistName) {
         if(this.artists.some(artist => artist.name === artistName)){
             const artist = this.artists.find(artist => artist.name === artistName);
@@ -183,8 +138,6 @@ class UNQfy {
 		}
 	}
 
-	//stringParcial: string
-	//retorna: la busqueda por matching parcial de los artistas, albumes o tracks 
 	getMatchingParcial(stringParcial){
 		
 		let matchingByArtist = this.artists.filter(artist => artist.name.match(stringParcial))/* artist.name.match(/stringParcial/gi) */
@@ -227,17 +180,7 @@ class UNQfy {
 			throw new Error("InvalidInputKey");
 		}
 	}
-	// name: nombre de la playlist
-	// genresToInclude: array de generos
-	// maxDuration: duración en segundos
-	// retorna: la nueva playlist creada
 	createPlaylist(name, user=null, maxDuration, genresToInclude){
-	/*** Crea una playlist y la agrega a unqfy. ***
-	El objeto playlist creado debe soportar (al menos):
-		* una propiedad name (string)
-		* un metodo duration() que retorne la duración de la playlist.
-		* un metodo hasTrack(aTrack) que retorna true si aTrack se encuentra en la playlist.
-	*/
 		if(name != undefined && maxDuration != undefined && genresToInclude != undefined){
 
 			let matchedTracks = this.getTracksMatchingGenres(genresToInclude);
@@ -298,6 +241,10 @@ class UNQfy {
 			throw new InstanceDoesNotExist('user', 'name', userName);
 		}
 	}
+
+    getUsers(){
+        return this.users;
+    }
  
 	getTrack(trackToSearch){ // se puede reemplazar por getInstanceByAttribute
 		let trackName = trackToSearch.name ;
@@ -361,7 +308,6 @@ class UNQfy {
 		}
 	}
 
-
     deleteTrack(track){
         const albumOfTrack = track.album;
         albumOfTrack.deleteTrack(track);
@@ -392,8 +338,8 @@ class UNQfy {
         
         album.tracks.forEach( deltaTrack =>
 			 this.deleteTrack(deltaTrack)
-		); // vacio el album y actualizo la lista de tracks de unqfy
-        this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album ); // actualizo la lista de albums de unqfy
+		);
+        this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album );
     }
     
     deleteArtist(artist){
@@ -428,7 +374,6 @@ class UNQfy {
 
 	static load(filename) {
         const serializedData = fs.readFileSync(filename, {encoding: 'utf-8'});
-        //COMPLETAR POR EL ALUMNO: Agregar a la lista todas las clases que necesitan ser instanciadas
         const classes = [UNQfy, 
                         Playlist, 
                         Artist, 
@@ -490,19 +435,34 @@ devuelve
         const unqfyNotIsUndefined = unqfyList !== undefined;
 
         if( unqfyNotIsUndefined && searchInKnownClass ){
-            ret = this.getInstancesMatchingAttribute(unqfyList,classOfReturnedInstances, knownClass, attributeName, attributeValue);
+            ret = 
+                this.getInstancesMatchingAttribute(
+                    unqfyList,
+                    classOfReturnedInstances, 
+                    knownClass, 
+                    attributeName, 
+                    attributeValue);
         } 
         else if( unqfyNotIsUndefined && unqfyList.some(instance => instance[attributeName] == attributeValue )){ 
             ret = unqfyList.filter( instance => instance[attributeName] == attributeValue);
         } 
         else{
-            this.handleErrors(unqfyNotIsUndefined, classOfReturnedInstances, attributeName, attributeValue);
+            this.handleErrors(
+                unqfyNotIsUndefined, 
+                classOfReturnedInstances, 
+                attributeName, 
+                attributeValue);
         }
 
         return ret.length==1 ? ret = ret[0] : ret;
     } 
 
-    getInstancesMatchingAttribute(unqfyList, classOfReturnedInstances, knownClass, attributeNameOfKnownClass, attributeValueOfKnownClass){
+    getInstancesMatchingAttribute(
+        unqfyList, 
+        classOfReturnedInstances, 
+        knownClass, 
+        attributeNameOfKnownClass, 
+        attributeValueOfKnownClass){
 
         if(unqfyList.some(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass) ){
             return unqfyList.filter(instance => instance[knownClass][attributeNameOfKnownClass] == attributeValueOfKnownClass);
@@ -659,7 +619,6 @@ devuelve
 
 }
 
-// COMPLETAR POR EL ALUMNO: exportar todas las clases que necesiten ser utilizadas desde un modulo cliente
 module.exports = {
     UNQfy: UNQfy,
 };

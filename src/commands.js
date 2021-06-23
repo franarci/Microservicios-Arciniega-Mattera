@@ -189,7 +189,7 @@ class Delete extends Command {
 }
 
 class GetLyrics extends Command{
-    executeMethod = async (lsParams, unqfy) =>{
+    async executeMethod (lsParams, unqfy){
         const trackName = lsParams[0];
         try{
             const lyrics = await unqfy.getLyrics(trackName)
@@ -205,7 +205,7 @@ class GetLyrics extends Command{
 }
 
 class PopulateAlbumsForArtist extends Command {
-    executeMethod = async (lsParams, unqfy) =>{
+    async executeMethod(lsParams, unqfy){
         try{
             const artistName = lsParams[0];
             await unqfy.populateAlbumsForArtist(artistName);

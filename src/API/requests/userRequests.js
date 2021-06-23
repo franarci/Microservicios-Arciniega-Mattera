@@ -47,7 +47,8 @@ router.route('/')
         } else {
             throw new Error('InvalidInputKey');
         }
-        
+        const jsonusers = users.map(user => standardJSONOutput(user)); 
+        res.send(jsonusers);
     })
     .post((req, res, next) => { // POST api/users
         const keys = Object.keys(req.body);
