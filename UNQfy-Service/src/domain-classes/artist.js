@@ -1,20 +1,4 @@
-class Subject {
-	observers = [];
-
-	addObserver(o){
-		this.observers.push(o);
-	}
-
-	removeObserver(o){
-		this.observers =this.observers.filter(observer => observer == o);
-	}
-
-	notify(event, object = this){
-		this.observers.forEach(observer => observer.update(event, object))
-	}
-}
-
-class Artist extends Subject{
+class Artist{
     constructor(
             id= null, 
             name= null, 
@@ -26,7 +10,6 @@ class Artist extends Subject{
         this.country = country;
         this.albums = [];
         this.genres = [];
-        this.notify("newArtist");
     }
 
     getId(){return this.id;}
@@ -45,7 +28,6 @@ class Artist extends Subject{
 
     addAlbum(album){
         this.albums.push(album)
-        this.notify("newAlbum", album);
     }
 
     addGenres(genres){
@@ -55,16 +37,9 @@ class Artist extends Subject{
         this.genres = Array.from(newSet); 
     }
 
-    newSong(track){
-        this.notify("newTrack", track);
-    }
 
     deleteAlbum(album){
         this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album );
-    }
-
-    removed(){
-        this.notify("deletedArtist");
     }
 
 
