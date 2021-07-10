@@ -1,16 +1,15 @@
-
-class Artist {
+class Artist{
     constructor(
             id= null, 
             name= null, 
             country= null
         ){
         
-        this.id = id
-        this.name = name
-        this.country = country
-        this.albums = []
-        this.genres = []
+        this.id = id;
+        this.name = name;
+        this.country = country;
+        this.albums = [];
+        this.genres = [];
     }
 
     getId(){return this.id;}
@@ -37,6 +36,7 @@ class Artist {
         concatGenres.forEach(deltaGenre => newSet.add(deltaGenre));
         this.genres = Array.from(newSet); 
     }
+
 
     deleteAlbum(album){
         this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album );
