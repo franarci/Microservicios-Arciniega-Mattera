@@ -1,0 +1,27 @@
+<diagram program="umletino" version="14.4.0-SNAPSHOT"><zoom_level>10</zoom_level><help_text>&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;420&lt;/x&gt;&lt;y&gt;210&lt;/y&gt;&lt;w&gt;30&lt;/w&gt;&lt;h&gt;120&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=&amp;lt;&amp;lt;.&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;10;100&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;120&lt;/x&gt;&lt;y&gt;210&lt;/y&gt;&lt;w&gt;30&lt;/w&gt;&lt;h&gt;120&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=&amp;lt;&amp;lt;.&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;10;100&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;&lt;diagram program="umletino" version="14.4.0-SNAPSHOT"&gt;&lt;zoom_level&gt;10&lt;/zoom_level&gt;&lt;element&gt;&lt;id&gt;Relation&lt;/id&gt;&lt;coordinates&gt;&lt;x&gt;240&lt;/x&gt;&lt;y&gt;140&lt;/y&gt;&lt;w&gt;190&lt;/w&gt;&lt;h&gt;30&lt;/h&gt;&lt;/coordinates&gt;&lt;panel_attributes&gt;lt=&amp;lt;&amp;lt;.&lt;/panel_attributes&gt;&lt;additional_attributes&gt;10;10;170;10&lt;/additional_attributes&gt;&lt;/element&gt;&lt;/diagram&gt;Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>20</x><y>4</y><w>210</w><h>140</h></coordinates><panel_attributes>&lt;&lt;Subject&gt;&gt;
+Package::FatClass
+{Some Properties}
+--
+-observers
+--
+addObserver(o: Observer)
+removeObserver(o: Observer)
+notify(evento)</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>4</y><w>210</w><h>90</h></coordinates><panel_attributes>&lt;&lt;Observer&gt;&gt;
+--
+update(evento,s: Subject)</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>140</y><w>30</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;140</additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>280</y><w>210</w><h>100</h></coordinates><panel_attributes>UNQfy
+--
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>310</y><w>160</w><h>70</h></coordinates><panel_attributes>Logging(Loggly)
+--
+saveLog()
+uploadLog()
+
+
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>400</x><y>90</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>Relation</id><coordinates><x>220</x><y>30</y><w>170</w><h>40</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;20;150;14</additional_attributes></element><element><id>UMLClass</id><coordinates><x>320</x><y>190</y><w>160</w><h>70</h></coordinates><panel_attributes>LoggingObserver
+--
+-Logging
+--
+llamarApiLogging()</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>490</x><y>190</y><w>160</w><h>70</h></coordinates><panel_attributes>NLObserver
+--
+notifysubscribers()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>530</x><y>90</y><w>30</w><h>120</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;100</additional_attributes></element><element><id>UMLClass</id><coordinates><x>490</x><y>310</y><w>160</w><h>70</h></coordinates><panel_attributes>NewsLetter(Gmail)
+--
+sendMail()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>390</x><y>250</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>560</x><y>250</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;60;10;10</additional_attributes></element></diagram>
