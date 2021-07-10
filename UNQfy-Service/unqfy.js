@@ -23,7 +23,23 @@ const {mmGetLyrics} = require('./src/API/musixmatch/musixMatchClient');
 const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
 const album = require('./src/domain-classes/album');
 
-class UNQfy {
+class Subject {
+	observers = [];
+
+	addObserver(o){
+		this.observers.push(o);
+	}
+
+	removeObserver(o){
+		this.observers =this.observers.filter(observer => observer == o);
+	}
+
+	notify(event, object){
+		this.observers.forEach(observer => observer.update(event, object))
+	}
+}
+
+class UNQfy extends Subject{
 	constructor(){
 		this.artists = []
 		this.tracks = []
@@ -52,6 +68,7 @@ class UNQfy {
 						artistData.country
 					)
 				this.artists.push(artist);
+				this.notify("newArtist",artist);
 				return artist;
 			} else {
 				throw new InstanceAlreadyExist('artist', artistData.name);
@@ -78,6 +95,7 @@ class UNQfy {
         	    const artist = this.getInstanceByAttribute(artistId, 'artist');
         	    artist.addAlbum(album);
         	    this.albums.push(album);
+				this.notify("newAlbum",album);
         	    return album;
         	} else{
         	    throw new InstanceAlreadyExist('album', albumData.name);
@@ -106,7 +124,7 @@ class UNQfy {
             album.addTrack(track);
             this.tracks.push(track);
             artist.addGenres(trackData.genres);
-			artist.newSong(track);
+			this.notify("newTrack",track);
             return track;
         } else {
             throw new InstanceAlreadyExist("track", trackData.name);
@@ -348,7 +366,7 @@ class UNQfy {
         artist.albums.forEach( deltaAlbum => {
 			this.deleteAlbum(deltaAlbum);
 		});
-		artist.removed();
+		this.notify("removedArtist",artist);
     }
 
     deletePlaylist(playlistName){
