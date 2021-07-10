@@ -6,6 +6,8 @@
   "dependencies": {
     "axios": "^0.21.1",
     "chai": "^4.1.2",
+    "discord.js": "^12.5.3",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "json-stringify-safe": "^5.0.1",
     "node": "^15.14.0",
@@ -23,7 +25,15 @@
   },
   "scripts": {
     "test": "mocha",
-    "eslint": "node_modules/.bin/eslint *.js"
+    "eslint": "node_modules/.bin/eslint *.js",
+    "monitor": "node ./src/API/apiMonitor.js",
+    "disc": "node ./src/API/discordNotify.js",
+    "start": "sh ./scripts/POSTstart.sh",
+    "stop": "sh ./scripts/POSTstop.sh",
+    "services": "sh ./scripts/GETservices.sh",
+    "unqfystat": "sh ./scripts/POSTstatUNQfy.sh",
+    "loggstat": "sh ./scripts/POSTstatLogging.sh",
+    "nlstat": "sh ./scripts/POSTstatNL.sh"
   },
   "author": "",
   "license": "ISC"
