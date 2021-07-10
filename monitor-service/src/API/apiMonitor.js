@@ -34,19 +34,37 @@ function stopMonitors(){
     unqfyMonitor.stop();
     delete unqfyMonitor;
 
-    newsletterMonitor.stop();
-    delete newsletterMonitor;
+    //newsletterMonitor.stop();
+    //delete newsletterMonitor;
 
-    loggingMonitor.stop();
-    delete loggingMonitor;
+    //loggingMonitor.stop();
+    //delete loggingMonitor;
 
 }    
 
 router.route('/statusUNQfy')
     .post((req,res) =>{
         if(serviceStatus){
+            console.log(req.body)
+            //discordNotify(res);
+            res.json(status.StatusUNQfy=req.body.StatusUNQfy);
+        }
+});
+
+router.route('/statusLogging')
+    .post((req,res) =>{
+        if(serviceStatus){
             //console.log(req.body)
-            discordNotify('El servicio UNQfy ha dejado de funcionar');
+            discordNotify(res);
+            //res.json(status.StatusUNQfy=req.body.StatusUNQfy);
+        }
+});
+
+router.route('/statusNewsletter')
+    .post((req,res) =>{
+        if(serviceStatus){
+            //console.log(req.body)
+            discordNotify(res);
             //res.json(status.StatusUNQfy=req.body.StatusUNQfy);
         }
 });
@@ -66,7 +84,7 @@ router.route('/start')
         serviceStatus = true;
         checkServices();
         console.log("MONITOR SERVICE ON");
-        res.status(200).json({status: 200, message: "El monitor esta activo"});
+        res.status(200).json({status: 200, message: "Monitor activado"});
     })
 
 router.route('/stop')
@@ -74,10 +92,10 @@ router.route('/stop')
         serviceStatus = false;
         stopMonitors();
         console.log("MONITOR SERVICE OFF");
-        res.status(200).json({status: 200, message: "El monitor esta desactivado"});
+        res.status(200).json({status: 200, message: "Monitor desactivado"});
     })
 
 appMonitor.listen(5002, () =>{ console.log('Monitor listening on port 5002') });
 
 
-module.exports = checkServices;
+checkServices();
