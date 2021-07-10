@@ -106,6 +106,7 @@ class UNQfy {
             album.addTrack(track);
             this.tracks.push(track);
             artist.addGenres(trackData.genres);
+			artist.newSong(track);
             return track;
         } else {
             throw new InstanceAlreadyExist("track", trackData.name);
@@ -347,6 +348,7 @@ class UNQfy {
         artist.albums.forEach( deltaAlbum => {
 			this.deleteAlbum(deltaAlbum);
 		});
+		artist.removed();
     }
 
     deletePlaylist(playlistName){
