@@ -349,6 +349,7 @@ class UNQfy extends Subject{
 				break;
 			}
 		}
+		this.notify("removedTrack", track);
     }
 
     deleteAlbum(album){
@@ -359,6 +360,7 @@ class UNQfy extends Subject{
 			 this.deleteTrack(deltaTrack)
 		);
         this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album );
+		this.notify("removedAlbum", album);
     }
     
     deleteArtist(artist){
