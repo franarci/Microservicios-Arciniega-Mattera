@@ -4,7 +4,7 @@ const Monitor = require('ping-monitor');
 function checkStatusUNQfy(){
     
     const myMonitor = new Monitor({
-        website:'http://localhost:5001',
+        website:'http://localhost:5001/api',
         title:'UNQFy',
         interval: 10,
         config: { intervalUnits: 'seconds' },
