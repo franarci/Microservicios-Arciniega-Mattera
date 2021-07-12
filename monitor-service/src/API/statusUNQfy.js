@@ -15,9 +15,12 @@ function checkStatusUNQfy(){
         return fetch('http://localhost:5002/api/monitor/statusUNQfy', {
             method:'POST',
             headers:{ 'Content-Type': 'application/json' },
-            body:JSON.stringify({unqfyStatus: 'El servicio UNQfy esta funcionando con normalidad'})
+            body:JSON.stringify({unqfyStatus: 'ON'})
         })
-            .then(res => res.json().then(console.log(res)))
+            .then(res => res.json().then(
+                console.log('UNQFY ON'),
+                console.log('<----------------------->')
+            ))
             .catch(err => console.error(err))
     });   
     
@@ -26,9 +29,12 @@ function checkStatusUNQfy(){
         return fetch('http://localhost:5002/api/monitor/statusUNQfy', {
             method:'POST',
             headers:{ 'Content-Type': 'application/json' },
-            body:JSON.stringify({unqfyStatus: 'El servicio UNQfy ha dejado defuncionar'})
+            body:JSON.stringify({unqfyStatus: 'OFF'})
         })
-            .then(res => res.json())
+            .then(res => res.json().then(
+                console.log('UNQFY OFF'),
+                console.log('<----------------------->')
+            ))
             .catch(err => console.error(err))
     });   
 
@@ -37,9 +43,12 @@ function checkStatusUNQfy(){
         return fetch('http://localhost:5002/api/monitor/statusUNQfy', {
             method: 'POST', 
             headers:{ 'Content-Type': 'application/json' },
-            body:JSON.stringify({unqfyStatus: 'El servicio UNQfy ha devuelto un error'})
+            body:JSON.stringify({unqfyStatus: 'ERROR'})
         })
-            .then(res => res.json())
+            .then(res => res.json().then(
+                console.log('UNQFY ERROR'), 
+                console.log('<----------------------->')
+            ))
             .catch(err => console.error(err))
     });
 
