@@ -15,12 +15,18 @@ let discordNotify = require('./discordNotify');
 let errors = require('./apiErrors');
 let serviceStatus = false;
 
-//appMonitor.use(bodyParser.json());
+appMonitor.use(bodyParser.json());
 appMonitor.use('/api/monitor',router);
 
 let unqfyMonitor;
 let newsletterMonitor;
 let loggingMonitor;
+
+const status = {
+    unqfyStatus: 'OFF',
+    loggingStatus: 'OFF',
+    newsletterStatus: 'OFF'
+}
 
 function checkServices(){
     if(serviceStatus){
@@ -45,9 +51,9 @@ function stopMonitors(){
 router.route('/statusUNQfy')
     .post((req,res) =>{
         if(serviceStatus){
-            console.log(req.body)
+            console.log(req.body);
             //discordNotify(res);
-            res.json(status.StatusUNQfy=req.body.StatusUNQfy);
+            res.json(status.unqfyStatus = req.body.unqfyStatus);
         }
 });
 
@@ -98,4 +104,4 @@ router.route('/stop')
 appMonitor.listen(5002, () =>{ console.log('Monitor listening on port 5002') });
 
 
-checkServices();
+//checkServices();
