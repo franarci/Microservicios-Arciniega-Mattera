@@ -52,7 +52,7 @@ router.route('/statusUNQfy')
     .post((req,res) =>{
         if(serviceStatus){
             console.log(req.body);
-            //discordNotify(res);
+            discordNotify(req.body.msg);
             res.json(status.unqfyStatus = req.body.unqfyStatus);
         }
 });
