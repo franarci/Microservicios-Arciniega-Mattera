@@ -106,3 +106,4 @@ data.json
 
 spotifyCreds.json
 setup.sh
+pull-all-from-master.sh

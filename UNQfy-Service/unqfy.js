@@ -24,7 +24,9 @@ const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
 const album = require('./src/domain-classes/album');
 
 class Subject {
-	observers = [];
+    constructor(){
+        this.observers = [];
+    }
 
 	addObserver(o){
 		this.observers.push(o);
@@ -41,16 +43,17 @@ class Subject {
 
 class UNQfy extends Subject{
 	constructor(){
-		this.artists = []
-		this.tracks = []
-		this.playlists = []
-		this.albums = []
-		this.users = []
-		this.artistIdGenerator = 0
-		this.trackIdGenerator = 0
-		this.playlistIdGenerator = 0
-		this.albumIdGenerator = 0
-		this.userIdGenerator = 0
+        super();
+		this.artists = [];
+		this.tracks = [];
+		this.playlists = [];
+		this.albums = [];
+		this.users = [];
+		this.artistIdGenerator = 0;
+		this.trackIdGenerator = 0;
+		this.playlistIdGenerator = 0;
+		this.albumIdGenerator = 0;
+		this.userIdGenerator = 0;
 	}
 
 	getArtists(){ return this.artists; }
