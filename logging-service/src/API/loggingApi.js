@@ -4,9 +4,6 @@ let bodyParser = require('body-parser');
 let appLogging = express();
 let router = express.Router();
 
-//let checkStatusNewsletter = require('./statusNewsletter');
-//let checkStatusLogging    = require('./statusLogging');
-
 
 let errors = require('./apiErrors');
 
@@ -15,21 +12,14 @@ appLogging.use('/api/logging',router);
 
 
 
-function newLog(){
-  
-   
+async function newLog(log){
+  let options = {
+      body: log
+  }
+
+  await appLogging.post('/', options);
     
 }
-
-
-router.route('/statusUNQfy')
-    .post((req,res) =>{
-        if(serviceStatus){
-            //console.log(req.body)
-            discordNotify('El servicio UNQfy ha dejado de funcionar');
-            //res.json(status.StatusUNQfy=req.body.StatusUNQfy);
-        }
-});
 
 router.route('/start')
     .post((req, res) => {
@@ -46,7 +36,7 @@ router.route('/stop')
         res.status(200).json({status: 200, message: "El servicio de logging esta desactivado"});
     })
 
-appMonitor.listen(5002, () =>{ console.log('Monitor listening on port 5002') });
+appLogging.listen(5003, () =>{ console.log('Logging listening on port 5003') });
 
 
-module.exports = checkServices;
+module.exports = { newLog };
