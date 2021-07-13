@@ -1,6 +1,8 @@
 let fs = require('fs');
+const { newLog } = require('./API/loggingApi') ;
 
-const log = {
+
+const logs = {
     newAlbum : {msg : "new album:"},
     newTrack: {msg : "new track:"},
     newArtist: {msg : "new artist:"},
@@ -14,14 +16,11 @@ class Observer {
 }
 
 class LoggingObserver extends Observer{
-     update(event, object){
-        return fetch(`http://localhost:${puerto}/api/logging`,{
-            method : 'post',
-            body: JSON.stringify({mensaje : mensaje, tipo: tipo}),
-            headers: {
-                'Content-Type' : 'application/json'
-            } 
-        }).then(res => res.json())    
-
+    async update(event, object){
+         let log= {
+            msg: logs[event] + object.name,
+            nivel: ""
+         }
+       await newLog(log);
     }
 }
