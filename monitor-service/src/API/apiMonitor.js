@@ -55,7 +55,10 @@ router.route('/statusUNQfy')
             discordNotify(req.body.msg);
             res.json(status.unqfyStatus = req.body.unqfyStatus);
         }
-});
+    })
+    .get((req,res) => {
+        res.json(status.unqfyStatus);
+    })
 
 router.route('/statusLogging')
     .post((req,res) =>{
@@ -64,7 +67,10 @@ router.route('/statusLogging')
             discordNotify(res);
             res.json(status.checkStatusLogging=req.body.checkStatusLogging);
         }
-});
+    })
+    .get((req,res) => {
+        res.json(status.checkStatusLogging);
+    })
 
 router.route('/statusNewsletter')
     .post((req,res) =>{
@@ -73,16 +79,9 @@ router.route('/statusNewsletter')
             discordNotify(res);
             res.json(status.checkStatusNewsletter=req.body.checkStatusNewsletter);
         }
-});
-
-router.route('/services')
-    .get((req, res) => {
-
     })
-
-router.route('/notify')
-    .post((req, res) => {
-
+    .get((req,res) => {
+        res.json(status.checkStatusNewsletter);
     })
 
 router.route('/start')
