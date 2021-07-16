@@ -31,9 +31,9 @@
     "start": "sh ./scripts/POSTstart.sh",
     "stop": "sh ./scripts/POSTstop.sh",
     "services": "sh ./scripts/GETservices.sh",
-    "unqfystat": "sh ./scripts/POSTstatUNQfy.sh",
-    "loggstat": "sh ./scripts/POSTstatLogging.sh",
-    "nlstat": "sh ./scripts/POSTstatNL.sh"
+    "unqfystat": "sh ./scripts/GETstatUNQfy.sh",
+    "loggstat": "sh ./scripts/GETstatLogging.sh",
+    "nlstat": "sh ./scripts/GETstatNL.sh"
   },
   "author": "",
   "license": "ISC"
