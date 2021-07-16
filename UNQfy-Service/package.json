@@ -21,7 +21,9 @@
   },
   "scripts": {
     "test": "mocha",
-    "eslint": "node_modules/.bin/eslint *.js"
+    "eslint": "node_modules/.bin/eslint *.js",
+    "unqfy": "node ./src/API/requests/router.js",
+    "setup": "sh ./scripts/apiSetup.sh"
   },
   "author": "",
   "license": "ISC"
