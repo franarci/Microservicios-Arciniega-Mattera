@@ -5,8 +5,8 @@ let appMonitor = express();
 let router = express.Router();
 
 let checkStatusUNQfy      = require('./statusUNQfy.js');
-//let checkStatusNewsletter = require('./statusNewsletter');
-//let checkStatusLogging    = require('./statusLogging');
+let checkStatusNewsletter = require('./statusNewsletter');
+let checkStatusLogging    = require('./statusLogging');
 
 let discordNotify = require('./discordNotify');
 
@@ -31,8 +31,8 @@ const status = {
 function checkServices(){
     if(serviceStatus){
         unqfyMonitor = checkStatusUNQfy();
-        //newsletterMonitor = checkStatusNewsletter();
-        //loggingMonitor = checkStatusLogging();
+        newsletterMonitor = checkStatusNewsletter();
+        loggingMonitor = checkStatusLogging();
     }
 }
 
@@ -40,11 +40,11 @@ function stopMonitors(){
     unqfyMonitor.stop();
     delete unqfyMonitor;
 
-    //newsletterMonitor.stop();
-    //delete newsletterMonitor;
+    newsletterMonitor.stop();
+    delete newsletterMonitor;
 
-    //loggingMonitor.stop();
-    //delete loggingMonitor;
+    loggingMonitor.stop();
+    delete loggingMonitor;
 
 }    
 
@@ -60,18 +60,18 @@ router.route('/statusUNQfy')
 router.route('/statusLogging')
     .post((req,res) =>{
         if(serviceStatus){
-            //console.log(req.body)
+            console.log(req.body);
             discordNotify(res);
-            //res.json(status.StatusUNQfy=req.body.StatusUNQfy);
+            res.json(status.checkStatusLogging=req.body.checkStatusLogging);
         }
 });
 
 router.route('/statusNewsletter')
     .post((req,res) =>{
         if(serviceStatus){
-            //console.log(req.body)
+            console.log(req.body)
             discordNotify(res);
-            //res.json(status.StatusUNQfy=req.body.StatusUNQfy);
+            res.json(status.checkStatusNewsletter=req.body.checkStatusNewsletter);
         }
 });
 
