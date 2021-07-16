@@ -1,5 +1,5 @@
 let express = require('express');
-let bodyParser = require('body-parser');
+let apiKey = process.env.LOGGING_TKN;
 
 let appLogging = express();
 let router = express.Router();
