@@ -22,24 +22,8 @@ const { type } = require('os');
 const {mmGetLyrics} = require('./src/API/musixmatch/musixMatchClient');
 const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
 const album = require('./src/domain-classes/album');
-
-class Subject {
-    constructor(){
-        this.observers = [];
-    }
-
-	addObserver(o){
-		this.observers.push(o);
-	}
-
-	removeObserver(o){
-		this.observers =this.observers.filter(observer => observer == o);
-	}
-
-	notify(event, object){
-		this.observers.forEach(observer => observer.update(event, object))
-	}
-}
+const Subject = require('./src/observer/subject');
+const LoggingObserver = require('./src/observer/loggingObserver');
 
 class UNQfy extends Subject{
 	constructor(){
@@ -54,6 +38,7 @@ class UNQfy extends Subject{
 		this.playlistIdGenerator = 0;
 		this.albumIdGenerator = 0;
 		this.userIdGenerator = 0;
+		this.addObserver(new LoggingObserver);
 	}
 
 	getArtists(){ return this.artists; }
@@ -71,7 +56,7 @@ class UNQfy extends Subject{
 						artistData.country
 					)
 				this.artists.push(artist);
-				this.notify("newArtist",artist);
+				this.notify("newArtist",{artist: artist});
 				return artist;
 			} else {
 				throw new InstanceAlreadyExist('artist', artistData.name);
