@@ -24,6 +24,7 @@ const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
 const album = require('./src/domain-classes/album');
 const Subject = require('./src/observer/subject');
 const LoggingObserver = require('./src/observer/loggingObserver');
+const LoggingClient = require('./src/clients/Logging/LoggingClient');
 
 class UNQfy extends Subject{
 	constructor(){
@@ -395,7 +396,10 @@ class UNQfy extends Subject{
                         AlbumBelongs,
                         PlaylistBelongs,
                         TrackBelongs,
-                        UserBelongs
+                        UserBelongs,
+						LoggingObserver,
+						LoggingClient,
+						Subject
                     ];
         return picklify.unpicklify(JSON.parse(serializedData), classes);
 	}
