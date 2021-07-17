@@ -50,9 +50,10 @@ function stopMonitors(){
 
 router.route('/statusUNQfy')
     .post((req,res) =>{
+        let date=new Date();
         if(serviceStatus){
             console.log(req.body);
-            discordNotify(req.body.msg);
+            discordNotify(req.body.msg, date);
             res.json(status.unqfyStatus = req.body.unqfyStatus);
         }
     })
@@ -62,9 +63,10 @@ router.route('/statusUNQfy')
 
 router.route('/statusLogging')
     .post((req,res) =>{
+        let date=new Date();
         if(serviceStatus){
             console.log(req.body);
-            discordNotify(res);
+            discordNotify(req.body.msg, date);
             res.json(status.checkStatusLogging=req.body.checkStatusLogging);
         }
     })
@@ -74,9 +76,10 @@ router.route('/statusLogging')
 
 router.route('/statusNewsletter')
     .post((req,res) =>{
+        let date=new Date();
         if(serviceStatus){
             console.log(req.body)
-            discordNotify(res);
+            discordNotify(req.body.msg, date);
             res.json(status.checkStatusNewsletter=req.body.checkStatusNewsletter);
         }
     })
