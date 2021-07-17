@@ -1,11 +1,11 @@
 let express = require('express');
 
 let token = process.env.LOGGING_TKN;
-
+let running = true;
 var winston  = require('winston');
 var {Loggly} = require('winston-loggly-bulk');
 winston.add(new Loggly({
-    token: "80214558-74a9-4715-abc3-cc31c0bbc2ed", ///////CAMBIAR POR VARIABLE
+    token: token, ///////CAMBIAR POR VARIABLE
     subdomain: "franarci",
     tags: ["Winston-NodeJS"],
     json: true
@@ -23,27 +23,49 @@ let appLogging = express();
 let router = express.Router();
 
 
-let errors = require('./apiErrors');
-
+let {errorHandler} = require('./apiErrors');
+appLogging.use(errorHandler);
 
 appLogging.use('/api/logging',router);
 
 appLogging.route('/')
-    .post((req, res, next)=>{ // POST /api/logging/
-
+    .post((req, res)=>{ // POST /api/logging/
+        if(running){
+            try{
+                const level = req.body.level;
+                const msg = req.body.message;
+                switch(level){
+                    case "error":
+                        logger.error(msg);
+                        break;
+                    case "warning":
+                        logger.warn(msg);
+                        break;
+                    case "debug":
+                        logger.debug(msg);
+                        break;                
+                    default:
+                        logger.info(msg);
+                        break;
+                }
+            } catch(e) {
+                next(e);
+            }
+               
+            
+        }
     })
 
 router.route('/start')
     .post((req, res) => {
-        
+        running=true;
         console.log("LOGGING SERVICE ON");
         res.status(200).json({status: 200, message: "El servicio de logging esta activo"});
     })
 
 router.route('/stop')
     .post((req, res) => {
-
-        
+        running = false;
         console.log("LOGGING SERVICE OFF");
         res.status(200).json({status: 200, message: "El servicio de logging esta desactivado"});
     })
