@@ -18,17 +18,15 @@ log4js.configure({
     categories: { default: { appenders: ["cheese"], level: "error" } }
 });
 
-
 let appLogging = express();
 let router = express.Router();
-
 
 let {errorHandler} = require('./apiErrors');
 appLogging.use(errorHandler);
 
 appLogging.use('/api',router);
 
-appLogging.route('/logging')
+router.route('/logging')
     .post((req, res)=>{ // POST /api/logging/
         if(running){
             try{
@@ -51,9 +49,8 @@ appLogging.route('/logging')
             } catch(e) {
                 next(e);
             }
-               
-            
         }
+        res.status(200);
     })
 
 router.route('/start')
