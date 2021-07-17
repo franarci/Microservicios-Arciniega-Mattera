@@ -10,7 +10,6 @@
     "json-stringify-safe": "^5.0.1",
     "log4js": "^6.3.0",
     "node": "^15.14.0",
-    "picklify": "github:lwoites/picklify",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "winston": "^3.3.3",
