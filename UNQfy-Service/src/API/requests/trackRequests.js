@@ -6,15 +6,6 @@ const appTrack = express();
 const router = express.Router();
 router.use(express.json());
 
-function getNotRecursiveTracks(recursiveTracksList){
-    let ret = [];
-
-    recursiveTracksList.forEach(trackRec => 
-        ret.push({track_name:trackRec.name, track_duration:trackRec.duration})
-    );
-
-    return ret;
-}
 
 
 appTrack.use(errorHandler);
