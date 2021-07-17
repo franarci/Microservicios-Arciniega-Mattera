@@ -14,7 +14,7 @@ const events = {
 
 class LoggingObserver extends Observer{
 
-   update(event, eventObject){
+   update(event, eventData){
       switch(event){
          case "error":
             LoggingClientInstance.logError(eventObject.msg);
@@ -26,7 +26,7 @@ class LoggingObserver extends Observer{
             LoggingClientInstance.logDebug(eventObject.msg);
             break;
          default:
-            LoggingClientInstance.logInfo(events[event]+eventObject.name);
+            LoggingClientInstance.logInfo(events[event]+eventData.changedObject.name);
             break;
       }
 
