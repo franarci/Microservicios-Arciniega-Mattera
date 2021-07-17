@@ -1,12 +1,18 @@
 const express = require('express');
 const {unqfy, saveUNQfy} = require('./saveAndLoadUNQfy');
 const { errorHandler } = require('../apiErrors');
-
+const {InstanceDoesNotExist} = require('../../errors');
 const appTrack = express();
 const router = express.Router();
 router.use(express.json());
 
-
+function standardJSONOutput(track){
+    return {
+        id: track.id,
+        name: track.name,
+        duration: track.duration,
+    }
+}
 
 appTrack.use(errorHandler);
 appTrack.use('/tracks', router);
@@ -21,7 +27,7 @@ router.route('/')
                 const track = unqfy.addTrack(req.body.albumId, dataTrack);
                 saveUNQfy(unqfy);
                 res.status(201);
-                res.send(track);
+                res.send(standardJSONOutput(track));
             } catch (error) {
                 unqfy.notify("error", {msg: "Failed track POST"});
                 if(error instanceof InstanceDoesNotExist){
