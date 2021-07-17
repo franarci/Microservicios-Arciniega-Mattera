@@ -42,11 +42,13 @@ router.route('/')
                 res.status(201);
                 res.send(standardJSONOutput(album));
             } catch (error) {
+                unqfy.notify("error", {msg: "Failed album POST"});
                 if(error instanceof InstanceDoesNotExist){
                     next(new Error("RelatedResourceNotFound"));
                 } else throw error;
             }
         } else {
+            unqfy.notify("error", {msg: "Failed album POST"});
             next(new Error("MissingParameter")); 
         }
     })
@@ -66,12 +68,17 @@ router.route('/:id')
         const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
         res.send(standardJSONOutput(album));
     })
-    .delete((req, res) => { // DELETE /api/albums/:id
+    .delete((req, res,next) => { // DELETE /api/albums/:id
+       try{ 
         const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
         unqfy.deleteAlbum(album);
         saveUNQfy(unqfy);
         res.status(204);
         res.send();
+       } catch(e){
+            unqfy.notify("error", {msg: "Failed album DELETE"});
+            next(e);
+       }
     })
     .patch((req, res, next) => { // PATCH /api/albums/:id
         const keys = Object.keys(req.body); 
@@ -82,6 +89,7 @@ router.route('/:id')
             const album = unqfy.getInstanceByAttribute(req.params.id, 'album');
             res.send(standardJSONOutput(album));
         } else {
+            unqfy.notify("error", {msg: "Failed album PATCH"});
             next(new Error("MissingParameter"));
         }
     })
