@@ -1,4 +1,5 @@
 let express = require('express');
+require("dotenv").config();
 
 let token = process.env.LOGGING_TKN;
 let running = true;
