@@ -1,6 +1,6 @@
 let fs = require('fs');
 const Observer= require('./observer');
-const LoggingClient = require('../clientes/Logging/LoggingClient');
+const LoggingClient = require('../clients/Logging/LoggingClient');
 const { newLog } = require('../../../logging-service/src/API/loggingApi') ;
 
 const logs = {
