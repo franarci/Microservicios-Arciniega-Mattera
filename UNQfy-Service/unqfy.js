@@ -25,6 +25,7 @@ const album = require('./src/domain-classes/album');
 const Subject = require('./src/observer/subject');
 const LoggingObserver = require('./src/observer/loggingObserver');
 const LoggingClient = require('./src/clients/Logging/LoggingClient');
+const Observer = require('./src/observer/observer');
 
 class UNQfy extends Subject{
 	constructor(){
@@ -399,9 +400,11 @@ class UNQfy extends Subject{
                         UserBelongs,
 						LoggingObserver,
 						LoggingClient,
-						Subject
+						Subject,
+                        Observer
                     ];
-        return picklify.unpicklify(JSON.parse(serializedData), classes);
+        const ret = picklify.unpicklify(JSON.parse(serializedData), classes);
+        return ret;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
