@@ -2,7 +2,6 @@ let fs = require('fs');
 const Observer= require('./observer');
 const LoggingClient = require('../clients/Logging/LoggingClient');
 const LoggingClientInstance = new LoggingClient.LogginClient();
-const { newLog } = require('../../../logging-service/src/API/loggingApi') ;
 
 const events = {
    newAlbum : "New album: ",
