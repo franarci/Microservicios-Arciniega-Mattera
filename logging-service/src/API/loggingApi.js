@@ -2,6 +2,7 @@ let express = require('express');
 
 let token = process.env.LOGGING_TKN;
 let running = true;
+
 var winston  = require('winston');
 var {Loggly} = require('winston-loggly-bulk');
 winston.add(new Loggly({
