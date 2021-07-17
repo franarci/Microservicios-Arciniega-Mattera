@@ -1,5 +1,23 @@
 let express = require('express');
-let apiKey = process.env.LOGGING_TKN;
+
+let token = process.env.LOGGING_TKN;
+
+var winston  = require('winston');
+var {Loggly} = require('winston-loggly-bulk');
+winston.add(new Loggly({
+    token: "80214558-74a9-4715-abc3-cc31c0bbc2ed", ///////CAMBIAR POR VARIABLE
+    subdomain: "franarci",
+    tags: ["Winston-NodeJS"],
+    json: true
+}));
+
+var log4js = require("log4js");
+var logger = log4js.getLogger();
+log4js.configure({
+    appenders: { cheese: { type: "file", filename: "logs.log" } },
+    categories: { default: { appenders: ["cheese"], level: "error" } }
+});
+
 
 let appLogging = express();
 let router = express.Router();
@@ -10,16 +28,10 @@ let errors = require('./apiErrors');
 
 appLogging.use('/api/logging',router);
 
+appLogging.route('/')
+    .post((req, res, next)=>{ // POST /api/logging/
 
-
-async function newLog(log){
-  let options = {
-      body: log
-  }
-
-  await appLogging.post('/', options);
-    
-}
+    })
 
 router.route('/start')
     .post((req, res) => {
@@ -39,4 +51,3 @@ router.route('/stop')
 appLogging.listen(5003, () =>{ console.log('Logging listening on port 5003') });
 
 
-module.exports = { newLog };
