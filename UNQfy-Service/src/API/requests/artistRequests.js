@@ -54,6 +54,7 @@ router.route('/')
                 saveUNQfy(unqfy);        
                 res.status(201).send(standardJSONOutput(artist));            
         } else {
+            unqfy.notify("error", {msg: "Failed artist POST"});
             next(new Error("MissingParameter"));
         }
     })
@@ -72,15 +73,21 @@ router.route('/:id')
             saveUNQfy(unqfy);
             res.send(standardJSONOutput(artist));
         } else {
+            unqfy.notify("error", {msg: "Failed artist PATCH"});
             next(new Error("MissingParameter"));
         }
     })
-    .delete((req,res, e) => {
-        const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
-        unqfy.deleteArtist(artist);
-        saveUNQfy(unqfy);
-        res.status(204);
-        res.send();
+    .delete((req,res, next) => {
+        try {
+            const artist = unqfy.getInstanceByAttribute(req.params.id, 'artist');
+            unqfy.deleteArtist(artist);
+            saveUNQfy(unqfy);
+            res.status(204);
+            res.send();
+        } catch(e) {
+            unqfy.notify("error", {msg: "Failed artist DELETE"});
+            next(e);
+        }
     })    
 
 module.exports={appArtist: appArtist}  
