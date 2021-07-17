@@ -1,7 +1,7 @@
 const rp = require('request-promise');
 const BASE_URL = 'http://localhost:5003/api/logging';
 
-class LogginClient {
+class LoggingClient {
     constructor() {
         this.options = this.getOptions();
     }
@@ -36,5 +36,5 @@ class LogginClient {
 }
 
 module.exports = {
-    LogginClient: LogginClient,
+    LoggingClient: LoggingClient,
 };
