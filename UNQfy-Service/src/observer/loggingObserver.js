@@ -25,8 +25,10 @@ class LoggingObserver extends Observer{
             break;
          case "debug":
             LoggingClientInstance.logDebug(eventObject.msg);
+            break;
          default:
             LoggingClientInstance.logInfo(events[event]+eventObject.name);
+            break;
       }
 
    }
