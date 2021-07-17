@@ -19,17 +19,15 @@ log4js.configure({
     categories: { default: { appenders: ["cheese"], level: "error" } }
 });
 
-
 let appLogging = express();
 let router = express.Router();
-
 
 let {errorHandler} = require('./apiErrors');
 appLogging.use(errorHandler);
 
-appLogging.use('/api/logging',router);
+appLogging.use('/api',router);
 
-appLogging.route('/')
+router.route('/logging')
     .post((req, res)=>{ // POST /api/logging/
         if(running){
             try{
@@ -52,9 +50,8 @@ appLogging.route('/')
             } catch(e) {
                 next(e);
             }
-               
-            
         }
+        res.status(200);
     })
 
 router.route('/start')
@@ -70,6 +67,8 @@ router.route('/stop')
         console.log("LOGGING SERVICE OFF");
         res.status(200).json({status: 200, message: "El servicio de logging esta desactivado"});
     })
+
+router.route('/status').get((req, res) => { res.status(200).send(JSON.stringify('OK'))});
 
 appLogging.listen(5003, () =>{ console.log('Logging listening on port 5003') });
 

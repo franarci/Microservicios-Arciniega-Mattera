@@ -8,10 +8,13 @@
     "chai": "^4.1.2",
     "express": "^4.17.1",
     "json-stringify-safe": "^5.0.1",
+    "log4js": "^6.3.0",
     "node": "^15.14.0",
     "picklify": "github:lwoites/picklify",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "winston": "^3.3.3",
+    "winston-loggly-bulk": "^3.2.1"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
@@ -21,7 +24,12 @@
   },
   "scripts": {
     "test": "mocha",
-    "eslint": "node_modules/.bin/eslint *.js"
+    "eslint": "node_modules/.bin/eslint *.js",
+    "logging": "node ./src/API/loggingApi.js",
+    "start": "sh ./scripts/POSTstart.sh",
+    "stop": "sh ./scripts/POSTstop.sh",
+    "status": "sh ./scripts/GETstatus.sh",
+    "postlog": "sh ./scripts/POSTlogging.sh"
   },
   "author": "",
   "license": "ISC"
