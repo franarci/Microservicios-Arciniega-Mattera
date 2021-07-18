@@ -12,7 +12,6 @@
     "json-stringify-safe": "^5.0.1",
     "node": "^15.14.0",
     "node-fetch": "^2.6.1",
-    "picklify": "github:lwoites/picklify",
     "ping-monitor": "^0.6.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.6"

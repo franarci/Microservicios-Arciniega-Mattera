@@ -2,7 +2,6 @@ let fs = require('fs');
 const Observer= require('./observer');
 const LoggingClient = require('../clients/Logging/LoggingClient');
 const LoggingClientInstance = new LoggingClient.LogginClient();
-const { newLog } = require('../../../logging-service/src/API/loggingApi') ;
 
 const events = {
    newAlbum : "New album: ",
@@ -15,19 +14,19 @@ const events = {
 
 class LoggingObserver extends Observer{
 
-   update(event, eventObject){
+   update(event, eventData){
       switch(event){
          case "error":
-            LoggingClientInstance.logError(eventObject.msg);
+            LoggingClientInstance.logError(eventData.msg);
             break;
          case "warning":
-            LoggingClientInstance.logWarning(eventObject.msg);
+            LoggingClientInstance.logWarning(eventData.msg);
             break;
          case "debug":
-            LoggingClientInstance.logDebug(eventObject.msg);
+            LoggingClientInstance.logDebug(eventData.msg);
             break;
          default:
-            LoggingClientInstance.logInfo(events[event]+eventObject.name);
+            LoggingClientInstance.logInfo(events[event]+eventData.changedObject.name);
             break;
       }
 

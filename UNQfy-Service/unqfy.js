@@ -24,6 +24,7 @@ const {getAllArtistAlbums} = require('./src/API/spotify/spotifyClient');
 const album = require('./src/domain-classes/album');
 const Subject = require('./src/observer/subject');
 const LoggingObserver = require('./src/observer/loggingObserver');
+const LoggingClient = require('./src/clients/Logging/LoggingClient');
 
 class UNQfy extends Subject{
 	constructor(){
@@ -56,7 +57,7 @@ class UNQfy extends Subject{
 						artistData.country
 					)
 				this.artists.push(artist);
-				this.notify("newArtist",{artist: artist});
+				this.notify("newArtist",{changedObject: artist});
 				return artist;
 			} else {
 				throw new InstanceAlreadyExist('artist', artistData.name);
@@ -83,7 +84,7 @@ class UNQfy extends Subject{
         	    const artist = this.getInstanceByAttribute(artistId, 'artist');
         	    artist.addAlbum(album);
         	    this.albums.push(album);
-				this.notify("newAlbum",album);
+				this.notify("newAlbum",{changedObject:album, artist: artist});
         	    return album;
         	} else{
         	    throw new InstanceAlreadyExist('album', albumData.name);
@@ -112,7 +113,7 @@ class UNQfy extends Subject{
             album.addTrack(track);
             this.tracks.push(track);
             artist.addGenres(trackData.genres);
-			this.notify("newTrack",track);
+			this.notify("newTrack",{changedObject:track});
             return track;
         } else {
             throw new InstanceAlreadyExist("track", trackData.name);
@@ -337,7 +338,7 @@ class UNQfy extends Subject{
 				break;
 			}
 		}
-		this.notify("removedTrack", track);
+		this.notify("removedTrack", {changedObject:track});
     }
 
     deleteAlbum(album){
@@ -348,7 +349,7 @@ class UNQfy extends Subject{
 			 this.deleteTrack(deltaTrack)
 		);
         this.albums = this.albums.filter( deltaAlbum => deltaAlbum !== album );
-		this.notify("removedAlbum", album);
+		this.notify("removedAlbum", {changedObject:album});
     }
     
     deleteArtist(artist){
@@ -356,7 +357,7 @@ class UNQfy extends Subject{
         artist.albums.forEach( deltaAlbum => {
 			this.deleteAlbum(deltaAlbum);
 		});
-		this.notify("removedArtist",artist);
+		this.notify("removedArtist",{changedObject:artist});
     }
 
     deletePlaylist(playlistName){
@@ -395,7 +396,10 @@ class UNQfy extends Subject{
                         AlbumBelongs,
                         PlaylistBelongs,
                         TrackBelongs,
-                        UserBelongs
+                        UserBelongs,
+						LoggingObserver,
+						LoggingClient,
+						Subject
                     ];
         return picklify.unpicklify(JSON.parse(serializedData), classes);
 	}

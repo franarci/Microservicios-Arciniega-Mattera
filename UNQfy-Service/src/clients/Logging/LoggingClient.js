@@ -1,5 +1,5 @@
 const rp = require('request-promise');
-const BASE_URL = process.env.LOGGING_HOST + '/api/logging';
+const BASE_URL = 'http://localhost:5003/api/logging';
 
 class LogginClient {
     constructor() {

@@ -11,8 +11,6 @@ const webhookClient = new WebhookClient(
     wbhook_tkn,
 );
 
-let date = new Date();
-
 function discordNotify_fetch(msg){
     const message = JSON.stringify(date + ': ' + msg);
     return fetch(`https://discord.com/api/webhooks/${wbhook_id}/${wbhook_tkn}`,{
@@ -24,12 +22,11 @@ function discordNotify_fetch(msg){
         .catch(console.log)
 }
 
-function discordNotify_rp(msg){
-    const message = JSON.stringify(date + ': ' + msg);
+function discordNotify_rp(msg, dateP){
     const options = {
         uri: `https://discord.com/api/webhooks/${wbhook_id}/${wbhook_tkn}`,
         headers: {'Content-Type': ' application/json',},
-        body: {'content': date + ': ' + msg},
+        body: {'content': dateP + ': ' + msg},
         json:true
     }
     const res = 
@@ -48,7 +45,6 @@ function main(){
             .catch(console.error)
     }
 }
-
 
 //console.log(process.env.WEBHOOK_ID);
 //console.log(process.env.WEBHOOK_TKN);
