@@ -57,7 +57,7 @@ class UNQfy extends Subject{
 						artistData.country
 					)
 				this.artists.push(artist);
-				this.notify("newArtist",{artist: artist});
+				this.notify("newArtist",{changedObject: artist});
 				return artist;
 			} else {
 				throw new InstanceAlreadyExist('artist', artistData.name);
