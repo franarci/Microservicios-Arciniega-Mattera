@@ -7,6 +7,10 @@ class NewsletterObserver extends Observer{
         if(event == "newAlbum"){
             NLClientInstance.newAlbum(eventData);
         }
+
+        if(event == "removedArtist"){
+            NLClientInstance.removedArtist(eventData);
+        }
     }
  }
  
