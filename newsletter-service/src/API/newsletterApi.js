@@ -9,7 +9,8 @@ require("dotenv").config();
 //let token = process.env.LOGGING_TKN;
 let running = true;
 
-
+const subscriptionsHandler = new SubscriptionsHandler();
+const unqfyClient = new UnqfyClient();
 
 let appNewsletter = express();
 let router = express.Router();
@@ -20,16 +21,37 @@ appNewsletter.use(errorHandler);
 appNewsletter.use('/api',router);
 
 router.route('/subscribe')
-    .post((req, res, next)=>{ // POST /api/subscribe/
-        
-        res.status(200);
-        res.json("ok");
+    .post(async (req, res, next)=>{ // POST /api/subscribe/
+        const keys = Object.keys(req.body);
+        const emptyFiledsCond = Object.values(req.body).every(value => value !== "");
+        if(keys.length > 1 && emptyFiledsCond) {
+            try {
+                const artistId = req.body.artistId;
+                const mail = req.body.mail;
+                unqfyClient.verifyArtist(artistId);
+                await subscriptionsHandler.subscribe(artistId, mail);
+                res.status(200).json(`${mail} se ha suscripto`);
+            } catch(e){ 
+                if(e instanceof InstanceDoesNotExist) {next(new Error('RelatedResourceNotFound'))} else {throw e}
+            }
+        } else { next(new Error('MissingParameter')); }
     })
-router.route('/unsuscribe') 
-    .post((req, res, next)=>{ // POST /api/subscribe/
 
-        res.status(200);
-        res.json("ok");
+router.route('/unsuscribe') 
+    .post(async (req, res, next)=>{ // POST /api/subscribe/
+        const keys = Object.keys(req.body);
+        const emptyFiledsCond = Object.values(req.body).every(value => value !== "");
+        if(keys.length > 1 && emptyFiledsCond) {
+            try {
+                const artistId = req.body.artistId;
+                const mail = req.body.mail;
+                unqfyClient.verifyArtist(artistId);
+                await subscriptionsHandler.unsubscribe(artistId, mail);
+                res.status(200).json(`${mail} se ha desuscripto`);
+            } catch(e){ 
+                if(e instanceof InstanceDoesNotExist) {next(new Error('RelatedResourceNotFound'))} else {throw e}
+            }
+        } else { next(new Error('MissingParameter')); }
     })
 
 router.route('/notify')
@@ -92,6 +114,6 @@ router.route('/subscriptions')
 
 router.route('/status').get((req, res) => { res.status(200).send(JSON.stringify('OK'))});
 
-appLogging.listen(5004, () =>{ console.log('Newsletter listening on port 5004')});
+appNewsletter.listen(5004, () =>{ console.log('Newsletter listening on port 5004')});
 
 
