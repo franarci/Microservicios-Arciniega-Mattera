@@ -14,10 +14,14 @@ class NewsletterClient {
         return options;
     }
     async newAlbum(eventData){
+        const artist = eventData.artist.name;
         this.options.body = {
-            album: eventData.changedObject.name,
-            artist: eventData.artist.name
+            artistId: eventData.artist.id,
+            subject: "Nuevo album para el artista " + artist,
+            message: "Se ha agregado el album "+eventData.changedObject.name + " al artista " + artist
         }
+
+        this.options.uri = BASE_URL + "notify";
         await rp.post(this.options);
     }
 
