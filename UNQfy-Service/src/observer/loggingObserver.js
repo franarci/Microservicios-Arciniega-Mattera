@@ -17,13 +17,13 @@ class LoggingObserver extends Observer{
    update(event, eventData){
       switch(event){
          case "error":
-            LoggingClientInstance.logError(eventObject.msg);
+            LoggingClientInstance.logError(eventData.msg);
             break;
          case "warning":
-            LoggingClientInstance.logWarning(eventObject.msg);
+            LoggingClientInstance.logWarning(eventData.msg);
             break;
          case "debug":
-            LoggingClientInstance.logDebug(eventObject.msg);
+            LoggingClientInstance.logDebug(eventData.msg);
             break;
          default:
             LoggingClientInstance.logInfo(events[event]+eventData.changedObject.name);
