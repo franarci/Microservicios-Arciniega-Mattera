@@ -1,6 +1,7 @@
 let express = require('express');
 let {errorHandler} = require('./apiErrors');
 const {InstanceDoesNotExist} = require('../errors');
+const { SubscriptionsHandler } = require('../SubscriptionsHandler');
 require("dotenv").config();
 
 //let token = process.env.LOGGING_TKN;
@@ -37,8 +38,8 @@ router.route('/notify')
         if(keys.length > 2 && emptyFiledsCond) {
             try{
                 const artist = req.body.artistId;
-
-                getSubscriptorsOf(artistId);//////////////////////////// VER COMO MANEJAR LAS SUSCRIPCIONES
+                SubscriptionsHandler.notifySubscribers(artistId);//////////////////////////// VER COMO MANEJAR LAS SUSCRIPCIONES
+                
             } catch(error) {
                 if(error instanceof InstanceDoesNotExist){
                     next(new Error("RelatedResourceNotFound"));
