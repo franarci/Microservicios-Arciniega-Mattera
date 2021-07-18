@@ -1,6 +1,9 @@
+const  GMailAPIClient = require("../../../send-mail-example/GMailAPIClient");
+const  remitent = ""; // PONER UN MAIL
 
 class SubscriptionsHandler {
     constructor(){
+        this.gmailClient = new GMailAPIClient();
         this.subscriptions = {};  //{artist=>[suscriptores]}
     }
 
@@ -12,14 +15,20 @@ class SubscriptionsHandler {
         return this.subscriptions[artistId];
     }
 
-    notifySubscribers(artistId){
+    notifySubscribers(artistId, subject, message){
         const subscribers = this.getSubscribersOf(artistId);
-        subscribers.forEach(subscriber => notifyNewAlbum(subscriber));
+        subscribers.forEach(subscriber => notifyNewAlbum(subscriber, subject, message));
     }
 
-    notifyNewAlbum(subscriber) {
-        //send mail to subscriber
+    async notifyNewAlbum(subscriber, subject, message) {
+        await GMailAPIClient.send_mail(subject, message, subscriber, remitent);
     }
+
+    deleteSubscriptions(artistId){
+        this.subscriptions[artistId] = [];
+    }
+
+
 }
 
 module.exports = SubscriptionsHandler;
