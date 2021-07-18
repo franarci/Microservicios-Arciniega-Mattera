@@ -1,5 +1,5 @@
 const rp = require('rp');
-const BASE_URL = "http://localhost:5004/api/";
+const BASE_URL = "http://localhost:5004/api";
 
 class NewsletterClient {
     constructor() {
@@ -21,8 +21,17 @@ class NewsletterClient {
             message: "Se ha agregado el album "+eventData.changedObject.name + " al artista " + artist
         }
 
-        this.options.uri = BASE_URL + "notify";
+        this.options.uri = BASE_URL + "/notify";
         await rp.post(this.options);
+    }
+
+    async removedArtist(eventData){
+        const artistId = eventData.artist.id;
+        this.options.body = {
+            artistId: artistId
+        }
+        this.options.uri = BASE_URL + "/subscriptions";
+        await rp.delete(this.options);
     }
 
 }
