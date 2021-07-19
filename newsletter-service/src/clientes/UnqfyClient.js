@@ -1,4 +1,4 @@
-const rp = require('rp');
+const rp = require('request-promise');
 const InstanceDoesNotExist = require("../errors");
 const BASE_URL = "http://localhost:5001/api/";
 
@@ -18,12 +18,15 @@ class UnqfyClient {
         this.options.uri = BASE_URL + "artists/";
         this.options.qs = {id: artistId};
 
-        rp.get(options).then(() => {
-            // no hacer nada?
-        }).catch((error) => {
-            throw InstanceDoesNotExist;
-        });
+        rp.get(this.options)
+            .then((res) => {
+                return res.name;
+            }).catch((error) => {
+                throw InstanceDoesNotExist;
+            });
     }
 }
+
+//console.log(decodeURIComponent('))
 
 module.exports = UnqfyClient;
