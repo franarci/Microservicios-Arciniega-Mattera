@@ -26,11 +26,7 @@ class User {
         if(tracks.length!==0){
             tracks = tracks.map( t => JSON.parse(t))
         }
-        
-        return tracks.some(t => 
-
-                        this.sameTrackName(t.name, track.name)
-                        )
+        return tracks.some(t => this.sameTrackName(t.name, track.name))
     }
 
     sameTrackName(tn1,tn2){

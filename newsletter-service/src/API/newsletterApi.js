@@ -27,10 +27,10 @@ router.route('/subscribe')
         if(keys.length > 1 && emptyFiledsCond) {
             try {
                 const artistId = req.body.artistId;
-                const mail = req.body.mail;
-                unqfyClient.verifyArtist(artistId);
-                await subscriptionsHandler.subscribe(artistId, mail);
-                res.status(200).json(`${mail} se ha suscripto`);
+                const sub = req.body.email;
+                const artistName = unqfyClient.verifyArtist(artistId);  
+                await subscriptionsHandler.subscribe(artistId, artistName, sub);
+                res.status(200).json(`${artistName} se ha suscripto`);
             } catch(e){ 
                 if(e instanceof InstanceDoesNotExist) {next(new Error('RelatedResourceNotFound'))} else {throw e}
             }
@@ -44,10 +44,10 @@ router.route('/unsuscribe')
         if(keys.length > 1 && emptyFiledsCond) {
             try {
                 const artistId = req.body.artistId;
-                const mail = req.body.mail;
-                unqfyClient.verifyArtist(artistId);
-                await subscriptionsHandler.unsubscribe(artistId, mail);
-                res.status(200).json(`${mail} se ha desuscripto`);
+                const sub = req.body.email;
+                const artistName = unqfyClient.verifyArtist(artistId);
+                await subscriptionsHandler.unsubscribe(artistId, artistName, sub);
+                res.status(200).json(`${sub} se ha desuscripto`);
             } catch(e){ 
                 if(e instanceof InstanceDoesNotExist) {next(new Error('RelatedResourceNotFound'))} else {throw e}
             }

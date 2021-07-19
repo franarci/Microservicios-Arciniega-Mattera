@@ -18,11 +18,12 @@ class UnqfyClient {
         this.options.uri = BASE_URL + "artists/";
         this.options.qs = {id: artistId};
 
-        rp.get(this.options).then(() => {
-            // no hacer nada?
-        }).catch((error) => {
-            throw InstanceDoesNotExist;
-        });
+        rp.get(this.options)
+            .then((res) => {
+                return res.name;
+            }).catch((error) => {
+                throw InstanceDoesNotExist;
+            });
     }
 }
 
