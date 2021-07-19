@@ -16,25 +16,23 @@ class LogginClient {
 
     async logInfo(msg) {
         this.options.body = { message: msg, level: 'info'};
-        rp.post(this.options);
+        await rp.post(this.options);
     }
 
     async logError(msg) {
         this.options.body = { message: msg, level: 'error'};
-        rp.post(this.options);
+        await rp.post(this.options);
     }
 
     async logDebug(msg) {
         this.options.body = { message: msg, level: 'debug'};
-        rp.post(this.options);
+        await rp.post(this.options);
     }
 
     async logWarning(msg){
         this.options.body = { message: msg, level: 'warning'};
-        rp.post(this.options);
+        await rp.post(this.options);
     }
 }
 
-module.exports = {
-    LogginClient: LogginClient,
-};
+module.exports =  LogginClient;
