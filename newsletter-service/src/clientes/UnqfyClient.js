@@ -14,19 +14,18 @@ class UnqfyClient {
         return options;
     }
     
-    verifyArtist(artistId){
-        this.options.uri = BASE_URL + "artists/";
-        this.options.qs = {id: artistId};
-
-        rp.get(this.options)
-            .then((res) => {
-                return res.name;
-            }).catch((error) => {
-                throw InstanceDoesNotExist;
-            });
+    async verifyArtist(artistId){
+        this.options.uri = BASE_URL + `artists/${artistId}`;
+        let artist;
+        try {
+            artist =  await rp.get(this.options);
+            return artist.name;
+        }  
+        catch(error) {
+                throw error;
+        };
     }
 }
 
-//console.log(decodeURIComponent('))
 
 module.exports = UnqfyClient;
