@@ -8,8 +8,9 @@ class SubscriptionsHandler {
     }
 
     subscribe(artistId, artistName, subscriber){
-        if(this.hasSubs(artistId)){
-            this.subscriptions[artistId] = this.subscriptions[artistId].push(subscriber);  //O ALGO ASI
+        if(this.artistExists(artistId)){
+
+            this.subscriptions[artistId].push(subscriber);  //O ALGO ASI
         } else {
             this.subscriptions[artistId] = [subscriber];
         }
@@ -19,27 +20,45 @@ class SubscriptionsHandler {
                                             "name": "Lucas",
                                             "email":subscriber
                                         }, 
-                                        {   "name": "Francisco",
+                                        {   "name": "El equipo de unqfy",
                                             "email":remitent
                                         }
                                         ).then( (gmailResponse) => {
                                             console.log("Mail enviado!");
-                                            console.log(gmailResponse);
+                                            
                                           }).catch( (error) => {
                                             console.error("Algo salió mal");
-                                            console.error(error);
+                                            
                                         });
                                         
     }
 
-    hasSubs(artistId){
+    artistExists(artistId){
         const artistsIds = Object.keys(this.subscriptions);
         return artistsIds.some(id => id == artistId );
     }
 
-    async unsubscribe(artistId, artistName, subscriber){ 
-        this.subscriptions[artistId] = this.subscriptions[artistId].filter(sub => sub != mail); 
-        await this.gmailClient.send_mail('Notificacion de NL', `Usted esta desuscrito al artista ${artistName}`, subscriber, remitent);
+    async unsubscribe(artistId, artistName, subscriber){
+        if(this.artistExists(artistId)){
+            this.subscriptions[artistId] = this.subscriptions[artistId].filter(sub => sub != subscriber); 
+            this.gmailClient.send_mail('Notificacion de NL', 
+                                            [ `Usted esta desuscripto del artista ${artistName}`],
+                                            { 
+                                                "name": "Usted",
+                                                "email":subscriber
+                                            }, 
+                                            {   
+                                                "name": "El equipo de unqfy",
+                                                "email":remitent
+                                            }
+                                            ).then( (gmailResponse) => {
+                                                console.log("Mail enviado!");
+                                                console.log(gmailResponse);
+                                              }).catch( (error) => {
+                                                console.error("Algo salió mal");
+                                                console.error(error);
+                                            });
+        }
     }
 
     getSubscribersOf(artistId){
@@ -51,8 +70,24 @@ class SubscriptionsHandler {
         subscribers.forEach(subscriber => notifyNewAlbum(subscriber, subject, message));
     }
 
-    async notifyNewAlbum(subscriber, subject, message) {
-        await this.gmailClient.send_mail(subject, message, subscriber, remitent);
+    notifyNewAlbum(subscriber, subject, message) {
+        this.gmailClient.send_mail(subject, 
+                                   [message],
+                                   { 
+                                       "name": "Usted",
+                                       "email":subscriber
+                                   }, 
+                                   {   
+                                       "name": "El equipo de unqfy",
+                                       "email":remitent
+                                   }
+                                   ).then( (gmailResponse) => {
+                                       console.log("Mail enviado!");
+                                       console.log(gmailResponse);
+                                     }).catch( (error) => {
+                                       console.error("Algo salió mal");
+                                       console.error(error);
+                                   });
     }
 
     deleteSubscriptions(artistId){
