@@ -1,5 +1,5 @@
 const rp = require('request-promise');
-const InstanceDoesNotExist = require("../errors");
+const {InstanceDoesNotExist} = require("../errors");
 const BASE_URL = "http://localhost:5001/api/";
 
 class UnqfyClient {
@@ -17,14 +17,13 @@ class UnqfyClient {
     async verifyArtist(artistId){
         this.options.uri = BASE_URL + `artists/${artistId}`;
         let artist;
-        try {
+        try{
             artist =  await rp.get(this.options);
             return artist.name;
-        }  
-        catch(error) {
-                throw error;
-        };
-    }
+            } catch(e) {
+                throw new InstanceDoesNotExist;
+            }
+    };
 }
 
 
