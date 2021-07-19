@@ -1,5 +1,5 @@
 const  GMailAPIClient = require("./clientes/GMailAPIClient");
-const  remitent = "lucasmattera97@gmail.com"; // PONER UN MAIL
+const  remitent = "fran.arciniega96@gmail.com"; // PONER UN MAIL
 
 class SubscriptionsHandler {
     constructor(){
@@ -7,13 +7,29 @@ class SubscriptionsHandler {
         this.subscriptions = new Map(); //{1:[]};  //{artistID=>[suscriptores]}
     }
 
-    async subscribe(artistId, artistName, subscriber){
+    subscribe(artistId, artistName, subscriber){
         if(this.hasSubs(artistId)){
-            this.subscriptions[artistId] = this.subscriptions[artistId].push(mail);  //O ALGO ASI
+            this.subscriptions[artistId] = this.subscriptions[artistId].push(subscriber);  //O ALGO ASI
         } else {
             this.subscriptions[artistId] = [subscriber];
         }
-        await this.gmailClient.send_mail('Notificacion de NL', `Usted esta suscrito al artista ${artistName}`, subscriber, remitent);
+        this.gmailClient.send_mail('Notificacion de NL', 
+                                        [ `Usted esta suscrito al artista ${artistName}`],
+                                        { 
+                                            "name": "Lucas",
+                                            "email":subscriber
+                                        }, 
+                                        {   "name": "Francisco",
+                                            "email":remitent
+                                        }
+                                        ).then( (gmailResponse) => {
+                                            console.log("Mail enviado!");
+                                            console.log(gmailResponse);
+                                          }).catch( (error) => {
+                                            console.error("Algo salió mal");
+                                            console.error(error);
+                                        });
+                                        
     }
 
     hasSubs(artistId){
