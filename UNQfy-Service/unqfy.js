@@ -25,6 +25,7 @@ const album = require('./src/domain-classes/album');
 const Subject = require('./src/observer/subject');
 const LoggingObserver = require('./src/observer/loggingObserver');
 const LoggingClient = require('./src/clients/Logging/LoggingClient');
+const NewsletterObserver = require('./src/observer/newsletterObserver');
 
 class UNQfy extends Subject{
 	constructor(){
@@ -40,6 +41,7 @@ class UNQfy extends Subject{
 		this.albumIdGenerator = 0;
 		this.userIdGenerator = 0;
 		this.addObserver(new LoggingObserver);
+		this.addObserver(new NewsletterObserver);
 	}
 
 	getArtists(){ return this.artists; }
