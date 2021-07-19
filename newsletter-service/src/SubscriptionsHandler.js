@@ -4,17 +4,17 @@ const  remitent = "lucasmattera97@gmail.com"; // PONER UN MAIL
 class SubscriptionsHandler {
     constructor(){
         this.gmailClient = new GMailAPIClient();
-        this.subscriptions = {};  //{artistID=>[suscriptores]}
+        this.subscriptions = {1:[]};  //{artistID=>[suscriptores]}
     }
 
-    subscribe(artistId, mail){
+    async subscribe(artistId, mail){
         this.subscriptions[artistId].push(mail)  //O ALGO ASI
-        await GMailAPIClient.send_mail(mail, 'Usted esta suscrito a la lista', artistId, remitent);
+        await this.gmailClient.send_mail(mail, 'Usted esta suscrito a la lista', artistId, remitent);
     }
 
-    unsubscribe(artistId, mail){ 
+    async unsubscribe(artistId, mail){ 
         this.subscriptions[artistId] = this.subscriptions[artistId].filter(sub => sub != mail); 
-        await GMailAPIClient.send_mail(mail, 'Usted esta desuscrito de la lista', artistId, remitent);
+        await this.gmailClient.send_mail(mail, 'Usted esta desuscrito de la lista', artistId, remitent);
     }
 
     getSubscribersOf(artistId){
@@ -27,7 +27,7 @@ class SubscriptionsHandler {
     }
 
     async notifyNewAlbum(subscriber, subject, message) {
-        await GMailAPIClient.send_mail(subject, message, subscriber, remitent);
+        await this.gmailClient.send_mail(subject, message, subscriber, remitent);
     }
 
     deleteSubscriptions(artistId){
