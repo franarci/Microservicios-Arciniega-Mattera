@@ -24,9 +24,9 @@ let router = express.Router();
 router.use(express.json());
 
 let {errorHandler} = require('./apiErrors');
-appLogging.use(errorHandler);
 
 appLogging.use('/api',router);
+appLogging.use(errorHandler);
 
 router.route('/logging')
     .post((req, res,next)=>{ // POST /api/logging/
