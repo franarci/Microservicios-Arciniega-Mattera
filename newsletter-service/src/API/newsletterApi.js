@@ -28,8 +28,8 @@ router.route('/subscribe')
             try {
                 const artistId = req.body.artistId;
                 const sub = req.body.email;
-                const artistName = unqfyClient.verifyArtist(artistId);  
-                await subscriptionsHandler.subscribe(artistId, artistName, sub);
+                const artistName = await unqfyClient.verifyArtist(artistId);  
+                subscriptionsHandler.subscribe(artistId, artistName, sub);
                 res.status(200).json(`${artistName} se ha suscripto`);
             } catch(e){ 
                 if(e instanceof InstanceDoesNotExist) {next(new Error('RelatedResourceNotFound'))} else {throw e}
