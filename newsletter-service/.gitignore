@@ -23,3 +23,5 @@ yarn-debug.log*
 yarn-error.log*
 token.json
 credentials.json
+package-lock.json
+package.json
