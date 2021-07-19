@@ -1,7 +1,7 @@
 let express = require('express');
 let {errorHandler} = require('./apiErrors');
 const {InstanceDoesNotExist} = require('../errors');
-const SubscriptionsHandler  = require('../SubscriptionsHandler');
+const SubscriptionsHandler = require('../SubscriptionsHandler');
 const UnqfyClient = require('../clientes/UnqfyClient');
 
 require("dotenv").config();
@@ -16,25 +16,29 @@ let appNewsletter = express();
 let router = express.Router();
 router.use(express.json());
 
-appNewsletter.use(errorHandler);
 
 appNewsletter.use('/api',router);
+appNewsletter.use(errorHandler);
 
 router.route('/subscribe')
-    .post(async (req, res, next)=>{ // POST /api/subscribe/
-        const keys = Object.keys(req.body);
-        const emptyFiledsCond = Object.values(req.body).every(value => value !== "");
-        if(keys.length > 1 && emptyFiledsCond) {
-            try {
-                const artistId = req.body.artistId;
-                const sub = req.body.email;
-                const artistName = await unqfyClient.verifyArtist(artistId);  
-                subscriptionsHandler.subscribe(artistId, artistName, sub);
+.post(async (req, res, next)=>{ // POST /api/subscribe/
+    const keys = Object.keys(req.body);
+    const emptyFiledsCond = Object.values(req.body).every(value => value !== "");
+    if(keys.length > 1 && emptyFiledsCond) {
+        try {
+            const artistId = req.body.artistId;
+            const sub = req.body.email;
+            const artistName = await unqfyClient.verifyArtist(artistId);  
+            subscriptionsHandler.subscribe(artistId, artistName, sub);
                 res.status(200).json(`${artistName} se ha suscripto`);
             } catch(e){ 
-                if(e instanceof InstanceDoesNotExist) {next(new Error('RelatedResourceNotFound'))} else {throw e}
+                if(e instanceof InstanceDoesNotExist) {
+                    next(new Error('RelatedResourceNotFound'))
+                } else {throw e}
             }
-        } else { next(new Error('MissingParameter')); }
+        } else {
+            next(new Error("MissingParameter"));
+        }
     })
 
 router.route('/unsuscribe') 
@@ -45,8 +49,8 @@ router.route('/unsuscribe')
             try {
                 const artistId = req.body.artistId;
                 const sub = req.body.email;
-                const artistName = unqfyClient.verifyArtist(artistId);
-                await subscriptionsHandler.unsubscribe(artistId, artistName, sub);
+                const artistName = await unqfyClient.verifyArtist(artistId);
+                subscriptionsHandler.unsubscribe(artistId, artistName, sub);
                 res.status(200).json(`${sub} se ha desuscripto`);
             } catch(e){ 
                 if(e instanceof InstanceDoesNotExist) {next(new Error('RelatedResourceNotFound'))} else {throw e}
@@ -55,7 +59,7 @@ router.route('/unsuscribe')
     })
 
 router.route('/notify')
-    .post(async (req, res) => {
+    .post(async (req, res, next) => {
         const keys = Object.keys(req.body);
         const emptyFiledsCond = Object.values(req.body).every(value => value !== "");
 
@@ -64,8 +68,8 @@ router.route('/notify')
                 const artistId = req.body.artistId;
                 const subject = req.body.subject;
                 const message = req.body.message;
-                UnqfyClient.verifyArtist(artistId);
-                await SubscriptionsHandler.notifySubscribers(artistId, subject, message);
+                await unqfyClient.verifyArtist(artistId);
+                subscriptionsHandler.notifySubscribers(artistId, subject, message);
                 res.status(200);
             } catch(error) {
                 if(error instanceof InstanceDoesNotExist){
@@ -79,15 +83,15 @@ router.route('/notify')
     })
 
 router.route('/subscriptions')
-    .delete((req, res,next) => {//DELETE /api/subscriptions
+    .delete(async (req, res,next) => {//DELETE /api/subscriptions
         const keys = Object.keys(req.body);
         const emptyFiledsCond = Object.values(req.body).every(value => value !== "");
 
         if(keys.length > 0 && emptyFiledsCond) {
             try{
                 const artistId = req.body.artistId;
-                SubscriptionsHandler.deleteSubscriptions(artistId);
-                UnqfyClient.verifyArtist(artistId);
+                await unqfyClient.verifyArtist(artistId);
+                subscriptionsHandler.deleteSubscriptions(artistId);
                 res.status(200);
             } catch(error) {
                 if(error instanceof InstanceDoesNotExist){
@@ -100,11 +104,11 @@ router.route('/subscriptions')
         }
         res.status(200).json({});
     })
-    .get((req,res,next)=>{ // GET /api/subscriptions?artistId
+    .get(async (req,res,next)=>{ // GET /api/subscriptions?artistId
         const artistId = req.params.id;
         if(artistId != undefined){
-            UnqfyClient.verifyArtist(artistId);
-            const subscribers = SubscriptionsHandler.getSubscribersOf(artistId);    
+            await unqfyClient.verifyArtist(artistId);
+            const subscribers = subscriptionsHandler.getSubscribersOf(artistId);    
             res.status(200).json({artistId: artistId, subscriptors: subscribers});
         } else {
             next(InstanceDoesNotExist);
