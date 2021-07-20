@@ -13,7 +13,7 @@ let discordNotify = require('./discordNotify');
 //let stopMonitor = require('./statusUNQfy.js');
 
 let errors = require('./apiErrors');
-let serviceStatus = false;
+let serviceStatus = true;
 
 appMonitor.use(bodyParser.json());
 appMonitor.use('/api/monitor',router);
@@ -48,44 +48,25 @@ function stopMonitors(){
 
 }    
 
+const doPost = (req, res) => {
+    let date=new Date();
+    if(serviceStatus){
+        console.log(req.body);
+        discordNotify(req.body.msg, date);
+        res.json(status.unqfyStatus = req.body.unqfyStatus);
+    }
+}
 router.route('/statusUNQfy')
-    .post((req,res) =>{
-        let date=new Date();
-        if(serviceStatus){
-            console.log(req.body);
-            discordNotify(req.body.msg, date);
-            res.json(status.unqfyStatus = req.body.unqfyStatus);
-        }
-    })
-    .get((req,res) => {
-        res.json(status.unqfyStatus);
-    })
+    .post((req,res) =>{ doPost(req, res); })
+    .get((req,res) => { res.json(status.unqfyStatus); })
 
 router.route('/statusLogging')
-    .post((req,res) =>{
-        let date=new Date();
-        if(serviceStatus){
-            console.log(req.body);
-            discordNotify(req.body.msg, date);
-            res.json(status.checkStatusLogging=req.body.checkStatusLogging);
-        }
-    })
-    .get((req,res) => {
-        res.json(status.checkStatusLogging);
-    })
+    .post((req,res) =>{ doPost(req, res); })
+    .get((req,res) => { res.json(status.loggingStatus); })
 
 router.route('/statusNewsletter')
-    .post((req,res) =>{
-        let date=new Date();
-        if(serviceStatus){
-            console.log(req.body)
-            discordNotify(req.body.msg, date);
-            res.json(status.checkStatusNewsletter=req.body.checkStatusNewsletter);
-        }
-    })
-    .get((req,res) => {
-        res.json(status.checkStatusNewsletter);
-    })
+    .post((req,res) =>{ doPost(req, res); })
+    .get((req,res) => { res.json(status.newsletterStatus); })
 
 router.route('/start')
     .post((req, res) => {
@@ -103,7 +84,7 @@ router.route('/stop')
         res.status(200).json({status: 200, message: "Monitor desactivado"});
     })
 
-appMonitor.listen(5002, () =>{ console.log('Monitor listening on port 5002') });
+appMonitor.listen(5002, () =>{ checkServices(); ; console.log('Monitor listening on port 5002') });
 
 
 //checkServices();

@@ -407,7 +407,8 @@ class UNQfy extends Subject{
 						NewsletterClient,
 						Subject
                     ];
-        return picklify.unpicklify(JSON.parse(serializedData), classes);
+        const ret = picklify.unpicklify(JSON.parse(serializedData), classes);
+        return ret;
 	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
