@@ -26,6 +26,7 @@ const Subject = require('./src/observer/subject');
 const LoggingObserver = require('./src/observer/loggingObserver');
 const LoggingClient = require('./src/clients/Logging/LoggingClient');
 const NewsletterObserver = require('./src/observer/newsletterObserver');
+const NewsletterClient = require('./src/clients/NewsletterClient');
 
 class UNQfy extends Subject{
 	constructor(){
@@ -59,7 +60,7 @@ class UNQfy extends Subject{
 						artistData.country
 					)
 				this.artists.push(artist);
-				this.notify("newArtist",{changedObject: artist});
+				this.notify("newArtist",{changedObject: {id:artist.id}});
 				return artist;
 			} else {
 				throw new InstanceAlreadyExist('artist', artistData.name);
@@ -359,7 +360,8 @@ class UNQfy extends Subject{
         artist.albums.forEach( deltaAlbum => {
 			this.deleteAlbum(deltaAlbum);
 		});
-		this.notify("removedArtist",{changedObject:artist});
+		this.notify("removedArtist",{artist:artist});
+		
     }
 
     deletePlaylist(playlistName){
@@ -401,6 +403,8 @@ class UNQfy extends Subject{
                         UserBelongs,
 						LoggingObserver,
 						LoggingClient,
+						NewsletterObserver,
+						NewsletterClient,
 						Subject
                     ];
         return picklify.unpicklify(JSON.parse(serializedData), classes);
