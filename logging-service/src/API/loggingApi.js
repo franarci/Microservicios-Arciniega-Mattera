@@ -6,7 +6,7 @@ let running = true;
 var winston  = require('winston');
 var winlog = require('winston-loggly-bulk');
 winston.add(new winlog.Loggly({
-    token: "80214558-74a9-4715-abc3-cc31c0bbc2ed", ///////CAMBIAR POR VARIABLE
+    token: token,
     subdomain: "franarci",
     tags: ["Winston-NodeJS"],
     json: true
