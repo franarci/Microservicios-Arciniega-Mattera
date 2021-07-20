@@ -23,7 +23,8 @@
     "test": "mocha",
     "eslint": "node_modules/.bin/eslint *.js",
     "unqfy": "node ./src/API/requests/router.js",
-    "setup": "sh ./scripts/apiSetup.sh"
+    "empty": "sh ./scripts/apiSetup.sh",
+    "setup": "sh ./scripts/apiUsersSetup.sh"
   },
   "author": "",
   "license": "ISC"
