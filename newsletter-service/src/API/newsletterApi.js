@@ -90,8 +90,11 @@ router.route('/subscriptions')
         if(keys.length > 0 && emptyFiledsCond) {
             try{
                 const artistId = req.body.artistId;
+
+                subscriptionsHandler.artistExists(artistId) ? 
+                subscriptionsHandler.deleteSubscriptions(artistId) :
                 await unqfyClient.verifyArtist(artistId);
-                subscriptionsHandler.deleteSubscriptions(artistId);
+
                 res.status(200).send();
             } catch(error) {
                 if(error instanceof InstanceDoesNotExist){
