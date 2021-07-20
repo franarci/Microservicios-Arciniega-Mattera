@@ -360,7 +360,7 @@ class UNQfy extends Subject{
         artist.albums.forEach( deltaAlbum => {
 			this.deleteAlbum(deltaAlbum);
 		});
-		this.notify("removedArtist",{artist:artist});
+		this.notify("removedArtist",{changedObject:artist, artist:artist});
 		
     }
 

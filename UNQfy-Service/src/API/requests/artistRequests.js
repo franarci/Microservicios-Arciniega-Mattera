@@ -41,6 +41,7 @@ router.route('/')
             
         } else {
             artists = unqfy.getArtists();
+            
         }
         const jsonArtists = artists.map(artist => standardJSONOutput(artist));
         res.send(jsonArtists);

@@ -24,10 +24,8 @@ class LoggingObserver extends Observer{
          case "debug":
             LoggingClientInstance.logDebug(eventData.msg);
             break;
-         case "info":
-            LoggingClientInstance.logInfo(events[event]+eventData.changedObject.name);
-            break;
          default:
+            LoggingClientInstance.logInfo(events[event]+eventData.changedObject.name);
             break;
       }
 
