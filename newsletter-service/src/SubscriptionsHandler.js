@@ -62,12 +62,15 @@ class SubscriptionsHandler {
     }
 
     getSubscribersOf(artistId){
-        return this.subscriptions[artistId];
+        if(this.subscriptions[artistId] == undefined){
+            return [];
+        } else return this.subscriptions[artistId];
+        
     }
 
     notifySubscribers(artistId, subject, message){
         const subscribers = this.getSubscribersOf(artistId);
-        subscribers.forEach(subscriber => notifyNewAlbum(subscriber, subject, message));
+        subscribers.forEach(subscriber => this.notifyNewAlbum(subscriber, subject, message));
     }
 
     notifyNewAlbum(subscriber, subject, message) {
