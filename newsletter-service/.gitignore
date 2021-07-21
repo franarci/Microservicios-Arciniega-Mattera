@@ -25,3 +25,4 @@ token.json
 credentials.json
 package-lock.json
 package.json
+*.json
