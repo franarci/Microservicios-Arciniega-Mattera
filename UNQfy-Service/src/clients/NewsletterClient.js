@@ -1,5 +1,10 @@
 const rp = require('request-promise');
-const BASE_URL = "http://localhost:5004/api";
+require("dotenv").config();
+
+let PORT = process.env.NL_PORT;
+let IP = process.env.NL_IP;
+
+const BASE_URL = `http://${IP}:${PORT}/api`;
 
 class NewsletterClient {
     constructor() {

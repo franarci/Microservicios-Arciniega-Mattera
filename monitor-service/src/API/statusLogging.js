@@ -1,10 +1,14 @@
 const fetch = require('node-fetch');
 const Monitor = require('ping-monitor');
+require("dotenv").config();
+
+let IP = process.env.LOGGING_IP;
+let PORT = process.env.PORT_ENV;
 
 function checkStatusLogging(){
     
     const myMonitor = new Monitor({
-        website:'http://localhost:5003',
+        website:`http://${IP}:${PORT}`,
         title:'Logging',
         interval: 10,
         config: { intervalUnits: 'seconds' },
@@ -19,7 +23,7 @@ function checkStatusLogging(){
 
     myMonitor.on('up',function(res,state){
         myMonitor.totalRequestPost = myMonitor.resetValPost
-        return fetch('http://localhost:5002/api/monitor/statusLogging', {
+        return fetch(`http://${IP}:${PORT}/api/monitor/statusLogging`, {
             method:'POST',
             headers:{ 'Content-Type': 'application/json' },
             body:JSON.stringify({
@@ -36,7 +40,7 @@ function checkStatusLogging(){
 
     myMonitor.on('error', function(res){
         myMonitor.totalRequestPut = myMonitor.resetValPut
-        return fetch('http://localhost:5002/api/monitor/statusLogging', {
+        return fetch(`http://${IP}:${PORT}/api/monitor/statusLogging`, {
             method: 'POST', 
             headers:{ 'Content-Type': 'application/json' },
             body:JSON.stringify({

@@ -1,6 +1,8 @@
 const rp = require('request-promise');
 const {InstanceDoesNotExist} = require("../errors");
-const BASE_URL = "http://localhost:5001/api/";
+let PORT = process.env.PORT_ENV;
+let IP = process.env.UNQFY_IP;
+const BASE_URL = `http://${IP}:${PORT}/api/`;
 
 class UnqfyClient {
     constructor(){

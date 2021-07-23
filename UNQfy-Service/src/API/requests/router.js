@@ -6,7 +6,10 @@ const {appPlaylist} = require('./playlistRequests');
 const {appTrack} = require('./trackRequests');
 const {appUser} = require('./userRequests');
 
-const {errorHandler} =require('../apiErrors')
+const {errorHandler} =require('../apiErrors');
+require("dotenv").config();
+
+let PORT = process.env.PORT_ENV;
 
 let appStatus = express();
 let router = express.Router();
@@ -21,5 +24,5 @@ rootAPI.use((req,res,next)=>{
     next(new Error("Invalid route"));
 })
 rootAPI.use(errorHandler);
-rootAPI.listen(5001);
-console.log('UNQfy listening on port 5001');
+rootAPI.listen(PORT);
+console.log(`UNQfy listening on port ${PORT}`);

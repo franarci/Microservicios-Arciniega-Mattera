@@ -6,7 +6,7 @@ const UnqfyClient = require('../clientes/UnqfyClient');
 
 require("dotenv").config();
 
-//let token = process.env.LOGGING_TKN;
+let PORT = process.env.PORT_ENV;
 let running = true;
 
 const subscriptionsHandler = new SubscriptionsHandler();
@@ -15,7 +15,6 @@ const unqfyClient = new UnqfyClient();
 let appNewsletter = express();
 let router = express.Router();
 router.use(express.json());
-
 
 appNewsletter.use('/api',router);
 appNewsletter.use(errorHandler);
@@ -123,6 +122,4 @@ router.route('/subscriptions')
 
 router.route('/status').get((req, res) => { res.status(200).send(JSON.stringify('OK'))});
 
-appNewsletter.listen(5004, () =>{ console.log('Newsletter listening on port 5004')});
-
-
+appNewsletter.listen(PORT, () =>{ console.log(`Newsletter listening on port ${PORT}`)});

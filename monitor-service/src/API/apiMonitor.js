@@ -1,8 +1,10 @@
 let express = require('express');
 let bodyParser = require('body-parser');
+require("dotenv").config();
 
 let appMonitor = express();
 let router = express.Router();
+let PORT = process.env.PORT_ENV;
 
 let checkStatusUNQfy      = require('./statusUNQfy.js');
 let checkStatusNewsletter = require('./statusNewsletter');
@@ -84,7 +86,7 @@ router.route('/stop')
         res.status(200).json({status: 200, message: "Monitor desactivado"});
     })
 
-appMonitor.listen(5002, () =>{ checkServices(); ; console.log('Monitor listening on port 5002') });
+appMonitor.listen(PORT, () =>{ checkServices(); ; console.log(`Monitor listening on port ${PORT}`) });
 
 
 //checkServices();

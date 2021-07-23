@@ -2,7 +2,9 @@ let express = require('express');
 require("dotenv").config();
 
 let token = process.env.LOGGING_TKN;
+let PORT = process.env.PORT_ENV;
 let running = true;
+
 var winston  = require('winston');
 var winlog = require('winston-loggly-bulk');
 winston.add(new winlog.Loggly({
@@ -81,11 +83,10 @@ router.route('/stop')
 
 router.route('/status').get((req, res) => { res.status(200).send(JSON.stringify('OK'))});
 
-appLogging.listen(5003, () =>{ 
-    console.log('Logging listening on port 5003');
+appLogging.listen(PORT, () =>{ 
+    console.log(`Logging listening on port ${PORT}`);
     logger.level = "info";
     logger.info('Server running');
     winston.log("info", "Server running");
  });
-
 

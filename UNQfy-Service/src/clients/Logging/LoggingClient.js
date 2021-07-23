@@ -1,5 +1,10 @@
 const rp = require('request-promise');
-const BASE_URL = 'http://localhost:5003/api/logging';
+require("dotenv").config();
+
+let PORT = process.env.LOGGING_PORT;
+let IP = process.env.LOGGING_IP;
+
+const BASE_URL = `http://${IP}:${PORT}/api/logging`;
 
 class LoggingClient {
     constructor() {
