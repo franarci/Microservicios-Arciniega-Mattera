@@ -12,6 +12,7 @@
     "json-stringify-safe": "^5.0.1",
     "node": "^15.14.0",
     "node-fetch": "^2.6.1",
+    "nodemon": "^2.0.12",
     "ping-monitor": "^0.6.1",
     "request": "^2.88.2",
     "request-promise": "^4.2.6"
@@ -25,9 +26,10 @@
   "scripts": {
     "test": "mocha",
     "eslint": "node_modules/.bin/eslint *.js",
-    "monitor": "node ./src/API/apiMonitor.js",
+    "start": "UNQFY_IP=172.20.0.10 NL_IP=172.20.0.40 LOGGING_IP=172.20.0.30 PORT_ENV=5002 node ./src/API/apiMonitor.js",
+    "dev": "UNQFY_IP=172.20.0.10 NL_IP=172.20.0.40 LOGGING_IP=172.20.0.30 PORT_ENV=5002 nodemon ./src/API/apiMonitor.js",
     "disc": "node ./src/API/discordNotify.js",
-    "start": "sh ./scripts/POSTstart.sh",
+    "init": "sh ./scripts/POSTstart.sh",
     "stop": "sh ./scripts/POSTstop.sh",
     "services": "sh ./scripts/GETservices.sh",
     "unqfystat": "sh ./scripts/GETstatUNQfy.sh",

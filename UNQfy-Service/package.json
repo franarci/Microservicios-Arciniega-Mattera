@@ -6,9 +6,11 @@
   "dependencies": {
     "axios": "^0.21.1",
     "chai": "^4.1.2",
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "json-stringify-safe": "^5.0.1",
     "node": "^15.14.0",
+    "nodemon": "^2.0.12",
     "picklify": "github:lwoites/picklify",
     "request": "^2.88.2",
     "request-promise": "^4.2.6"
@@ -22,8 +24,13 @@
   "scripts": {
     "test": "mocha",
     "eslint": "node_modules/.bin/eslint *.js",
-    "unqfy": "node ./src/API/requests/router.js",
-    "empty": "sh ./scripts/apiSetup.sh",
+    "start": "PORT_ENV=5001 UNQFY_IP=172.20.0.10 NL_PORT=5004 NL_IP=172.20.0.40 LOGGING_PORT=5003 LOGGING_IP=172.20.30 node ./src/API/requests/router.js",
+    "dev": "PORT_ENV=5001 UNQFY_IP=172.20.0.10 NL_PORT=5004 NL_IP=172.20.0.40 LOGGING_PORT=5003 LOGGING_IP=172.20.30 nodemon ./src/API/requests/router.js",
+    
+    "start-local": "PORT_ENV=5001 UNQFY_IP=localhost NL_PORT=5004 NL_IP=localhost LOGGING_PORT=5003 LOGGING_IP=localhost node ./src/API/requests/router.js",
+    "dev-local": "PORT_ENV=5001 UNQFY_IP=localhost NL_PORT=5004 NL_IP=localhost LOGGING_PORT=5003 LOGGING_IP=localhost nodemon ./src/API/requests/router.js",
+    
+    "empty": "sh ./scripts/apiSetup.sh", 
     "setup": "sh ./scripts/apiUsersSetup.sh"
   },
   "author": "",

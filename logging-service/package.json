@@ -11,6 +11,7 @@
     "json-stringify-safe": "^5.0.1",
     "log4js": "^6.3.0",
     "node": "^15.14.0",
+    "nodemon": "^2.0.12",
     "request": "^2.88.2",
     "request-promise": "^4.2.6",
     "winston": "^3.3.3",
@@ -25,8 +26,9 @@
   "scripts": {
     "test": "mocha",
     "eslint": "node_modules/.bin/eslint *.js",
-    "logging": "node ./src/API/loggingApi.js",
-    "start": "sh ./scripts/POSTstart.sh",
+    "start": "PORT_ENV=5003 node ./src/API/loggingApi.js",
+    "dev": "PORT_ENV=5003 nodemon ./src/API/loggingApi.js",
+    "init": "sh ./scripts/POSTstart.sh",
     "stop": "sh ./scripts/POSTstop.sh",
     "status": "sh ./scripts/GETstatus.sh",
     "postlog": "sh ./scripts/POSTlogging.sh"
