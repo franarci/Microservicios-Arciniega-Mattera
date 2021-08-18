@@ -1,6 +1,6 @@
 # Microservicios-Arciniega-Mattera
 ENG: Four microservices interconnected: UNQfy, Newsletter, Logging and Monitor
-ESP: Cuatro microservicios interconectador: UNQfy, Newsletter, Logging and Monitor
+ESP: Cuatro microservicios interconectados: UNQfy, Newsletter, Logging and Monitor
 
 ## UNQfy model
 
